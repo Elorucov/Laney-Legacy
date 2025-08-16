@@ -1,0 +1,773 @@
+﻿<Application
+    x:Class="Elorucov.Laney.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:msm="using:Microsoft.UI.Xaml.Media"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:gconv="using:Elorucov.Laney.Services.Converters"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:contract14Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,14)"
+    xmlns:uis="using:Elorucov.Laney.Services.UI">
+    <Application.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <controls:XamlControlsResources/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKPalette.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKPaletteMessages.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKScheme.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKSchemeMessages.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKTypography.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKControlStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Themes/CalendarView.xaml"/>
+                <contract14Present:ResourceDictionary Source="ms-appx:///Themes/ListViewItem.xaml"/>
+                <contract14Present:ResourceDictionary Source="ms-appx:///Themes/GridViewItem.xaml"/>
+                <ResourceDictionary Source="ms-appx:///ControlTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- BitmapImageConverter -->
+            <gconv:BitmapImageConverter x:Key="bic"/>
+
+            <!-- Non-vector images -->
+            <ImageSource x:Key="StickerKeywordBotIcon">ms-appx:///Assets/NonVector/StickerKeywordBot.png</ImageSource>
+
+            <!-- New message bubble -->
+            <DataTemplate x:Key="DefaultIncomingBubbleTemplate">
+                <Rectangle RadiusX="16" RadiusY="16" Fill="{ThemeResource VKImBubbleIncomingBrush}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="DefaultOutgoingBubbleTemplate">
+                <Rectangle RadiusX="16" RadiusY="16" Fill="{ThemeResource VKImBubbleOutgoingBrush}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="GiftBubbleTemplate">
+                <Rectangle RadiusX="16" RadiusY="16" Fill="{ThemeResource VKImBubbleGiftBackgroundBrush}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="TransparentWithBorderBubbleTemplate">
+                <Rectangle RadiusX="16" RadiusY="16" Fill="{ThemeResource TransparentBubbleBrush}"  Stroke="{ThemeResource VKSeparatorAlphaBrush}" StrokeThickness="1"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="TextLikeHyperlinkBtnTemplate">
+                <TextBlock Foreground="{ThemeResource AlternativeAccentBrush}" IsHitTestVisible="False" Text="{Binding}"/>
+            </DataTemplate>
+
+            <!-- Service message and bubble time templates -->
+            <ControlTemplate x:Key="ServiceMessageTemplate" TargetType="ContentControl">
+                <Border Margin="0,4" CornerRadius="12" HorizontalAlignment="Center" Background="{ThemeResource VKBackgroundContentBrush}">
+                    <ContentPresenter FontSize="12" Margin="8,3,8,5" Content="{TemplateBinding Content}"/>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="TimeInBubbleImageTemplate" TargetType="ContentControl">
+                <Border CornerRadius="11" HorizontalAlignment="Center" Background="#80000000" RequestedTheme="Dark">
+                    <Border.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Default">
+                                    <SolidColorBrush x:Key="VKTextSubheadBrush" Color="White"/>
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="Light">
+                                    <SolidColorBrush x:Key="VKTextSubheadBrush" Color="White"/>
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Border.Resources>
+                    <ContentPresenter Foreground="{ThemeResource VKTextSubheadBrush}" FontSize="11" Margin="8,2,8,4" Content="{TemplateBinding Content}"/>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="TimeInBubbleIncomingTemplate" TargetType="ContentControl">
+                <Border CornerRadius="11,8,16,11" HorizontalAlignment="Center" Background="Transparent">
+                    <ContentPresenter FontSize="11" Margin="8,2,8,4" Foreground="{ThemeResource VKTextSubheadBrush}" Content="{TemplateBinding Content}"/>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="TimeInBubbleOutgoingTemplate" TargetType="ContentControl">
+                <Border CornerRadius="11,8,16,11" HorizontalAlignment="Center" Background="Transparent">
+                    <ContentPresenter FontSize="11" Margin="8,2,8,4" Foreground="{ThemeResource VKTextSubheadBrush}" Content="{TemplateBinding Content}"/>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="TimeInBubbleGiftTemplate" TargetType="ContentControl">
+                <Border CornerRadius="11,8,16,11" HorizontalAlignment="Center" Background="Transparent">
+                    <ContentPresenter FontSize="11" Margin="8,2,8,4" Foreground="{ThemeResource VKTextSubheadBrush}" Content="{TemplateBinding Content}"/>
+                </Border>
+            </ControlTemplate>
+
+            <!-- Dissapeared message info -->
+            <DataTemplate x:Key="DisappearedMessageTemplate">
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0" Margin="4">
+                    <StackPanel CornerRadius="16" Height="32" Orientation="Horizontal" Padding="6,0,8,0" Background="{ThemeResource VKBackgroundContentBrush}" BorderBrush="{ThemeResource VKImBubbleOutgoingBrush}" BorderThickness="1">
+                        <ContentPresenter Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center" ContentTemplate="{StaticResource Icon28BombOutline}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                        <TextBlock FontSize="13" Margin="0,-2,0,0" VerticalAlignment="Center" Foreground="{ThemeResource VKTextSecondaryBrush}" x:Uid="msg_disappeared"/>
+                    </StackPanel>
+                </HyperlinkButton>
+            </DataTemplate>
+
+            <!-- Icons -->
+            <DataTemplate x:Key="ImportantMessageIconTemplate">
+                <ctrls:FixedFontIcon Foreground="{ThemeResource VKIconMediumAlphaBrush}" FontSize="12" Glyph=""/>
+            </DataTemplate>
+            <DataTemplate x:Key="LoadingMessageIconTemplate">
+                <ctrls:FixedFontIcon Foreground="{ThemeResource VKIconMediumAlphaBrush}" FontSize="12" Glyph=""/>
+            </DataTemplate>
+            <DataTemplate x:Key="UnreadMessageIconTemplate">
+                <ctrls:FixedFontIcon Foreground="{ThemeResource VKIconMediumAlphaBrush}" FontSize="12" Glyph=""/>
+            </DataTemplate>
+            <DataTemplate x:Key="DeletedMessageIconTemplate">
+                <ctrls:FixedFontIcon Foreground="{ThemeResource VKIconMediumAlphaBrush}" FontSize="12" Glyph=""/>
+            </DataTemplate>
+            <DataTemplate x:Key="VKReactionsIcon12">
+                <PathIcon Width="12" Height="12" Data="M2.8.22a.32.32 0 0 0-.6 0l-.25.73a1.6 1.6 0 0 1-1 1l-.73.25a.32.32 0 0 0 0 .6l.73.25c.47.15.85.53 1 1l.25.73a.32.32 0 0 0 .6 0l.25-.73a1.6 1.6 0 0 1 1-1l.73-.25a.32.32 0 0 0 0-.6l-.73-.24a1.6 1.6 0 0 1-1-1.01L2.8.22Zm3.64 3.25c-.26.75-.6 1.5-1.04 1.93a5.3 5.3 0 0 1-1.93 1.03 12.31 12.31 0 0 1-.77.24c-.27.08-.27.58 0 .66a15.19 15.19 0 0 1 .77.23c.75.26 1.5.6 1.94 1.04a5.3 5.3 0 0 1 1.03 1.93 12.45 12.45 0 0 1 .23.77c.08.27.58.27.66 0a14.93 14.93 0 0 1 .23-.77c.26-.75.6-1.5 1.04-1.93a5.3 5.3 0 0 1 1.93-1.03 12.45 12.45 0 0 1 .77-.24c.27-.08.27-.58 0-.66a15.08 15.08 0 0 1-.77-.23c-.75-.26-1.5-.6-1.93-1.03a5.3 5.3 0 0 1-1.03-1.94 12.12 12.12 0 0 1-.24-.77c-.08-.27-.58-.27-.66 0a15.19 15.19 0 0 1-.23.77Z"/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ChatSettingsAdmin">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M28 14Q28 14.3437 27.9831 14.6869Q27.9663 15.0302 27.9326 15.3722Q27.8989 15.7143 27.8485 16.0542Q27.798 16.3942 27.731 16.7313Q27.6639 17.0683 27.5804 17.4017Q27.4969 17.7351 27.3972 18.064Q27.2974 18.3929 27.1816 18.7165Q27.0658 19.04 26.9343 19.3576Q26.8028 19.6751 26.6558 19.9858Q26.5089 20.2965 26.3469 20.5996Q26.1849 20.9027 26.0082 21.1974Q25.8315 21.4922 25.6406 21.778Q25.4496 22.0637 25.2449 22.3398Q25.0402 22.6158 24.8221 22.8815Q24.6041 23.1472 24.3733 23.4018Q24.1425 23.6565 23.8995 23.8995Q23.6565 24.1425 23.4018 24.3733Q23.1472 24.6041 22.8815 24.8221Q22.6158 25.0402 22.3398 25.2449Q22.0637 25.4496 21.778 25.6406Q21.4922 25.8315 21.1974 26.0082Q20.9027 26.1849 20.5996 26.3469Q20.2965 26.5089 19.9858 26.6558Q19.6751 26.8028 19.3576 26.9343Q19.04 27.0658 18.7165 27.1816Q18.3929 27.2974 18.064 27.3972Q17.7351 27.4969 17.4017 27.5804Q17.0683 27.6639 16.7313 27.731Q16.3942 27.798 16.0542 27.8485Q15.7143 27.8989 15.3722 27.9326Q15.0302 27.9663 14.6869 27.9831Q14.3437 28 14 28Q13.6563 28 13.3131 27.9831Q12.9698 27.9663 12.6278 27.9326Q12.2857 27.8989 11.9458 27.8485Q11.6058 27.798 11.2687 27.731Q10.9317 27.6639 10.5983 27.5804Q10.2649 27.4969 9.93602 27.3972Q9.60713 27.2974 9.28354 27.1816Q8.95995 27.0658 8.64243 26.9343Q8.32491 26.8028 8.01423 26.6558Q7.70354 26.5089 7.40045 26.3469Q7.09735 26.1849 6.80256 26.0082Q6.50778 25.8315 6.22202 25.6406Q5.93626 25.4496 5.66021 25.2449Q5.38416 25.0402 5.11849 24.8221Q4.85283 24.6041 4.59817 24.3733Q4.34352 24.1425 4.1005 23.8995Q3.85749 23.6565 3.62668 23.4018Q3.39588 23.1472 3.17785 22.8815Q2.95982 22.6158 2.75509 22.3398Q2.55036 22.0637 2.35943 21.778Q2.16849 21.4922 1.9918 21.1974Q1.81511 20.9027 1.6531 20.5996Q1.49109 20.2965 1.34415 19.9858Q1.19721 19.6751 1.06569 19.3576Q0.934165 19.04 0.818383 18.7165Q0.7026 18.3929 0.602835 18.064Q0.50307 17.7351 0.419562 17.4017Q0.336055 17.0683 0.269006 16.7313Q0.201957 16.3942 0.151529 16.0542Q0.1011 15.7143 0.0674138 15.3722Q0.0337272 15.0302 0.0168636 14.6869Q0 14.3437 0 14Q0 13.6563 0.0168636 13.3131Q0.0337272 12.9698 0.0674138 12.6278Q0.1011 12.2857 0.151529 11.9458Q0.201957 11.6058 0.269006 11.2687Q0.336055 10.9317 0.419562 10.5983Q0.50307 10.2649 0.602835 9.93602Q0.7026 9.60713 0.818383 9.28354Q0.934165 8.95995 1.06569 8.64243Q1.19721 8.32491 1.34415 8.01423Q1.49109 7.70354 1.6531 7.40045Q1.81511 7.09735 1.9918 6.80256Q2.16849 6.50778 2.35943 6.22202Q2.55036 5.93626 2.75509 5.66021Q2.95982 5.38416 3.17785 5.11849Q3.39588 4.85283 3.62668 4.59817Q3.85749 4.34352 4.1005 4.1005Q4.34352 3.85749 4.59817 3.62668Q4.85282 3.39588 5.11849 3.17785Q5.38416 2.95982 5.66021 2.75509Q5.93626 2.55036 6.22202 2.35943Q6.50778 2.16849 6.80256 1.9918Q7.09735 1.81511 7.40045 1.6531Q7.70354 1.49109 8.01423 1.34415Q8.32491 1.19721 8.64243 1.06569Q8.95995 0.934165 9.28354 0.818383Q9.60713 0.7026 9.93602 0.602835Q10.2649 0.50307 10.5983 0.419562Q10.9317 0.336055 11.2687 0.269006Q11.6058 0.201957 11.9458 0.151529Q12.2857 0.1011 12.6278 0.0674138Q12.9698 0.0337272 13.3131 0.0168636Q13.6563 0 14 0Q14.3437 0 14.6869 0.0168636Q15.0302 0.0337272 15.3722 0.0674138Q15.7143 0.1011 16.0542 0.151529Q16.3942 0.201957 16.7313 0.269006Q17.0683 0.336055 17.4017 0.419562Q17.7351 0.50307 18.064 0.602835Q18.3929 0.7026 18.7165 0.818383Q19.04 0.934165 19.3576 1.06569Q19.6751 1.19721 19.9858 1.34415Q20.2965 1.49109 20.5996 1.6531Q20.9027 1.81511 21.1974 1.9918Q21.4922 2.16849 21.778 2.35943Q22.0637 2.55036 22.3398 2.75509Q22.6158 2.95982 22.8815 3.17785Q23.1472 3.39588 23.4018 3.62668Q23.6565 3.85749 23.8995 4.1005Q24.1425 4.34352 24.3733 4.59817Q24.6041 4.85282 24.8221 5.11849Q25.0402 5.38416 25.2449 5.66021Q25.4496 5.93626 25.6406 6.22202Q25.8315 6.50778 26.0082 6.80256Q26.1849 7.09735 26.3469 7.40045Q26.5089 7.70354 26.6558 8.01423Q26.8028 8.32491 26.9343 8.64243Q27.0658 8.95995 27.1816 9.28354Q27.2974 9.60713 27.3972 9.93602Q27.4969 10.2649 27.5804 10.5983Q27.6639 10.9317 27.731 11.2687Q27.798 11.6058 27.8485 11.9458Q27.8989 12.2857 27.9326 12.6278Q27.9663 12.9698 27.9831 13.3131Q28 13.6563 28 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="28.733,0.773">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F1 M16.75 11.25Q16.75 11.1149 16.7368 10.9805Q16.7235 10.846 16.6972 10.7135Q16.6708 10.581 16.6316 10.4517Q16.5924 10.3224 16.5407 10.1976Q16.489 10.0728 16.4253 9.95366Q16.3616 9.83451 16.2865 9.72218Q16.2115 9.60985 16.1258 9.50542Q16.0401 9.40098 15.9445 9.30546Q15.849 9.20993 15.7446 9.12422Q15.6401 9.03851 15.5278 8.96346Q15.4155 8.8884 15.2963 8.82472Q15.1772 8.76103 15.0524 8.70933Q14.9276 8.65763 14.7983 8.61841Q14.669 8.5792 14.5365 8.55284Q14.404 8.52648 14.2695 8.51324Q14.1351 8.5 14 8.5Q13.8649 8.5 13.7305 8.51324Q13.596 8.52648 13.4635 8.55284Q13.331 8.5792 13.2017 8.61841Q13.0724 8.65763 12.9476 8.70933Q12.8228 8.76103 12.7037 8.82472Q12.5845 8.8884 12.4722 8.96346Q12.3598 9.03851 12.2554 9.12422Q12.151 9.20993 12.0555 9.30546Q11.9599 9.40098 11.8742 9.50542Q11.7885 9.60985 11.7135 9.72218Q11.6384 9.83451 11.5747 9.95366Q11.511 10.0728 11.4593 10.1976Q11.4076 10.3224 11.3684 10.4517Q11.3292 10.581 11.3028 10.7135Q11.2765 10.846 11.2632 10.9805Q11.25 11.1149 11.25 11.25Q11.25 11.3851 11.2632 11.5195Q11.2765 11.654 11.3028 11.7865Q11.3292 11.919 11.3684 12.0483Q11.4076 12.1776 11.4593 12.3024Q11.511 12.4272 11.5747 12.5463Q11.6384 12.6655 11.7135 12.7778Q11.7885 12.8901 11.8742 12.9946Q11.9599 13.099 12.0555 13.1945Q12.151 13.2901 12.2554 13.3758Q12.3599 13.4615 12.4722 13.5365Q12.5845 13.6116 12.7037 13.6753Q12.8228 13.739 12.9476 13.7907Q13.0724 13.8424 13.2017 13.8816Q13.331 13.9208 13.4635 13.9472Q13.596 13.9735 13.7305 13.9868Q13.8649 14 14 14Q14.1351 14 14.2695 13.9868Q14.404 13.9735 14.5365 13.9472Q14.669 13.9208 14.7983 13.8816Q14.9276 13.8424 15.0524 13.7907Q15.1772 13.739 15.2963 13.6753Q15.4155 13.6116 15.5278 13.5365Q15.6401 13.4615 15.7446 13.3758Q15.849 13.2901 15.9445 13.1945Q16.0401 13.099 16.1258 12.9946Q16.2115 12.8901 16.2865 12.7778Q16.3616 12.6655 16.4253 12.5463Q16.489 12.4272 16.5407 12.3024Q16.5924 12.1776 16.6316 12.0483Q16.6708 11.919 16.6972 11.7865Q16.7235 11.654 16.7368 11.5195Q16.75 11.3851 16.75 11.25ZM8.5 18.115L8.5 18.83C8.5 19.2 8.8 19.5 9.17 19.5L18.83 19.5C19.2 19.5 19.5 19.2 19.5 18.83L19.5 18.115C19.5 15.692 15.836 15 14 15C12.164 15 8.5 15.692 8.5 18.115Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsCall">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF50C750" />
+                                        <GradientStop Offset="1" Color="#FF32B332" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F1 M15.6424 16.5348C16.6957 15.4814 18.3537 15.3843 19.4563 16.3113L20.253 16.9824C21.1621 17.7476 21.2546 19.1269 20.4579 20.0623C20.0234 20.565 19.4119 20.8807 18.7505 20.9438C16.2049 21.2867 13.5344 20.06 10.7375 17.2629C7.94066 14.4658 6.71328 11.7944 7.05615 9.24926C7.07397 9.05012 7.11535 8.8538 7.17943 8.66442C7.32769 8.22936 7.58943 7.84178 7.93758 7.54173C8.87372 6.74576 10.2521 6.83745 11.0172 7.74747L11.6875 8.54421C12.616 9.64532 12.5196 11.3043 11.4664 12.3576L10.8947 12.9286C10.7423 13.0813 10.6924 13.3086 10.7668 13.5111C10.9748 14.0798 11.5057 14.7902 12.3578 15.6425C13.2108 16.4955 13.9212 17.0256 14.489 17.2344C14.6916 17.3087 14.919 17.2584 15.0715 17.1057L15.6424 16.5348Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsChangeInfo">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14Q0 13.6563 0.0168636 13.3131Q0.0337272 12.9698 0.0674138 12.6278Q0.1011 12.2857 0.151529 11.9458Q0.201957 11.6058 0.269006 11.2687Q0.336055 10.9317 0.419562 10.5983Q0.50307 10.2649 0.602835 9.93602Q0.7026 9.60713 0.818383 9.28354Q0.934165 8.95995 1.06569 8.64243Q1.19721 8.32491 1.34415 8.01423Q1.49109 7.70354 1.6531 7.40045Q1.81511 7.09735 1.9918 6.80256Q2.16849 6.50778 2.35943 6.22202Q2.55036 5.93626 2.75509 5.66021Q2.95982 5.38416 3.17785 5.11849Q3.39588 4.85283 3.62668 4.59817Q3.85749 4.34352 4.1005 4.1005Q4.34352 3.85749 4.59817 3.62668Q4.85282 3.39588 5.11849 3.17785Q5.38416 2.95982 5.66021 2.75509Q5.93626 2.55036 6.22202 2.35943Q6.50778 2.16849 6.80256 1.9918Q7.09735 1.81511 7.40045 1.6531Q7.70354 1.49109 8.01423 1.34415Q8.32491 1.19721 8.64243 1.06569Q8.95995 0.934165 9.28354 0.818383Q9.60713 0.7026 9.93602 0.602835Q10.2649 0.50307 10.5983 0.419562Q10.9317 0.336055 11.2687 0.269006Q11.6058 0.201957 11.9458 0.151529Q12.2857 0.1011 12.6278 0.0674138Q12.9698 0.0337272 13.3131 0.0168636Q13.6563 0 14 0Q14.3437 0 14.6869 0.0168636Q15.0302 0.0337272 15.3722 0.0674138Q15.7143 0.1011 16.0542 0.151529Q16.3942 0.201957 16.7313 0.269006Q17.0683 0.336055 17.4017 0.419562Q17.7351 0.50307 18.064 0.602835Q18.3929 0.7026 18.7165 0.818383Q19.04 0.934165 19.3576 1.06569Q19.6751 1.19721 19.9858 1.34415Q20.2965 1.49109 20.5996 1.6531Q20.9027 1.81511 21.1974 1.9918Q21.4922 2.16849 21.778 2.35943Q22.0637 2.55036 22.3398 2.75509Q22.6158 2.95982 22.8815 3.17785Q23.1472 3.39588 23.4018 3.62668Q23.6565 3.85749 23.8995 4.1005Q24.1425 4.34352 24.3733 4.59817Q24.6041 4.85282 24.8221 5.11849Q25.0402 5.38416 25.2449 5.66021Q25.4496 5.93626 25.6406 6.22202Q25.8315 6.50778 26.0082 6.80256Q26.1849 7.09735 26.3469 7.40045Q26.5089 7.70354 26.6558 8.01423Q26.8028 8.32491 26.9343 8.64243Q27.0658 8.95995 27.1816 9.28354Q27.2974 9.60713 27.3972 9.93602Q27.4969 10.2649 27.5804 10.5983Q27.6639 10.9317 27.731 11.2687Q27.798 11.6058 27.8485 11.9458Q27.8989 12.2857 27.9326 12.6278Q27.9663 12.9698 27.9831 13.3131Q28 13.6563 28 14Q28 14.3437 27.9831 14.6869Q27.9663 15.0302 27.9326 15.3722Q27.8989 15.7143 27.8485 16.0542Q27.798 16.3942 27.731 16.7313Q27.6639 17.0683 27.5804 17.4017Q27.4969 17.7351 27.3972 18.064Q27.2974 18.3929 27.1816 18.7165Q27.0658 19.04 26.9343 19.3576Q26.8028 19.6751 26.6558 19.9858Q26.5089 20.2965 26.3469 20.5996Q26.1849 20.9027 26.0082 21.1974Q25.8315 21.4922 25.6406 21.778Q25.4496 22.0637 25.2449 22.3398Q25.0402 22.6158 24.8221 22.8815Q24.6041 23.1472 24.3733 23.4018Q24.1425 23.6565 23.8995 23.8995Q23.6565 24.1425 23.4018 24.3733Q23.1472 24.6041 22.8815 24.8221Q22.6158 25.0402 22.3398 25.2449Q22.0637 25.4496 21.778 25.6406Q21.4922 25.8315 21.1974 26.0082Q20.9027 26.1849 20.5996 26.3469Q20.2965 26.5089 19.9858 26.6558Q19.6751 26.8028 19.3576 26.9343Q19.04 27.0658 18.7165 27.1816Q18.3929 27.2974 18.064 27.3972Q17.7351 27.4969 17.4017 27.5804Q17.0683 27.6639 16.7313 27.731Q16.3942 27.798 16.0542 27.8485Q15.7143 27.8989 15.3722 27.9326Q15.0302 27.9663 14.6869 27.9831Q14.3437 28 14 28Q13.6563 28 13.3131 27.9831Q12.9698 27.9663 12.6278 27.9326Q12.2857 27.8989 11.9458 27.8485Q11.6058 27.798 11.2687 27.731Q10.9317 27.6639 10.5983 27.5804Q10.2649 27.4969 9.93602 27.3972Q9.60713 27.2974 9.28354 27.1816Q8.95995 27.0658 8.64243 26.9343Q8.32491 26.8028 8.01423 26.6558Q7.70354 26.5089 7.40045 26.3469Q7.09735 26.1849 6.80256 26.0082Q6.50778 25.8315 6.22202 25.6406Q5.93626 25.4496 5.66021 25.2449Q5.38416 25.0402 5.11849 24.8221Q4.85283 24.6041 4.59817 24.3733Q4.34352 24.1425 4.1005 23.8995Q3.85749 23.6565 3.62668 23.4018Q3.39588 23.1472 3.17785 22.8815Q2.95982 22.6158 2.75509 22.3398Q2.55036 22.0637 2.35943 21.778Q2.16849 21.4922 1.9918 21.1974Q1.81511 20.9027 1.6531 20.5996Q1.49109 20.2965 1.34415 19.9858Q1.19721 19.6751 1.06569 19.3576Q0.934165 19.04 0.818383 18.7165Q0.7026 18.3929 0.602835 18.064Q0.50307 17.7351 0.419562 17.4017Q0.336055 17.0683 0.269006 16.7313Q0.201957 16.3942 0.151529 16.0542Q0.1011 15.7143 0.0674138 15.3722Q0.0337272 15.0302 0.0168636 14.6869Q0 14.3437 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F0 M14.987 9.97606L18.022 13.0111L12.4831 18.5507C11.8202 19.2135 11.0045 19.7033 10.1079 19.977L7.61962 20.7366C7.4685 20.7827 7.3086 20.6976 7.26246 20.5465C7.24585 20.4921 7.24585 20.4339 7.26246 20.3795L8.02195 17.8915C8.29571 16.9946 8.78568 16.1789 9.44874 15.5159L14.987 9.97606ZM19.1575 7.6266L20.3735 8.84262C20.8422 9.31128 20.8735 10.0518 20.4673 10.5567L20.3734 10.6611L18.857 12.1771L15.822 9.14206L17.3389 7.62655C17.8411 7.12446 18.6553 7.12448 19.1575 7.6266L19.1575 7.6266Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsChangeStyle">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F0 M14.6288 17.7021C14.4547 18.0771 14.5246 18.4696 14.7085 18.7825C15.2119 19.6513 15.4859 21 14.0298 21C10.3058 21 7 17.7825 7 14C7 10.134 10.1474 7 14.0298 7C17.4856 7 20.4156 9.5001 20.9718 12.894C21.2559 15.285 19.3471 16.9853 17.3042 16.9853C16.4647 16.9859 15.0728 16.7461 14.6288 17.7021L14.6288 17.7021ZM9.75 15C10.4404 15 11 14.4404 11 13.75C11 13.0596 10.4404 12.5 9.75 12.5C9.05964 12.5 8.5 13.0596 8.5 13.75C8.5 14.4404 9.05964 15 9.75 15ZM15.75 11.5C16.4404 11.5 17 10.9404 17 10.25C17 9.55964 16.4404 9 15.75 9C15.0596 9 14.5 9.55964 14.5 10.25C14.5 10.9404 15.0596 11.5 15.75 11.5ZM11.75 11.5C12.4404 11.5 13 10.9404 13 10.25C13 9.55964 12.4404 9 11.75 9C11.0596 9 10.5 9.55964 10.5 10.25C10.5 10.9404 11.0596 11.5 11.75 11.5ZM18.25 15C18.9404 15 19.5 14.4404 19.5 13.75C19.5 13.0596 18.9404 12.5 18.25 12.5C17.5596 12.5 17 13.0596 17 13.75C17 14.4404 17.5596 15 18.25 15Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsInvite">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F1 M14 7C14.5523 7 15 7.44772 15 8L15 13L20 13C20.5523 13 21 13.4477 21 14C21 14.5523 20.5523 15 20 15L15 15L15 20C15 20.5523 14.5523 21 14 21C13.4477 21 13 20.5523 13 20L13 15L8 15C7.44772 15 7 14.5523 7 14C7 13.4477 7.44772 13 8 13L13 13L13 8C13 7.44772 13.4477 7 14 7Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsMassMention">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F1 M13.8747 21C12.4902 21 11.2803 20.726 10.2449 20.178C9.2095 19.63 8.40985 18.8488 7.84591 17.8345C7.28197 16.8201 7 15.6367 7 14.2842L7 13.8645C7 12.512 7.29838 11.3169 7.89514 10.2792C8.4919 9.24151 9.33034 8.43556 10.4105 7.86134C11.4906 7.28711 12.7349 7 14.1432 7L14.2148 7C15.5217 7 16.6899 7.25796 17.7193 7.77389C18.7487 8.28982 19.5529 9.00832 20.1317 9.92942C20.7106 10.8505 21 11.894 21 13.06L21 13.4884C21 14.2929 20.8672 15.0012 20.6017 15.6134C20.3361 16.2255 19.9587 16.6991 19.4693 17.0344C18.98 17.3696 18.416 17.5372 17.7775 17.5372C17.1927 17.5372 16.6869 17.4191 16.2602 17.183C15.8335 16.9469 15.5635 16.6336 15.4501 16.243L15.3696 16.243C15.2562 16.6336 15.01 16.9454 14.6311 17.1786C14.2521 17.4118 13.8031 17.5284 13.2839 17.5284C12.7587 17.5284 12.3022 17.4133 11.9143 17.183C11.5264 16.9527 11.228 16.6219 11.0192 16.1905C10.8103 15.7591 10.7059 15.249 10.7059 14.6602L10.7059 13.5934C10.7059 13.0279 10.8118 12.5353 11.0237 12.1156C11.2355 11.6958 11.5354 11.3708 11.9233 11.1405C12.3112 10.9103 12.7647 10.7951 13.2839 10.7951C13.7732 10.7951 14.1925 10.9088 14.5416 11.1362C14.8907 11.3635 15.1219 11.6696 15.2353 12.0543L15.298 12.0543L15.298 11.8882C15.298 11.6084 15.386 11.381 15.562 11.2061C15.7381 11.0312 15.9663 10.9438 16.2468 10.9438C16.5213 10.9438 16.7436 11.0312 16.9137 11.2061C17.0838 11.381 17.1688 11.6084 17.1688 11.8882L17.1688 15.3073C17.1688 15.5522 17.2434 15.7533 17.3926 15.9107C17.5418 16.0681 17.7357 16.1468 17.9744 16.1468C18.243 16.1468 18.4772 16.0316 18.6771 15.8014C18.877 15.5711 19.0322 15.2461 19.1426 14.8264C19.253 14.4066 19.3082 13.9198 19.3082 13.366L19.3082 13.1299C19.3082 12.238 19.0904 11.4379 18.6547 10.7295C18.2191 10.0212 17.6149 9.46888 16.8421 9.07245C16.0693 8.67603 15.1965 8.47783 14.2238 8.47783L14.1432 8.47783C13.0631 8.47783 12.1157 8.70227 11.3012 9.15116C10.4866 9.60004 9.8555 10.2369 9.40793 11.0618C8.96036 11.8867 8.73657 12.8413 8.73657 13.9257L8.73657 14.2317C8.73657 15.3044 8.9514 16.2401 9.38107 17.0387C9.81074 17.8374 10.4209 18.4539 11.2116 18.8882C12.0023 19.3225 12.9288 19.5397 13.991 19.5397L14.0806 19.5397C14.4804 19.5397 14.9518 19.4989 15.4949 19.4172C15.7694 19.3823 15.9395 19.3648 16.0051 19.3648C16.214 19.3648 16.387 19.4289 16.5243 19.5572C16.6616 19.6854 16.7302 19.8486 16.7302 20.0468C16.7302 20.3908 16.5362 20.624 16.1483 20.7464C15.6292 20.9155 14.9011 21 13.9642 21L13.8747 21ZM12.7289 14.3629C12.7289 15.4239 13.1257 15.9544 13.9194 15.9544C14.2954 15.9544 14.5803 15.8305 14.7743 15.5828C14.9682 15.335 15.0652 14.9663 15.0652 14.4766L15.0652 13.742C15.0652 13.299 14.9623 12.9521 14.7564 12.7014C14.5505 12.4508 14.2656 12.3254 13.9015 12.3254C13.5196 12.3254 13.2287 12.461 13.0288 12.732C12.8289 13.0031 12.7289 13.3952 12.7289 13.9082L12.7289 14.3629Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsChangePin">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F1 M16.2348 8.10902L19.8916 11.7722C20.1167 11.9977 19.9556 12.4052 19.6292 12.4052L19.1059 12.4052C18.8684 12.4052 18.6406 12.4996 18.4727 12.6677L16.7584 14.3826C16.5905 14.5506 16.4961 14.7785 16.4961 15.0161L16.4961 18.0119C16.4961 18.5662 15.7969 18.8697 15.3954 18.4681L13.0947 16.1672L9.52444 19.7385C9.17567 20.0872 8.61032 20.0872 8.26161 19.7383C7.91289 19.3895 7.91278 18.8239 8.26138 18.4749L11.8293 14.9013L9.53953 12.6105C9.14801 12.2189 9.42996 11.5093 9.99543 11.5093L12.9902 11.5093C13.2276 11.5093 13.4554 11.415 13.6233 11.247L15.3382 9.53196C15.5062 9.36393 15.6006 9.13601 15.6006 8.89835L15.6006 8.3716C15.6006 8.05217 16.0036 7.87741 16.2348 8.10902L16.2348 8.10902Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+            <DataTemplate x:Key="ChatSettingsSeeInviteLink">
+                <Viewbox>
+                    <Canvas Width="28" Height="28">
+                        <Path Data="F1 M0 14C0 6.26801 6.26801 0 14 0C21.732 0 28 6.26801 28 14C28 21.732 21.732 28 14 28C6.26801 28 0 21.732 0 14Z">
+                            <Path.Fill>
+                                <LinearGradientBrush StartPoint="0,14" EndPoint="14,42">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF70B2FF" />
+                                        <GradientStop Offset="1" Color="#FF5C9CE6" />
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Path.Fill>
+                        </Path>
+                        <Path Fill="#fff" Data="F0 M13.022 16.1837C12.6954 16.5126 12.1609 16.5123 11.8346 16.1829C10.3544 14.6883 10.3544 12.2588 11.8346 10.7643L14.4526 8.12093C15.9328 6.62636 18.3389 6.62636 19.8191 8.12093C21.0805 9.39456 21.3763 11.1544 20.4882 12.6286C20.1927 13.1191 19.5424 13.0984 19.1635 12.7185C18.8889 12.4432 18.9098 12.012 19.0873 11.7C19.5517 10.8834 19.3267 10.0173 18.6312 9.32098C17.8041 8.47876 16.4607 8.47817 15.6337 9.32038L13.0229 11.9565C12.189 12.7914 12.1884 14.147 13.0219 14.9822C13.3645 15.312 13.3645 15.8538 13.022 16.1837L13.022 16.1837ZM14.9712 13.0178C15.8046 13.853 15.8044 15.2083 14.9705 16.0432L12.3597 18.6793C11.5327 19.5215 10.1895 19.5218 9.3625 18.6796C8.66698 17.9833 8.45178 17.1241 8.91621 16.3075C9.09368 15.9955 9.11467 15.5643 8.84004 15.289C8.46115 14.9091 7.8108 14.8884 7.51534 15.3789C6.62725 16.8531 6.9126 18.6054 8.17399 19.8791C9.6542 21.3736 12.0603 21.3736 13.5405 19.8791L16.1584 17.2357C17.6387 15.7412 17.6387 13.3117 16.1584 11.8171C15.8322 11.4877 15.2977 11.4874 14.9711 11.8162C14.6286 12.1461 14.6286 12.688 14.9712 13.0178L14.9712 13.0178Z"/>
+                    </Canvas>
+                </Viewbox>
+            </DataTemplate>
+
+            <!-- Global styles for Modal -->
+            <!-- Сам Modal пока не умеет брать глобальные для него стили вне App.xaml, -->
+            <!-- ... и поэтому он не в ControlTemplates.xaml -->
+            <Style TargetType="elor:Modal">
+                <Setter Property="LayerBrush" Value="{ThemeResource SmokeFillColorDefaultBrush}"/>
+                <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorBaseBrush}"/>
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{ThemeResource SurfaceStrokeColorDefaultBrush}" />
+                <Setter Property="CornersRadius" Value="8"/>
+                <Setter Property="CloseButtonVisibility" Value="Visible"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="elor:Modal">
+                            <Grid x:Name="LayoutRoot">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="HeightStates">
+                                        <VisualState x:Name="Bottom">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Bottom"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Center">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Center"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Stretch">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Stretch"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="Layer" Background="{TemplateBinding LayerBrush}"/>
+                                <Border x:Name="AnimationBorder">
+                                    <Grid x:Name="DialogWrapper">
+                                        <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
+                                            Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
+                                        <Grid x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                            HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Rectangle Grid.RowSpan="2" Fill="{ThemeResource LayerFillColorAltBrush}"/>
+                                            <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="TitleText" Margin="12,8,8,0" FontSize="20" FontWeight="SemiBold" Text="{TemplateBinding Title}"/>
+                                                <HyperlinkButton x:Name="CloseButton" Grid.Column="1" Width="40" Height="40" Margin="4" Padding="0" Visibility="{TemplateBinding CloseButtonVisibility}">
+                                                    <ctrls:FixedFontIcon Glyph="" FontSize="16"/>
+                                                </HyperlinkButton>
+                                            </Grid>
+                                        </Grid>
+                                        <Rectangle x:Name="OuterBorder" IsHitTestVisible="False" HorizontalAlignment="Center" Margin="-1"
+                                            Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="ContentUnderTitleBarModalStyle" TargetType="elor:Modal">
+                <Setter Property="LayerBrush" Value="{ThemeResource SmokeFillColorDefaultBrush}"/>
+                <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorBaseBrush}"/>
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{ThemeResource SurfaceStrokeColorDefaultBrush}" />
+                <Setter Property="CornersRadius" Value="8"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="CloseButtonVisibility" Value="Visible"/>
+                <Setter Property="DropShadow" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="elor:Modal">
+                            <Grid x:Name="LayoutRoot">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="HeightStates">
+                                        <VisualState x:Name="Bottom">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Bottom"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Center">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Center"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Stretch">
+                                            <VisualState.Setters>
+                                                <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
+                                                <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                                                <Setter Target="OuterBorder.VerticalAlignment" Value="Stretch"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="Layer" Background="{TemplateBinding LayerBrush}"/>
+                                <Border x:Name="AnimationBorder">
+                                    <Grid x:Name="DialogWrapper">
+                                        <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
+                                            Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
+                                        <Grid x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                            HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <ContentPresenter Grid.RowSpan="2" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="TitleText" Margin="12,8,8,0" FontSize="20" FontWeight="SemiBold" Text="{TemplateBinding Title}"/>
+                                                <HyperlinkButton x:Name="CloseButton" Grid.Column="1" Width="40" Height="40" Margin="4" Padding="0" Visibility="{TemplateBinding CloseButtonVisibility}">
+                                                    <ctrls:FixedFontIcon Glyph="" FontSize="16"/>
+                                                </HyperlinkButton>
+                                            </Grid>
+                                        </Grid>
+                                        <Rectangle x:Name="OuterBorder" IsHitTestVisible="False" HorizontalAlignment="Center" Margin="-1"
+                                            Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <!-- Skeleton loader templates -->
+            <!-- Conversations view -->
+            <DataTemplate x:Key="convTemp1">
+                <Grid Margin="12,6" Height="56">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="48" Height="48"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="112" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,12,0,0"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="156" Height="9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12,0,0,12"/>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="32" Height="9" VerticalAlignment="Top" Margin="12,13,0,0"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="convTemp2">
+                <Grid Margin="12,6" Height="56">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="48" Height="48"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="144" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,12,0,0"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="112" Height="9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12,0,0,12"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="44" Height="9" VerticalAlignment="Top" Margin="12,13,0,0"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="convTemp3">
+                <Grid Margin="12,6" Height="56">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="48" Height="48"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="118" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,12,0,0"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="11" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="136,12,0,0"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="96" Height="9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12,0,0,12"/>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,7"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="64" Height="9" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,13,0,0"/>
+                </Grid>
+            </DataTemplate>
+
+            <!-- Friends view skeleton -->
+            <DataTemplate x:Key="friendTemp1">
+                <Grid Margin="12,0" Height="54">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="friendTemp2">
+                <Grid Margin="12,0" Height="54">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="172" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="friendTemp3">
+                <Grid Margin="12,0" Height="54">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="112" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,24,4,0"/>
+                </Grid>
+            </DataTemplate>
+            
+            <!-- 
+            Можно было вместо самих Grid-ов юзать ContentPresenter с шаблоном friendTempX,
+            но к сожалению, эти ContentPresenter-ы оказываются незагруженными,
+            из-за чего FindShapesWhere не находит фигуры.
+            -->
+            <DataTemplate x:Key="friendGroupTemp1">
+                <StackPanel>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="64" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,19,0,12"/>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="172" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="112" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,24,4,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="172" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="friendGroupTemp2">
+                <StackPanel>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="5" RadiusY="5" Width="11" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,19,0,12"/>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="172" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="112" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,24,4,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="172" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="112" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="2" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="4" RadiusY="4" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12,24,4,0"/>
+                    </Grid>
+                    <Grid Margin="12,0" Height="54">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" Width="42" Height="42"/>
+                        <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" RadiusX="6" RadiusY="6" Width="148" Height="11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,22,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Vertical folders skeleton -->
+            <DataTemplate x:Key="verticalFolderTemp">
+                <StackPanel Height="68">
+                    <Ellipse uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" HorizontalAlignment="Center" Width="24" Height="24" Margin="0,13,0,8"/>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" HorizontalAlignment="Center" Width="52" Height="8" RadiusX="4" RadiusY="4"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Horizontal folders skeleton -->
+            <DataTemplate x:Key="horizontalFolderTemp">
+                <StackPanel>
+                    <Rectangle uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}" VerticalAlignment="Center" Margin="10,0" Width="64" Height="10" RadiusX="5" RadiusY="5"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <Color x:Key="LegacyPageBackgroundColor">#000</Color>
+                    <SolidColorBrush x:Key="TransparentBrush" Color="#00000000"/>
+                    <SolidColorBrush x:Key="LegacyPageBackgroundBrush" Color="{ThemeResource LegacyPageBackgroundColor}"/>
+                    <SolidColorBrush x:Key="ConversationPageBackgroundBrush" Color="{ThemeResource ConversationPageBackgroundColor}"/>
+                    <SolidColorBrush x:Key="NonAcrylBackgroundBrush" Color="#101010"/>
+                    <SolidColorBrush x:Key="ReceivedMessageBackgroundBrush" Color="#343434"/>
+                    <SolidColorBrush x:Key="SentMessageBackgroundBrush" Color="#343C47"/>
+                    <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="#FFFFF000"/>
+                    <SolidColorBrush x:Key="AlternativeAccentBrush" Color="{ThemeResource SystemAccentColorLight2}"/>
+                    <SolidColorBrush x:Key="AlternativeMessageControlForegroundAccentBrush" Color="#E1E3E6"/>
+                    <SolidColorBrush x:Key="WinUIContentDialogBackgroundBrush" Color="#2B2B2B"/>
+                    <SolidColorBrush x:Key="VKBackgroundContentMicaBrush" Color="{StaticResource VKGray900Color}" Opacity="0.25"/>
+                    <SolidColorBrush x:Key="TransparentBubbleBrush" Color="#00000000"/>
+                    <SolidColorBrush x:Key="CheckMarkBrush" Color="{ThemeResource SystemAccentColorLight2}"/>
+                    <SolidColorBrush x:Key="VKUIWebWriteBarBrush" Color="#292929"/>
+                    <SolidColorBrush x:Key="ConvViewHeaderForegroundBrush" Color="{ThemeResource SystemAccentColorLight2}"/>
+                    <SolidColorBrush x:Key="ConvViewHeaderTextForegroundBrush" Color="#FFF"/>
+                    <SolidColorBrush x:Key="WriteBarIconBrush" Color="#FFF"/>
+
+                    <!-- Colors for buttons in messages -->
+                    <SolidColorBrush x:Key="VKLinkIconBackgroundBrush" Color="#1fffffff" />
+
+                    <!-- Drag'n'drop background -->
+                    <msm:AcrylicBrush x:Key="DragDropPanelBackgroundBrush" BackgroundSource="Backdrop" FallbackColor="{StaticResource VKGray900Color}" TintColor="{StaticResource VKGray900Color}" TintOpacity="0.8"/>
+
+                    <SolidColorBrush x:Key="ApplicationForegroundThemeBrush" Color="#FFFFFF" />
+
+                    <!-- Logo color -->
+                    <SolidColorBrush x:Key="LaneyLogoBrush" Color="#FFFFFF"/>
+
+                    <!-- WinUI 2.6 Hyperlink foreground -->
+                    <StaticResource x:Key="HyperlinkButtonForeground" ResourceKey="ApplicationForegroundThemeBrush" />
+
+                    <!-- Conv page titlebar & message form -->
+                    <SolidColorBrush x:Key="MicaContentBackgroundOpaqueBrush" Color="#232323"/>
+                    
+                    <msm:AcrylicBrush
+                        x:Key="AlternativeAcrylicBrush"
+                        TintColor="#2C2C2C"
+                        TintOpacity="0.5"
+                        FallbackColor="#2C2C2C"
+                        BackgroundSource="Backdrop"/>
+
+                    <msm:AcrylicBrush
+                        x:Key="MicaLikeAcrylicWindowBrush"
+                        TintColor="#202020"
+                        TintOpacity="0.9"
+                        FallbackColor="#202020"
+                        BackgroundSource="HostBackdrop"/>
+
+                    <msm:AcrylicBrush
+                        x:Key="VKPageAcrylicBrush"
+                        TintColor="{ThemeResource VKGray1000Color}"
+                        TintOpacity="0.92"
+                        FallbackColor="{ThemeResource VKGray1000Color}"
+                        BackgroundSource="HostBackdrop"/>
+
+                    <LinearGradientBrush x:Key="GradientUnderModalButtonBrush" StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#00202020" />
+                        <GradientStop Color="{ThemeResource SolidBackgroundFillColorBase}" Offset="1"/>
+                    </LinearGradientBrush>
+
+                    <!-- Not working except TeachingTipBackgroundBrush! idk why... (check Elorucov.Laney.Services.UI.Tips.FixUI()) -->
+                    <SolidColorBrush x:Key="WhiteBrush" Color="#FFF"/>
+                    <StaticResource x:Key="TeachingTipForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SystemControlBackgroundAccentBrush"/>
+                    <StaticResource x:Key="TeachingTipTitleForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipSubtitleForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipAlternateCloseButtonForeground" ResourceKey="WhiteBrush" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="LegacyPageBackgroundColor">#FFF</Color>
+                    <SolidColorBrush x:Key="TransparentBrush" Color="#00FFFFFF"/>
+                    <SolidColorBrush x:Key="LegacyPageBackgroundBrush" Color="{ThemeResource LegacyPageBackgroundColor}"/>
+                    <SolidColorBrush x:Key="ConversationPageBackgroundBrush" Color="{ThemeResource ConversationPageBackgroundColor}"/>
+                    <SolidColorBrush x:Key="NonAcrylBackgroundBrush" Color="#D0D0D0"/>
+                    <SolidColorBrush x:Key="ReceivedMessageBackgroundBrush" Color="#EEEEEE"/>
+                    <SolidColorBrush x:Key="SentMessageBackgroundBrush" Color="#c9daf0"/>
+                    <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="#FFC50500"/>
+                    <SolidColorBrush x:Key="AlternativeAccentBrush" Color="{ThemeResource SystemAccentColorDark1}"/>
+                    <SolidColorBrush x:Key="AlternativeMessageControlForegroundAccentBrush" Color="{ThemeResource SystemAccentColor}"/>
+                    <SolidColorBrush x:Key="WinUIContentDialogBackgroundBrush" Color="#FFF"/>
+                    <SolidColorBrush x:Key="VKBackgroundContentMicaBrush" Color="{StaticResource VKWhiteColor}" Opacity="1"/>
+                    <SolidColorBrush x:Key="TransparentBubbleBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="CheckMarkBrush" Color="{ThemeResource SystemAccentColorDark1}"/>
+                    <SolidColorBrush x:Key="VKUIWebWriteBarBrush" Color="#FFF"/>
+                    <SolidColorBrush x:Key="ConvViewHeaderForegroundBrush" Color="{ThemeResource SystemAccentColorDark2}"/>
+                    <SolidColorBrush x:Key="ConvViewHeaderTextForegroundBrush" Color="#000"/>
+                    <SolidColorBrush x:Key="WriteBarIconBrush" Color="#000"/>
+
+                    <!-- Colors for buttons in messages -->
+                    <SolidColorBrush x:Key="VKLinkIconBackgroundBrush" Color="#1f000000" />
+
+                    <!-- Drag'n'drop background -->
+                    <msm:AcrylicBrush x:Key="DragDropPanelBackgroundBrush" BackgroundSource="Backdrop" FallbackColor="{StaticResource VKWhiteColor}" TintColor="{StaticResource VKWhiteColor}" TintOpacity="0.8"/>
+
+                    <SolidColorBrush x:Key="ApplicationForegroundThemeBrush" Color="#000000" />
+
+                    <!-- Logo color -->
+                    <SolidColorBrush x:Key="LaneyLogoBrush" Color="#0070C0"/>
+
+                    <!-- WinUI 2.6 Hyperlink foreground -->
+                    <StaticResource x:Key="HyperlinkButtonForeground" ResourceKey="ApplicationForegroundThemeBrush" />
+
+                    <!-- Conv page titlebar & message form -->
+                    <SolidColorBrush x:Key="MicaContentBackgroundOpaqueBrush" Color="#FFF"/>
+                    
+                    <msm:AcrylicBrush
+                        x:Key="AlternativeAcrylicBrush"
+                        TintColor="#FCFCFC"
+                        TintOpacity="0.5"
+                        FallbackColor="#F9F9F9"
+                        BackgroundSource="Backdrop"/>
+
+                    <msm:AcrylicBrush
+                        x:Key="MicaLikeAcrylicWindowBrush"
+                        TintColor="#F3F3F3"
+                        TintOpacity="0.9"
+                        FallbackColor="#F3F3F3"
+                        BackgroundSource="HostBackdrop"/>
+
+                    <msm:AcrylicBrush
+                        x:Key="VKPageAcrylicBrush"
+                        TintColor="{ThemeResource VKGray50Color}"
+                        TintOpacity="0.92"
+                        FallbackColor="{ThemeResource VKGray50Color}"
+                        BackgroundSource="HostBackdrop"/>
+
+                    <LinearGradientBrush x:Key="GradientUnderModalButtonBrush" StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#00F3F3F3" />
+                        <GradientStop Color="{ThemeResource SolidBackgroundFillColorBase}" Offset="1"/>
+                    </LinearGradientBrush>
+
+                    <!-- Not working except TeachingTipBackgroundBrush! idk why... (check Elorucov.Laney.Services.UI.Tips.FixUI()) -->
+                    <SolidColorBrush x:Key="WhiteBrush" Color="#FFF"/>
+                    <StaticResource x:Key="TeachingTipForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipBackgroundBrush" ResourceKey="SystemControlBackgroundAccentBrush"/>
+                    <StaticResource x:Key="TeachingTipTitleForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipSubtitleForegroundBrush" ResourceKey="WhiteBrush"/>
+                    <StaticResource x:Key="TeachingTipAlternateCloseButtonForeground" ResourceKey="WhiteBrush" />
+                </ResourceDictionary>
+
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

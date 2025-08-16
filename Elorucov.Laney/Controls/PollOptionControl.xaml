@@ -1,0 +1,32 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.PollOptionControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="80"
+    d:DesignWidth="320">
+
+    <HyperlinkButton HorizontalContentAlignment="Stretch" VerticalAlignment="Top" BorderThickness="0" Padding="0" HorizontalAlignment="Stretch" Click="OnClick">
+        <Grid CornerRadius="4" MinHeight="36">
+            <Border Background="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.12"/>
+            <Border x:Name="OptionRate" HorizontalAlignment="Left" Background="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.12" Width="0"/>
+            <Grid Margin="12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="0,9" FontSize="15" LineHeight="18" LineStackingStrategy="BlockLineHeight" TextWrapping="Wrap" MaxLines="3">
+                    <Run x:Name="OptionText"/><Run x:Name="OptionVotes" Foreground="{ThemeResource SystemControlBackgroundBaseMediumBrush}"/>
+                </TextBlock>
+                <CheckBox x:Name="MultivariantCheckBox" Grid.Column="1" Padding="0" Width="20" Height="32" VerticalAlignment="Center" Margin="12,0,0,0" Style="{StaticResource VKCheckBox}" BorderBrush="{ThemeResource SystemControlBackgroundBaseMediumBrush}"  Visibility="Collapsed" IsHitTestVisible="False"/>
+                <StackPanel x:Name="Result" Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed">
+                    <ContentPresenter x:Name="ResultCheckIcon" Height="16" Margin="0,0,4,0" ContentTemplate="{StaticResource Icon16Done}"/>
+                    <TextBlock x:Name="ResultRate" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </HyperlinkButton>
+</UserControl>

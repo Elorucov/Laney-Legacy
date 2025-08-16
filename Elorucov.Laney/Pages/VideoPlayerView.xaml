@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.VideoPlayerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:ctrl="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Black" RequestedTheme="Dark">
+    <Grid>
+        <WebView x:Name="Web" Visibility="Collapsed"/>
+        <MediaPlayerElement x:Name="VKVideo" Visibility="Collapsed" AreTransportControlsEnabled="True" AutoPlay="True">
+            <MediaPlayerElement.TransportControls>
+                <MediaTransportControls IsCompact="True" IsVolumeButtonVisible="False" IsPlaybackRateEnabled="True" IsZoomButtonVisible="False"/>
+            </MediaPlayerElement.TransportControls>
+        </MediaPlayerElement>
+        <Grid x:Name="LoadingPanel" Background="#af000000" IsHitTestVisible="False">
+            <vkui:Spinner x:Name="LoadingSpinner" HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44" Foreground="White"/>
+            <TextBlock x:Name="ErrorInfo" Style="{StaticResource VKTitle3}" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock x:Name="ProgressText" VerticalAlignment="Bottom" FontSize="12" FontFamily="Lucida Console"/>
+        </Grid>
+    </Grid>
+</Page>

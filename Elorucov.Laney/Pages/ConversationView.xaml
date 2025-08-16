@@ -1,0 +1,294 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.ConversationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:msgatch="using:Elorucov.Laney.Controls.MessageAttachments"
+    xmlns:mxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:converters3="using:Elorucov.Laney.Services.Converters.ConversationsList"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:obj="using:Elorucov.VkAPI.Objects"
+    xmlns:gr="using:Elorucov.Laney.Services.UI"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <converters:MessageFormTemplateConverter x:Key="mftmp"/>
+        <converters3:UnreadMessagesCounterColor x:Key="umcc"/>
+        <converters3:UnreadMessagesCounterVisibility x:Key="umcv"/>
+        <converters2:NullToVisibility x:Key="vis"/>
+        <converters2:NullToVisibility2 x:Key="siv"/>
+        <converters2:DateTimeToString x:Key="dt"/>
+        <converters2:TimeToString x:Key="ts" />
+        <converters:StickerToBitmap x:Key="stu"/>
+
+        <Style x:Key="ConvAccentStyle" TargetType="HyperlinkButton">
+            <Setter Property="Foreground" Value="{ThemeResource ConvViewHeaderForegroundBrush}"/>
+        </Style>
+        
+        <SolidColorBrush x:Key="ListViewItemHoverAndPressedBrush" Color="Transparent"/>
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="#7F7F7F1F"/>
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="#7F7F7F1F"/>
+        <SolidColorBrush x:Key="SystemControlHighlightListAccentHighBrush" Color="#7F7F7F1F"/>
+
+        <StaticResource x:Key="ListViewItemForegroundSelected" ResourceKey="ApplicationForegroundThemeBrush" />
+        <StaticResource x:Key="ListViewItemBackgroundPointerOver" ResourceKey="ListViewItemHoverAndPressedBrush" />
+        <StaticResource x:Key="ListViewItemBackgroundPressed" ResourceKey="ListViewItemHoverAndPressedBrush" />
+        <StaticResource x:Key="ListViewItemBackgroundSelected" ResourceKey="SystemControlHighlightListAccentMediumLowBrush" />
+        <StaticResource x:Key="ListViewItemBackgroundSelectedPointerOver" ResourceKey="SystemControlHighlightListAccentMediumLowBrush" />
+        <StaticResource x:Key="ListViewItemBackgroundSelectedPressed" ResourceKey="SystemControlHighlightListAccentVeryHighBrush" />
+
+        <Storyboard x:Name="DateShowAnimation">
+            <DoubleAnimation Duration="0:0:0.25" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="DateControl"/>
+        </Storyboard>
+        <Storyboard x:Name="DateHideAnimation">
+            <DoubleAnimation Duration="0:0:0.25" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="DateControl"/>
+        </Storyboard>
+
+        <Storyboard x:Name="MSCBShowAnimation">
+            <DoubleAnimation Duration="0:0:0.15" From="-48" To="0" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="MSCBTransform"/>
+            <DoubleAnimation Duration="0:0:0.15" From="0" To="48" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="CIClipTransform"/>
+        </Storyboard>
+        <Storyboard x:Name="MSCBHideAnimation">
+            <DoubleAnimation Duration="0:0:0.15" From="0" To="-48" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="MSCBTransform"/>
+            <DoubleAnimation Duration="0:0:0.15" From="48" To="0" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="CIClipTransform"/>
+        </Storyboard>
+
+        <CollectionViewSource x:Key="GroupedMessages" x:Name="GroupedMessages" IsSourceGrouped="True" Source="{Binding Messages.GroupedMessages, Mode=OneWay}"/>
+    </Page.Resources>
+    
+    <Grid x:Name="Root">
+        <Grid x:Name="LayoutRoot" Visibility="{Binding IsReady}" Background="{ThemeResource VKBackgroundContentBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="MicaSemiTransparent" Grid.RowSpan="3" x:DeferLoadStrategy="Lazy" Background="{ThemeResource VKBackgroundContentBrush}"/>
+            <controls:ChatBackgroundControl x:Name="ChatBackground" Grid.RowSpan="3"/>
+
+            <controls:ChatListView x:Name="chatListView" Grid.Row="1" SelectionMode="None" IsMultiSelectCheckBoxEnabled="False" IsItemClickEnabled="True" IncrementalLoadingThreshold="2" ShowsScrollingPlaceholders="False" VerticalContentAlignment="Bottom" ItemsSource="{x:Bind GroupedMessages.View, Mode=OneWay}" ContainerContentChanging="RegisterScrollEvents">
+                <controls:ChatListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                </controls:ChatListView.ItemContainerStyle>
+                <controls:ChatListView.ItemTemplate>
+                    <DataTemplate x:DataType="mdl:LMessage">
+                        <mxc:SwipeControl MinHeight="32" DoubleTapped="SwipeControl_DoubleTapped" ContextRequested="ShowMsgContextMenu" DataContextChanged="MessageDataContextChanged"/>
+                    </DataTemplate>
+                </controls:ChatListView.ItemTemplate>
+                <ListView.Header>
+                    <Border Height="24"/>
+                </ListView.Header>
+                <controls:ChatListView.ItemContainerTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition FromHorizontalOffset="0" FromVerticalOffset="0"/>
+                    </TransitionCollection>
+                </controls:ChatListView.ItemContainerTransitions>
+                <controls:ChatListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel AreStickyGroupHeadersEnabled="False" GroupPadding="0" ItemsUpdatingScrollMode="KeepLastItemInView" VerticalAlignment="Bottom" CacheLength="1"/>
+                    </ItemsPanelTemplate>
+                </controls:ChatListView.ItemsPanel>
+                <controls:ChatListView.GroupStyle>
+                    <GroupStyle HidesIfEmpty="True">
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate x:DataType="gr:MessagesCollectionGroupItem">
+                                <controls:Date VerticalAlignment="Top" HorizontalAlignment="Center" Margin="4" DateTime="{x:Bind Key}" Click="Date_Click"/>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+                    </GroupStyle>
+                </controls:ChatListView.GroupStyle>
+                <controls:ChatListView.Footer>
+                    <Border Height="8"/>
+                </controls:ChatListView.Footer>
+            </controls:ChatListView>
+            <StackPanel x:Name="HeaderWithPin" VerticalAlignment="Top" Background="{ThemeResource VKBackgroundContentBrush}">
+                <Grid x:Name="HeaderInner">
+                    <Grid x:Name="ConvInfoContainer" Height="48" VerticalAlignment="Top">
+                        <Grid.Clip>
+                            <RectangleGeometry Rect="0,0,4096,48">
+                                <RectangleGeometry.Transform>
+                                    <CompositeTransform x:Name="CIClipTransform"/>
+                                </RectangleGeometry.Transform>
+                            </RectangleGeometry>
+                        </Grid.Clip>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <HyperlinkButton x:Name="BackButton" x:Uid="backButton" Visibility="Collapsed" Width="48" Height="48" Click="GoBack">
+                            <controls:FixedFontIcon Glyph="" Foreground="{ThemeResource ConvViewHeaderForegroundBrush}"/>
+                        </HyperlinkButton>
+                        <HyperlinkButton x:Name="ConvInfoButton" x:Uid="profileButton" Grid.Column="1" Height="48" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="0" VerticalContentAlignment="Stretch" Padding="8,0,0,0" Command="{Binding TitlebarCommand}" CommandParameter="{Binding ElementName=ConvInfoButton}" ContextRequested="OnHeaderContextRequested">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <elor:Avatar IsHitTestVisible="False" Width="32" Height="32" Margin="0,0,8,0" Grid.RowSpan="2" ImageSource="{Binding Photo, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{Binding Title, Mode=OneWay}"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Top" Orientation="Horizontal">
+                                    <TextBlock FontSize="16" LineHeight="16" LineStackingStrategy="BlockLineHeight" Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding Title}" Foreground="{ThemeResource ConvViewHeaderTextForegroundBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Visibility="{Binding ChatSettings, Converter={StaticResource vis}}">
+                                        <Image Margin="6,10,2,2" Visibility="{Binding ChatSettings.IsDonut, Mode=OneWay, Converter={StaticResource vis}, FallbackValue=Collapsed}" Source="ms-appx:///Assets/vk/donut.svg" Width="12" Height="12"/>
+                                        <Image Margin="4,8,0,0" Visibility="{Binding ChatSettings.IsDisappearing, Mode=OneWay, Converter={StaticResource vis}, FallbackValue=Collapsed}" Source="ms-appx:///Assets/vk/casper.svg" Width="16" Height="16"/>
+                                        <vkui:VKIcon Margin="4,6,0,0" Id="Icon16Muted" Foreground="{ThemeResource TextFillColorTertiaryBrush}" Visibility="{Binding IsMuted, Mode=OneWay, FallbackValue=Collapsed}"/>
+                                        <controls:FixedFontIcon Margin="6,4,0,0" Glyph="" Visibility="{Binding IsWritingDisabledForAll.Value, Mode=OneWay, Converter={StaticResource vis}, FallbackValue=Collapsed}" Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="13" Margin="0,0,0,5" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{Binding Subtitle, Mode=OneWay}" Visibility="{Binding UsersActivityInfo, Mode=OneWay, Converter={StaticResource siv}}"/>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Bottom" FontSize="13" Margin="0,0,0,5" Foreground="{ThemeResource AlternativeAccentBrush}" Text="{Binding UsersActivityInfo, Mode=OneWay}" Visibility="{Binding UsersActivityInfo, Mode=OneWay, Converter={StaticResource vis}}"/>
+                            </Grid>
+                        </HyperlinkButton>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <HyperlinkButton x:Name="SearchInChatBtn" x:Uid="searchInChatButton" Width="48" Height="48" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="" Foreground="{ThemeResource ConvViewHeaderForegroundBrush}" Click="SearchInChatBtn_Click"/>
+                            <HyperlinkButton x:Name="ContextMenuBtn" x:Uid="moreButton" Width="48" Height="48" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="" Command="{Binding ContextMenuCommand}" CommandParameter="{Binding ElementName=ContextMenuBtn}" Foreground="{ThemeResource ConvViewHeaderForegroundBrush}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="MultiSelectCommandBar" Height="48" Visibility="Collapsed">
+                        <Grid.RenderTransform>
+                            <CompositeTransform x:Name="MSCBTransform"/>
+                        </Grid.RenderTransform>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <HyperlinkButton x:Name="MultiselectCloseButton" Width="48" Height="48" Padding="0" Click="ClearSelectedMessages">
+                            <controls:FixedFontIcon Glyph="" Foreground="{ThemeResource ConvViewHeaderForegroundBrush}"/>
+                        </HyperlinkButton>
+                        <TextBlock x:Name="SelMsgCount" Grid.Column="1" Margin="0,11,0,0" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource ConvViewHeaderTextForegroundBrush}"/>
+                        <StackPanel x:Name="MultiSelectCommandButtons" Grid.Column="2" Orientation="Horizontal"/>
+                    </Grid>
+                </Grid>
+                <HyperlinkButton x:Name="PinnedMsgBtn" Grid.Row="1" Grid.ColumnSpan="3" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding PinnedMessageCommand}" Visibility="Collapsed">
+                    <Grid>
+                        <Rectangle VerticalAlignment="Top" Margin="12,0" Fill="{ThemeResource VKSeparatorAlphaBrush}" Height="1">
+                            <Rectangle.RenderTransform>
+                                <CompositeTransform TranslateY="-1"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <msgatch:CompactMessageControl x:Name="PinnedMessageControl" Margin="12,5" UseHeaderForegroundColor="True" HorizontalAlignment="Stretch"/>
+                    </Grid>
+                </HyperlinkButton>
+            </StackPanel>
+            <Rectangle x:Name="TitleBarSeparator" Grid.Row="1" VerticalAlignment="Top" Height="1" Fill="{ThemeResource NavigationViewContentGridBorderBrush}"/>
+
+            <controls:Date x:Name="DateControl" Grid.Row="1" Visibility="{Binding FirstVisibleMessage, Converter={StaticResource vis}}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="4,8,4,0" DateTime="{Binding FirstVisibleMessage.Date}" Click="Date_Click"/>
+
+            <StackPanel Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,12">
+                <Grid x:Name="ReactionsButtonContainer" Visibility="{Binding UnreadReactions, Mode=OneWay, Converter={StaticResource vis}, FallbackValue=Collapsed}">
+                    <Button Style="{StaticResource CircleButtonStyle}" Width="42" Height="42" Margin="0,12,24,12" BorderBrush="{ThemeResource CircleElevationBorderBrush}" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="" Command="{Binding GetToUnreadReactedMessageCommand}"/>
+                    <Border IsHitTestVisible="False" Margin="28,4,0,0" Visibility="{Binding UnreadReactionsCount, Mode=OneWay, Converter={StaticResource umcv}}" VerticalAlignment="Top" Background="{Binding IsMuted, Mode=OneWay, Converter={StaticResource umcc}}" CornerRadius="10" Height="20" MinWidth="20" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding UnreadReactionsCount, Mode=OneWay}" Foreground="White" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI" TextAlignment="Center" Padding="6,0"/>
+                    </Border>
+                </Grid>
+
+                <Grid x:Name="MentionButtonContainer" Grid.Row="1" Visibility="{Binding HasMention}">
+                    <Button Style="{StaticResource CircleButtonStyle}" Width="42" Height="42" Margin="0,12,24,12" BorderBrush="{ThemeResource CircleElevationBorderBrush}" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="&#xE168;" Command="{Binding GoToMentionCommand}"/>
+                </Grid>
+
+                <Grid x:Name="DownButtonContainer" Grid.Row="1" Visibility="Collapsed">
+                    <Button Style="{StaticResource CircleButtonStyle}" Width="42" Height="42" Margin="0,12,24,12" BorderBrush="{ThemeResource CircleElevationBorderBrush}" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="&#xE1FD;" Command="{Binding ButtonDownCommand}"/>
+                    <Border IsHitTestVisible="False" Margin="28,4,0,0" Visibility="{Binding UnreadMessagesCount, Mode=OneWay, Converter={StaticResource umcv}}" VerticalAlignment="Top" Background="{Binding IsMuted, Mode=OneWay, Converter={StaticResource umcc}}" CornerRadius="10" Height="20" MinWidth="20" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding UnreadMessagesCount, Mode=OneWay}" Foreground="White" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" FontFamily="Segoe UI" TextAlignment="Center" Padding="6,0"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+            <Grid x:Name="EmptyDialogContainer" Grid.Row="1" Visibility="{Binding IsEmptyDialog}" Padding="0,0,0,92">
+                <Grid x:Name="EmptyDialogStub" Visibility="{Binding IsEmptyDialogStubVisible}" MaxWidth="480" Margin="16,0,16,0" VerticalAlignment="Center">
+                    <Border x:Name="EmptyDialogStubBackground" CornerRadius="{StaticResource OverlayCornerRadius}" Background="{ThemeResource VKBackgroundContentBrush}"/>
+                    <StackPanel>
+                        <elor:Avatar IsHitTestVisible="False" Width="80" Height="80" Margin="0,24,0,0" Grid.RowSpan="2" ImageSource="{Binding Photo, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{Binding Title, Mode=OneWay}"/>
+                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" FontSize="19" LineHeight="23" FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Text="{Binding Title}"/>
+                        <TextBlock TextAlignment="Center" Margin="0,10,0,0" FontSize="16" LineHeight="23" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{Binding EmptyDialogStubText}"/>
+                        <StackPanel Margin="0,16,0,24" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button x:Name="addFriendBtn" Margin="4,0,4,0" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding CanAddToFriend}" Command="{Binding AddFriendCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=addFriendBtn}" x:Uid="add_friend_btn"/>
+                            <Button x:Name="viewProfileBtn" Margin="4,0,4,0" Command="{Binding ViewProfileCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=viewProfileBtn}" x:Uid="view_profile_btn"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <Border x:Name="StickersSuggestionContainer" Grid.RowSpan="2" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" BorderBrush="{ThemeResource SurfaceStrokeColorFlyoutBrush}" BorderThickness="1" CornerRadius="{ThemeResource OverlayCornerRadius}">
+                <Border.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="MinWidth" Value="72"/>
+                        <Setter Property="MinHeight" Value="72"/>
+                        <Setter Property="Width" Value="72"/>
+                        <Setter Property="Height" Value="72"/>
+                        <Setter Property="Margin" Value="4"/>
+                        <Setter Property="Padding" Value="4"/>
+                    </Style>
+                </Border.Resources>
+                <ListView x:Name="StickersSuggestionList" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.IsHorizontalRailEnabled="True" ScrollViewer.VerticalScrollMode="Disabled" ItemClick="StickersSuggestionList_ItemClick">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="obj:Sticker">
+                            <Image Width="64" Height="64" Stretch="Uniform" Source="{x:Bind Converter={StaticResource stu}, ConverterParameter=64}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+            <controls:MentionsPicker x:Name="mentionsPicker" Grid.RowSpan="2" Visibility="Collapsed"/>
+
+            <Grid x:Name="BottomControlsWrapper" Grid.Row="2" VerticalAlignment="Bottom" MaxWidth="1280">
+                <Rectangle x:Name="BottomControlsShadow" Margin="12,0,12,12" RadiusX="12" RadiusY="12" Fill="{ThemeResource VKUIWebWriteBarBrush}"/>
+                <Grid x:Name="BottomControls" MinHeight="48" Margin="11,-1,11,11" CornerRadius="12" Background="{ThemeResource VKUIWebWriteBarBrush}" BorderBrush="{ThemeResource VKSeparatorAlphaBrush}" BorderThickness="1">
+                    <ContentPresenter MinHeight="48" Visibility="{Binding IsBottomButtonShow, Converter={StaticResource siv}}" ContentTemplate="{Binding MessageSendRestriction, Converter={StaticResource mftmp}}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                    <HyperlinkButton x:Name="BottomButton" Visibility="{Binding IsBottomButtonShow, Converter={StaticResource vis}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontWeight="SemiBold" Command="{Binding BottomButtonCommand}" Content="{Binding BottomButtonContent}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid x:Name="DropArea" Visibility="Collapsed" Background="{ThemeResource DragDropPanelBackgroundBrush}" Padding="8" AllowDrop="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="DropDoc" Visibility="Collapsed" AllowDrop="True" Grid.Row="0" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToDoc">
+                <StackPanel VerticalAlignment="Center" MaxWidth="480">
+                    <ContentPresenter Width="64" Height="64" ContentTemplate="{StaticResource Icon32Document}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                    <TextBlock x:Name="DropDocText" Margin="0,12,0,0" FontSize="18" TextWrapping="Wrap" TextAlignment="Center" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="DropImg" Visibility="Collapsed" AllowDrop="True" Grid.Row="1" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToImg">
+                <StackPanel VerticalAlignment="Center" MaxWidth="480">
+                    <ContentPresenter Width="64" Height="64" ContentTemplate="{StaticResource Icon32Camera}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                    <TextBlock Margin="0,12,0,0" FontSize="18" TextWrapping="Wrap" TextAlignment="Center" Foreground="{ThemeResource VKTextSecondaryBrush}" x:Uid="cv_drop_photo"/>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="DropVid" Visibility="Collapsed" AllowDrop="True" Grid.Row="1" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToVid">
+                <StackPanel VerticalAlignment="Center" MaxWidth="480">
+                    <ContentPresenter Width="64" Height="64" ContentTemplate="{StaticResource Icon32Videos}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                    <TextBlock Margin="0,12,0,0" FontSize="18" TextWrapping="Wrap" TextAlignment="Center" Foreground="{ThemeResource VKTextSecondaryBrush}" x:Uid="cv_drop_video"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <mxc:ProgressBar x:Name="Progress" VerticalAlignment="Top" IsIndeterminate="{Binding IsLoading}" IsHitTestVisible="False" Background="Transparent" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" Value="0"/>
+        <StackPanel x:Name="ErrorPlaceholder" Grid.Row="1" MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource VKBackgroundContentBrush}" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding ErrorInfo, Converter={StaticResource vis}}">
+            <controls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph=""/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding ErrorTitle}"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding ErrorInfo}"/>
+            <Button Margin="0,16,0,24" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" x:Uid="retrybtn" Command="{Binding RetryCommand, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,124 @@
+﻿<Page
+    x:Class="Elorucov.Laney.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:contract5Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,5)"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    mc:Ignorable="d" Background="{ThemeResource MicaLikeAcrylicWindowBrush}">
+
+    <Grid x:Name="LayoutRoot" MaxWidth="320" MaxHeight="960" Padding="12,60">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="1.25*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="LogoContainer" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,72" VerticalAlignment="Bottom">
+            <Grid Width="90" Height="90" Margin="8,0">
+                <Rectangle x:Name="LogoEllipseShadow" Width="90" Height="90" RadiusX="45" RadiusY="45" Fill="{ThemeResource VKBackgroundContentBrush}"/>
+                <Rectangle x:Name="LogoEllipse" Width="90" Height="90" RadiusX="45" RadiusY="45" Fill="{ThemeResource SolidBackgroundFillColorBaseBrush}"/>
+                <Rectangle x:Name="LogoEllipseLayerFill" Width="90" Height="90" RadiusX="45" RadiusY="45" Fill="{ThemeResource LayerFillColorAltBrush}"/>
+                <Viewbox Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform">
+                    <ContentPresenter ContentTemplate="{StaticResource LogoTemplate}"/>
+                </Viewbox>
+                <Button Opacity="0" IsTabStop="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="OnLogoClicked"/>
+            </Grid>
+            <Viewbox Width="123" Height="56" VerticalAlignment="Center" Margin="8,0,0,0">
+                <Grid>
+                    <ContentPresenter ContentTemplate="{StaticResource LogoTextual}"/>
+                    <Button Opacity="0" IsTabStop="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="476,60,0,0" Width="140" Height="164" Click="OnEClicked"/>
+                </Grid>
+            </Viewbox>
+        </StackPanel>
+
+        <StackPanel x:Name="NoSessionsView" Grid.Row="1" x:DeferLoadStrategy="Lazy">
+            <TextBlock VerticalAlignment="Center" Margin="0,6" HorizontalAlignment="Center" TextAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="Wrap" x:Uid="wlc"/>
+            <Button x:Name="MainAuthBtn" Style="{StaticResource AccentButtonStyle}" Margin="0,6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="Login">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ctrls:FixedFontIcon Glyph="" Margin="0,0,6,0"/>
+                    <TextBlock Grid.Column="1" TextAlignment="Center" x:Uid="wlc_login"/>
+                </Grid>
+            </Button>
+            <Button x:Name="QRAuthBtn" Margin="0,0,0,6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="ShowQRDialog">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ctrls:FixedFontIcon Glyph="" Margin="0,0,6,0"/>
+                    <TextBlock Grid.Column="1" TextAlignment="Center" x:Uid="wlc_auth_by_qr"/>
+                </Grid>
+            </Button>
+        </StackPanel>
+
+        <StackPanel x:Name="SessionsView" Grid.Row="1" x:DeferLoadStrategy="Lazy">
+            <ListView x:Name="SessionsList" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.HorizontalScrollMode="Auto" SelectionMode="None" IsItemClickEnabled="True" ItemClick="LoginToSavedSession">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" contract5Present:Spacing="6"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="MinWidth" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="mdl:VKSession">
+                        <Grid Background="Transparent">
+                            <StackPanel Width="88" Height="88" Margin="0,12">
+                                <elor:Avatar IsHitTestVisible="False" HorizontalAlignment="Center" DisplayName="{x:Bind Name}" ImageSource="{x:Bind AvatarUri, Converter={StaticResource bic}}" Width="64" Height="64"/>
+                                <TextBlock Margin="0,8,0,0" TextAlignment="Center" Text="{x:Bind Name}"/>
+                            </StackPanel>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Style="{StaticResource CircleButtonStyle}" BorderBrush="{ThemeResource CircleElevationBorderBrush}" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" FontFamily="{StaticResource SymbolThemeFontFamily}" BorderThickness="1" Padding="0" Width="24" Height="24" FontSize="13" Content="" Click="RemoveSession"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel x:Name="NewSessionButtons">
+                <Button Margin="0,12,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="Login">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="" Margin="0,0,6,0"/>
+                        <TextBlock Grid.Column="1" TextAlignment="Center" x:Uid="wlc_add_session"/>
+                    </Grid>
+                </Button>
+                <Button Margin="0,6,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="ShowQRDialog">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="" Margin="0,0,6,0"/>
+                        <TextBlock Grid.Column="1" TextAlignment="Center" x:Uid="wlc_auth_by_qr"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <Button x:Name="UpdateAvailabilityButton" Visibility="Collapsed" x:Uid="appupdbtn" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource AccentButtonStyle}" Click="UpdateAvailabilityButton_Click"/>
+            <HyperlinkButton HorizontalAlignment="Stretch" Margin="0,12" Click="ShowLangPicker">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="langName" x:Uid="wlc_lang"/>
+                    <FontIcon Margin="3,0,0,0" FontSize="14" Glyph=""/>
+                </StackPanel>
+            </HyperlinkButton>
+            <TextBlock x:Name="ver" VerticalAlignment="Bottom" FontSize="12" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" HorizontalAlignment="Center" TextAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>

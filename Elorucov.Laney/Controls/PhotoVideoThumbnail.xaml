@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.PhotoVideoThumbnail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    UseSystemFocusVisuals="True" SizeChanged="RootSizeChanged">
+
+    <UserControl.Resources>
+        <Storyboard x:Name="LoadAnimation">
+            <DoubleAnimation Storyboard.TargetName="PreviewImage" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="PressAnimation">
+            <DoubleAnimation Storyboard.TargetName="PressedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1" Completed="SetReleaseAnimationTimer"/>
+        </Storyboard>
+        <Storyboard x:Name="ReleaseAnimation">
+            <DoubleAnimation Storyboard.TargetName="PressedLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <HyperlinkButton Padding="0" Margin="0" Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="ButtonClick">
+        <Grid Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+            <Image x:Name="PreviewImage" Opacity="0" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Source>
+                    <BitmapImage x:Name="bi" DecodePixelType="Logical" CreateOptions="IgnoreImageCache" ImageOpened="RunLoadAnimation"/>
+                </Image.Source>
+            </Image>
+            <StackPanel x:Name="ErrorInfo" x:DeferLoadStrategy="Lazy" VerticalAlignment="Center">
+                <vkui:VKIcon x:Name="ErrorIcon" Id="Icon28ErrorOutline" Foreground="{ThemeResource VKTextPrimaryBrush}"/>
+                <TextBlock x:Name="ErrorText" TextAlignment="Center" Foreground="{ThemeResource VKTextPrimaryBrush}" Style="{StaticResource BaseTextBlockStyle}"/>
+            </StackPanel>
+            <StackPanel x:Name="VideoDurationContainer" Visibility="Collapsed" CornerRadius="3" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#7f000000">
+                <Canvas Width="6" Height="9" Margin="6">
+                    <Path Data="M 0, 0 L 6, 4.5 L 0, 9 Z" Fill="White"/>
+                </Canvas>
+                <TextBlock x:Name="VideoDuration" VerticalAlignment="Center" LineHeight="17" Foreground="White" Margin="-1,0,5,0" FontSize="12" Text="-:--"/>
+            </StackPanel>
+            <StackPanel x:Name="DocInfoContainer" Visibility="Collapsed" CornerRadius="3" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#7f000000">
+                <TextBlock x:Name="DocFormat" Foreground="White" Margin="5,2,5,3" FontSize="12" Text=""/>
+                <TextBlock x:Name="DocSize" Foreground="White" Margin="0,2,5,3" FontSize="12" Text=""/>
+            </StackPanel>
+            <Border x:Name="PressedLayer" Background="#3F000000" Opacity="0"/>
+        </Grid>
+    </HyperlinkButton>
+</UserControl>

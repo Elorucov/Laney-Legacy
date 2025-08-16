@@ -1,0 +1,160 @@
+﻿<elor:Modal x:Name="Root"
+    x:Class="Elorucov.Laney.Pages.Dialogs.SharingModal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.ConversationsList"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Style="{StaticResource ContentUnderTitleBarModalStyle}" Padding="0"
+    FullSizeDesired="True" MaxHeight="640" MaxWidth="512" CloseButtonVisibility="Visible">
+
+    <elor:Modal.Resources>
+        <converters2:NullToVisibility x:Key="ntv"/>
+        <converters2:NullToVisibility2 x:Key="vtn"/>
+        <converters:VerifiedUser x:Key="vuc"/>
+        <converters:OnlineVia x:Key="ov"/>
+    </elor:Modal.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.RowSpan="3" Background="{ThemeResource LayerFillColorAltBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,-1"/>
+
+        <Grid x:Name="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="TitleText" Margin="12,8,8,0" FontSize="20" FontWeight="SemiBold" x:Uid="ctxsharebtn"/>
+            <ToggleButton x:Name="MultiSelectButton" Grid.Column="1" Margin="0,8" Visibility="{Binding MultiSelectAllowed, Converter={StaticResource ntv}}" IsChecked="{Binding MultiSelectMode, Mode=TwoWay}" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked" x:Uid="multiselect"/>
+        </Grid>
+
+        <Grid x:Name="SearchRoot" Grid.Row="1">
+            <AutoSuggestBox x:Uid="search_convs" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" QueryIcon="Find" Margin="12,4,12,12" QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+        </Grid>
+
+        <ListView x:Name="ConvsList" Grid.Row="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="ConvsList_ItemClick" SelectionChanged="ConvsList_SelectionChanged" VerticalAlignment="Top" ItemsSource="{Binding Conversations}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:LConversation">
+                    <Grid Margin="4,6" Height="56">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <elor:Avatar IsHitTestVisible="False" Width="48" Height="48" VerticalAlignment="Center" Grid.RowSpan="2" ImageSource="{x:Bind Photo, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{x:Bind Title, Mode=OneWay}"/>
+
+                        <Grid Grid.Column="1" Margin="12,-2,0,0" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                            <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <ContentPresenter Margin="4,2,0,0" Visibility="{x:Bind IsVerified, Mode=OneWay, Converter={StaticResource vuc}}" Foreground="{ThemeResource VKAccentBrush}" ContentTemplate="{StaticResource Icon16Verified}" Width="16" Height="16"/>
+                                <Image Margin="6,5,2,2" Visibility="{x:Bind IsDonut, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/donut.svg" Width="12" Height="12"/>
+                                <Image Margin="4,3,0,0" Visibility="{x:Bind IsDisappearing, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/casper.svg" Width="16" Height="16"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <ctrls:FixedFontIcon Grid.Column="2" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Visibility="{Binding DataContext.MultiSelectMode, ElementName=Root, Converter={StaticResource vtn}}" Glyph=""/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Border Height="24" Margin="0,6">
+                    <muxc:ProgressRing x:Name="Loader" IsActive="{Binding IsLoading}" HorizontalAlignment="Center" Width="24" Height="24"/>
+                </Border>
+            </ListView.Footer>
+        </ListView>
+
+        <GridView x:Name="SelectedConvsRoot" Grid.Row="3" Margin="6,0" Visibility="Collapsed" SelectionMode="None" ItemsSource="{Binding SelectedConvs}" MaxHeight="128" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ctrls:WrapPanel Margin="0,0,0,-9"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.Style>
+                <Style TargetType="GridView">
+                    <Setter Property="MinHeight" Value="0"/>
+                </Style>
+            </GridView.Style>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Style.Setters>
+                        <Setter Property="MinWidth" Value="0" />
+                        <Setter Property="MinHeight" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewItem">
+                                    <GridViewItemPresenter BorderBrush="Transparent" FocusBorderBrush="Transparent"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style.Setters>
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:Entity">
+                    <Border Margin="6,6,0,0" Height="30" Background="{ThemeResource ControlFillColorDefaultBrush}" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+                        <StackPanel Orientation="Horizontal">
+                            <elor:Avatar Width="20" Height="20" Margin="7,4,0,4" ImageSource="{x:Bind Image, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{x:Bind Title, Mode=OneWay}"/>
+                            <TextBlock FontSize="14" FontWeight="SemiBold" Margin="6,-2,6,0" VerticalAlignment="Center" Text="{x:Bind Title}"/>
+                            <HyperlinkButton Width="20" Height="20" Margin="0,4,7,4" Padding="0" Command="{x:Bind ExtraButtonCommand}" Click="SelectedConvRemoveClick">
+                                <ctrls:FixedFontIcon Glyph="" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                            </HyperlinkButton>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
+        <Grid x:Name="PreviewRoot" Grid.Row="4">
+            <StackPanel Orientation="Horizontal" Margin="12">
+                <Grid Height="32" Margin="0,0,12,0" CornerRadius="4">
+                    <ctrls:FixedFontIcon HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="16" Glyph="{Binding SharingItemGlyph}"/>
+                    <Image Width="32" Height="32" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="{Binding SharingItemPreviewImage, Converter={StaticResource bic}, ConverterParameter=smp}"/>
+                    <Border Width="30" Height="30" CornerRadius="3" BorderThickness="1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+                </Grid>
+                <StackPanel VerticalAlignment="Center" Margin="0,-2,0,0">
+                    <TextBlock x:Name="SharingItemTitleText" FontSize="14" Text="{Binding SharingItemTitle}" FontWeight="SemiBold" Foreground="{ThemeResource AccentTextFillColorSecondaryBrush}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="SharingItemDescText" FontSize="14"  Text="{Binding SharingItemDescription}" MaxLines="1" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="ComposerRoot" Grid.Row="5" MinHeight="48" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0" Visibility="{Binding MultiSelectMode, Mode=OneWay, Converter={StaticResource ntv}}">
+            <Grid.Resources>
+                <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent"/>
+                <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Uid="msgformtext" Background="Transparent" BorderThickness="0" MinHeight="48" MaxHeight="150" VerticalAlignment="Bottom" Margin="4,0,0,0" Padding="12" FontSize="16" TextWrapping="Wrap" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                <HyperlinkButton x:Name="SendBtn" IsEnabled="False" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE724;" FontSize="20" Command="{Binding SendMessageCommand}" Foreground="{ThemeResource WriteBarIconBrush}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</elor:Modal>

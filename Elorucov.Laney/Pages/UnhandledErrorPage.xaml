@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.UnhandledErrorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:msm="using:Microsoft.UI.Xaml.Media"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource MicaLikeAcrylicWindowBrush}">
+        <StackPanel VerticalAlignment="Center" MaxWidth="480" Margin="24,32">
+            <TextBlock TextAlignment="Center" FontSize="36" Margin="0,0,0,8" Text="(╯°□°)╯︵ ┻━┻"/>
+            <TextBlock TextAlignment="Center" FontSize="20" FontWeight="SemiBold" TextWrapping="Wrap" x:Uid="globerror_title"/>
+            <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="15" Margin="0,6,0,0">
+                <Run x:Uid="globerror_report"/>
+                <LineBreak/>
+                <Run x:Uid="globerror_logs"/> <Hyperlink Click="LinkClicked"><Run x:Uid="community_link"/></Hyperlink>
+            </TextBlock>
+            <Button x:Name="logsBtn" Margin="0,12,0,12" HorizontalAlignment="Stretch" FontWeight="SemiBold" FontSize="16" Padding="8,5,8,7" x:Uid="globerror_savelogs" Click="SaveLogs"/>
+            <HyperlinkButton HorizontalAlignment="Center" Content="Show error info" Click="ShowErrorInfo"/>
+        </StackPanel>
+        <TextBlock x:Name="ErrType" VerticalAlignment="Bottom" FontFamily="Lucida Console" FontSize="12"/>
+    </Grid>
+</Page>

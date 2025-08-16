@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.FeedSourcePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="SourceGroups" x:Key="SourceGroups" IsSourceGrouped="True" Source="{Binding GroupedItems, Mode=OneWay}" ItemsPath="Items"/>
+        <converters2:NullToVisibility x:Key="ntv"/>
+        
+        <DataTemplate x:Key="EntityTemplate" x:DataType="mdl:Entity">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Width="24" Height="24">
+                    <ctrls:FixedFontIcon FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Glyph="{x:Bind Subtitle}"/>
+                </Border>
+                <elor:Avatar Width="24" Height="24" Visibility="{x:Bind Image, Converter={StaticResource ntv}}" DisplayName="{x:Bind Title}" ImageUri="{x:Bind Image}"/>
+                <TextBlock Grid.Column="1" Margin="12,1,0,0" LineHeight="14" FontSize="14" LineStackingStrategy="BlockLineHeight" Foreground="{ThemeResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" Text="{x:Bind Title}"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <HyperlinkButton x:Uid="backButton" Grid.Column="0" Height="48" Width="48" FontSize="16" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="" Click="GoBack"/>
+            <AutoSuggestBox x:Name="SearchBox" Grid.Column="1" Margin="0,8,8,8" x:Uid="feed_source_search" QuerySubmitted="DoSearch" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <AutoSuggestBox.QueryIcon>
+                    <SymbolIcon Symbol="Find"/>
+                </AutoSuggestBox.QueryIcon>
+            </AutoSuggestBox>
+        </Grid>
+
+        <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource SourceGroups}, Mode=OneWay}" ItemTemplate="{StaticResource EntityTemplate}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+            <ListView.GroupStyle>
+                <GroupStyle HidesIfEmpty="True">
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Margin="14,10,0,2" Visibility="{Binding Key, Converter={StaticResource ntv}}" Text="{Binding Key}" VerticalAlignment="Bottom"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.Footer>
+                <muxc:ProgressRing Grid.Row="4" IsActive="{Binding IsLoading}"/>
+            </ListView.Footer>
+        </ListView>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+            <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</Page>

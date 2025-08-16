@@ -1,0 +1,393 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.PeerProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:msgatch="using:Elorucov.Laney.Controls.MessageAttachments"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:obj="using:Elorucov.VkAPI.Objects"
+    xmlns:converter="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:converter2="using:Elorucov.Laney.Services.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Style="{StaticResource ContentUnderTitleBarModalStyle}" MaxWidth="540" FullSizeDesired="True" Loaded="OnLoaded">
+
+    <elor:Modal.Resources>
+        <converter2:DocumentInfo x:Key="fzh"/>
+        <converter2:VideoAttachmentInfoConverter x:Key="vaic"/>
+        <converter:DocsIconConverter x:Key="dic"/>
+        <converter:NullToVisibility x:Key="ntv"/>
+        <converter:NullToVisibility2 x:Key="ntv2"/>
+
+        <Flyout x:Name="ChatEditFlyout" x:Key="ChatEditFlyout" Placement="Bottom" Opening="ChatEditFlyout_Opening">
+            <StackPanel Width="280">
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}" x:Uid="peerprofile_chatname"/>
+                <AutoSuggestBox x:Name="EditableChatName" Margin="12,0,12,6" QuerySubmitted="RenameChat">
+                    <AutoSuggestBox.QueryIcon>
+                        <ctrls:FixedFontIcon Glyph=""/>
+                    </AutoSuggestBox.QueryIcon>
+                </AutoSuggestBox>
+                <AppBarButton Style="{StaticResource CustomAppBarButtonStyle}" Icon="Edit" x:Uid="peerprofile_change_description" Click="OpenChatDescriptionEditor"/>
+                <MenuFlyoutSeparator/>
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}" x:Uid="peerprofile_chatphoto"/>
+                <AppBarButton Style="{StaticResource CustomAppBarButtonStyle}" Icon="BrowsePhotos" x:Uid="peerprofile_chatphoto_browse" Click="ChatPhotoBrowse"/>
+                <AppBarButton Style="{StaticResource CustomAppBarButtonStyle}" Icon="Emoji2" x:Uid="peerprofile_chatphoto_create" Click="ChatPhotoCreate"/>
+                <AppBarButton Style="{StaticResource CustomAppBarButtonStyle}" Icon="Delete" x:Uid="peerprofile_chatphoto_delete" Foreground="{ThemeResource SystemErrorTextColor}" Click="ChatPhotoDelete"/>
+                <MenuFlyoutSeparator/>
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}" x:Uid="peerprofile_misc"/>
+                <AppBarButton x:Name="managementBtn" Style="{StaticResource CustomAppBarButtonStyle}" Icon="Setting" x:Uid="peerprofile_chatmgmt"  Click="OpenChatPermissionsEditor"/>
+            </StackPanel>
+        </Flyout>
+
+        <Flyout x:Name="ChatDescEditFlyout" x:Key="ChatDescEditFlyout" Placement="Bottom">
+            <StackPanel Width="256">
+                <TextBlock Style="{StaticResource HeaderTextBlockStyle}" x:Uid="peerprofile_chatdesc"/>
+                <TextBox x:Name="EditableChatDescription" Margin="12,0,12,12" TextWrapping="Wrap" Height="72" Text="{Binding Description, Mode=OneTime}"/>
+                <Button Style="{StaticResource AccentButtonStyle}" x:Uid="polleditor_save" HorizontalAlignment="Right" Margin="12,0,12,12" Click="SaveDescription"/>
+            </StackPanel>
+        </Flyout>
+
+        <DataTemplate x:Key="UserGroupInfoEntityTemplate" x:DataType="mdl:TwoStringTuple">
+            <Grid Padding="12,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ctrls:FixedFontIcon VerticalAlignment="Top" Margin="0,0,12,0" Glyph="{x:Bind Item1}"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" Margin="0,-1,0,0" Text="{x:Bind Item2}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChatMemberTemplate" x:DataType="mdl:ChatMemberEntity">
+            <HyperlinkButton Background="Transparent" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Tag="{x:Bind Object}" Click="OpenMemberProfile">
+                <Grid Margin="12,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <elor:Avatar Width="48" Height="48" ImageSource="{x:Bind Image, Converter={StaticResource bic}}" DisplayName="{x:Bind Title}"/>
+                    <TextBlock Grid.Column="1" Margin="12,4,6,0" VerticalAlignment="Top" Text="{x:Bind Title}"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,6,6" FontSize="13" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Subtitle}"/>
+                    <ctrls:FixedFontIcon Grid.Column="2" Visibility="{x:Bind Object.IsRestrictedToWrite, Converter={StaticResource ntv}}" Foreground="{ThemeResource SystemControlErrorTextForegroundBrush}" Glyph=""/>
+                    <ctrls:FixedFontIcon Grid.Column="2" Visibility="{x:Bind Object.IsRestrictedToWrite, Converter={StaticResource ntv}}" Foreground="{ThemeResource SystemControlErrorTextForegroundBrush}" Glyph="">
+                        <ctrls:FixedFontIcon.RenderTransform>
+                            <TranslateTransform X="2" Y="2"/>
+                        </ctrls:FixedFontIcon.RenderTransform>
+                    </ctrls:FixedFontIcon>
+                    <HyperlinkButton Grid.Column="3" Width="48" Height="48" Padding="0" Visibility="{x:Bind ExtraButtonCommand, Converter={StaticResource ntv}}" Command="{x:Bind ExtraButtonCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                        <ctrls:FixedFontIcon Glyph=""/>
+                    </HyperlinkButton>
+                </Grid>
+            </HyperlinkButton>
+        </DataTemplate>
+    </elor:Modal.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <FlipView x:Name="MainFlipView" Visibility="{Binding Header, Converter={StaticResource ntv}}" Grid.RowSpan="2" Background="{ThemeResource LayerFillColorAltBrush}" IsTabStop="False" FocusVisualPrimaryThickness="0" FocusVisualSecondaryThickness="0">
+            <FlipViewItem x:Name="MembersTabFVI" x:Uid="pp_members">
+                <muxc:ItemsRepeaterScrollHost>
+                    <ScrollViewer x:Name="MembersTabSV">
+                        <StackPanel>
+                            <Grid Padding="12,6" Visibility="{Binding Description, Converter={StaticResource ntv}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <ctrls:FixedFontIcon VerticalAlignment="Top" Margin="0,0,12,0" Glyph=""/>
+                                <TextBlock x:Name="ChatDescrText" Grid.Column="1" TextWrapping="Wrap" Margin="0,-1,0,0" MaxLines="3" Text="{Binding Description}"/>
+                            </Grid>
+                            <StackPanel DataContext="{Binding ChatMembers}">
+                                <AutoSuggestBox x:Name="MemberSeacrhBox" x:Uid="MemberSeacrhBox" Margin="12,0" Visibility="{Binding SearchAvailable}" Text="{Binding SearchQuery, Mode=TwoWay}" QueryIcon="Find" QuerySubmitted="FindChatMembers"/>
+                                <muxc:ItemsRepeater x:Name="MembersTabIR" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource ChatMemberTemplate}" Margin="0,6">
+                                    <muxc:ItemsRepeater.Layout>
+                                        <muxc:StackLayout/>
+                                    </muxc:ItemsRepeater.Layout>
+                                </muxc:ItemsRepeater>
+                                <muxc:ProgressRing HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                    <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                    <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                    <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                    <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="InfoTabFVI" x:Uid="pp_info">
+                <muxc:ItemsRepeaterScrollHost>
+                    <ScrollViewer x:Name="InfoTabSV">
+                        <StackPanel>
+                            <muxc:ItemsRepeater x:Name="InfoTabIR" ItemsSource="{Binding Information}" ItemTemplate="{StaticResource UserGroupInfoEntityTemplate}" Margin="0,6">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:StackLayout/>
+                                </muxc:ItemsRepeater.Layout>
+                            </muxc:ItemsRepeater>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="PhotosFVI" x:Uid="convatchs_photo">
+                <muxc:ItemsRepeaterScrollHost Tag="1">
+                    <ScrollViewer x:Name="PhotosSV">
+                        <StackPanel DataContext="{Binding Photos}">
+                            <muxc:ItemsRepeater x:Name="PhotosIR" ItemsSource="{Binding Items}" VerticalAlignment="Top" Margin="4,0,4,0" VerticalCacheLength="40">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:UniformGridLayout Orientation="Horizontal" MinItemWidth="110" MinItemHeight="110" ItemsStretch="Fill" MinColumnSpacing="4" MinRowSpacing="4"/>
+                                </muxc:ItemsRepeater.Layout>
+                                <muxc:ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="obj:ConversationAttachment">
+                                        <ctrls:PhotoVideoThumbnail Tag="{x:Bind}" Preview="{x:Bind Attachment.Photo}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="OpenAttachment" ContextRequested="OpenAttachmentContextMenu"/>
+                                    </DataTemplate>
+                                </muxc:ItemsRepeater.ItemTemplate>
+                            </muxc:ItemsRepeater>
+                            <muxc:ProgressRing x:Name="PhotosLoader" HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="VideosFVI" x:Uid="convatchs_video">
+                <muxc:ItemsRepeaterScrollHost Tag="2">
+                    <ScrollViewer x:Name="VideosSV">
+                        <StackPanel DataContext="{Binding Videos}">
+                            <muxc:ItemsRepeater x:Name="VideosIR" ItemsSource="{Binding Items}" VerticalAlignment="Top">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:StackLayout/>
+                                </muxc:ItemsRepeater.Layout>
+                                <muxc:ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="obj:ConversationAttachment">
+                                        <HyperlinkButton Tag="{x:Bind}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="OpenAttachment" ContextRequested="OpenAttachmentContextMenu">
+                                            <Grid Height="63" Margin="12,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid Margin="0,0,12,0" Background="{ThemeResource VKButtonSecondaryBackgroundBrush}" Width="96" Height="64" CornerRadius="4">
+                                                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="{x:Bind Attachment.Video.Photo, Converter={StaticResource bic}}"/>
+                                                </Grid>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Text="{x:Bind Attachment.Video.Title}"/>
+                                                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Attachment.Video, Converter={StaticResource vaic}}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </HyperlinkButton>
+                                    </DataTemplate>
+                                </muxc:ItemsRepeater.ItemTemplate>
+                            </muxc:ItemsRepeater>
+                            <muxc:ProgressRing x:Name="VideosLoader" HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="AudiosFVI" x:Uid="convatchs_audio">
+                <muxc:ItemsRepeaterScrollHost Tag="3">
+                    <ScrollViewer x:Name="AudiosSV" DataContext="{Binding Audios}">
+                        <StackPanel>
+                            <muxc:ItemsRepeater x:Name="AudiosIR" ItemsSource="{Binding Items}" VerticalAlignment="Top">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:StackLayout/>
+                                </muxc:ItemsRepeater.Layout>
+                                <muxc:ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="obj:ConversationAttachment">
+                                        <HyperlinkButton Tag="{x:Bind}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="OpenAttachment" ContextRequested="OpenAttachmentContextMenu">
+                                            <msgatch:AudioUC Audio="{x:Bind Attachment.Audio}" Margin="12,6" IsHitTestVisible="False"/>
+                                        </HyperlinkButton>
+                                    </DataTemplate>
+                                </muxc:ItemsRepeater.ItemTemplate>
+                            </muxc:ItemsRepeater>
+                            <muxc:ProgressRing x:Name="AudiosLoader" HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="FilesFVI" x:Uid="convatchs_docs">
+                <muxc:ItemsRepeaterScrollHost Tag="4">
+                    <ScrollViewer x:Name="FilesSV">
+                        <StackPanel DataContext="{Binding Documents}">
+                            <muxc:ItemsRepeater x:Name="FilesIR" ItemsSource="{Binding Items}" VerticalAlignment="Top">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:StackLayout/>
+                                </muxc:ItemsRepeater.Layout>
+                                <muxc:ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="obj:ConversationAttachment">
+                                        <HyperlinkButton Tag="{x:Bind}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="OpenAttachment" ContextRequested="OpenAttachmentContextMenu">
+                                            <Grid Margin="12,6" Height="48">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <ContentControl Margin="0,0,12,0" Content="{x:Bind Attachment.Document, Converter={StaticResource dic}}"/>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock FontWeight="SemiBold" Text="{x:Bind Attachment.Document.Title}"/>
+                                                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Attachment.Document, Converter={StaticResource fzh}}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </HyperlinkButton>
+                                    </DataTemplate>
+                                </muxc:ItemsRepeater.ItemTemplate>
+                            </muxc:ItemsRepeater>
+                            <muxc:ProgressRing x:Name="FilesLoader" HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+            <FlipViewItem x:Name="LinksFVI" x:Uid="convatchs_links">
+                <muxc:ItemsRepeaterScrollHost Tag="5">
+                    <ScrollViewer x:Name="LinksSV">
+                        <StackPanel DataContext="{Binding Share}">
+                            <muxc:ItemsRepeater x:Name="LinksIR" ItemsSource="{Binding Items}" VerticalAlignment="Top">
+                                <muxc:ItemsRepeater.Layout>
+                                    <muxc:StackLayout/>
+                                </muxc:ItemsRepeater.Layout>
+                                <muxc:ItemsRepeater.ItemTemplate>
+                                    <DataTemplate x:DataType="obj:ConversationAttachment">
+                                        <HyperlinkButton Tag="{x:Bind}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="OpenAttachment" ContextRequested="OpenAttachmentContextMenu">
+                                            <Grid Height="63" Margin="12,6">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid Margin="0,0,12,0" Background="{ThemeResource VKButtonSecondaryBackgroundBrush}" Width="96" Height="64" CornerRadius="4">
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{ThemeResource VKIconSecondaryBrush}" FontSize="32" FontFamily="{StaticResource SymbolThemeFontFamily}" Text="">
+                                                        <TextBlock.RenderTransform>
+                                                            <RotateTransform CenterX="16" CenterY="16" Angle="45"/>
+                                                        </TextBlock.RenderTransform>
+                                                    </TextBlock>
+                                                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Visibility="{x:Bind Attachment.Link.Photo, Converter={StaticResource ntv}}" Source="{x:Bind Attachment.Link.Photo.PreviewImageUri, Converter={StaticResource bic}}"/>
+                                                </Grid>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Text="{x:Bind Attachment.Link.Title}"/>
+                                                    <TextBlock Opacity="0.7" Text="{x:Bind Attachment.Link.Url}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </HyperlinkButton>
+                                    </DataTemplate>
+                                </muxc:ItemsRepeater.ItemTemplate>
+                            </muxc:ItemsRepeater>
+                            <muxc:ProgressRing x:Name="LinksLoader" HorizontalAlignment="Center" Margin="12" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12,64,12,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+                                <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+                                <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+                                <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </muxc:ItemsRepeaterScrollHost>
+            </FlipViewItem>
+        </FlipView>
+
+        <Border x:Name="HeaderBackground" Visibility="{Binding Header, Converter={StaticResource ntv}}" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
+            <Border Background="Transparent" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,48"/>
+        </Border>
+
+        <StackPanel x:Name="Header" Visibility="{Binding Header, Converter={StaticResource ntv}}">
+            <elor:Avatar x:Name="Avatar" Margin="12,12,12,0" Width="96" Height="96" VerticalAlignment="Top" Tag="{Binding AvatarPhoto}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" ImageUri="{Binding Avatar}" DisplayName="{Binding Header}" Click="Avatar_Click"/>
+            <StackPanel x:Name="UserName" UseLayoutRounding="False">
+                <TextBlock x:Name="PeerName" Text="{Binding Header}" FontSize="22" LineHeight="24" LineStackingStrategy="BlockLineHeight" UseLayoutRounding="False" Margin="0,9,0,4" TextAlignment="Center" FontWeight="SemiBold" MaxLines="3" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                <TextBlock x:Name="PeerSubtitle" Text="{Binding Subhead}" FontSize="16" LineHeight="18" LineStackingStrategy="BlockLineHeight" UseLayoutRounding="False" Margin="0,0,0,9" Style="{StaticResource BodyTextBlockStyle}" TextAlignment="Center" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+            <StackPanel x:Name="ActionButtons" Margin="4,0" Orientation="Horizontal" LayoutUpdated="ActionButtons_LayoutUpdated">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="LineHeight" Value="16"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Margin="4,0,4,8" Padding="7" HorizontalContentAlignment="Stretch" Visibility="{Binding FirstCommand, Converter={StaticResource ntv}}" Command="{Binding FirstCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="{Binding FirstCommand.Icon, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="1" TextAlignment="Center" Margin="8,0,0,0" Text="{Binding FirstCommand.Label, Mode=OneWay}"/>
+                    </Grid>
+                </Button>
+                <Button Margin="4,0,4,8" Padding="7" HorizontalContentAlignment="Stretch" Visibility="{Binding SecondCommand, Converter={StaticResource ntv}}" Command="{Binding SecondCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="{Binding SecondCommand.Icon, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="1" TextAlignment="Center" Margin="8,0,0,0" Text="{Binding SecondCommand.Label, Mode=OneWay}"/>
+                    </Grid>
+                </Button>
+                <Button Margin="4,0,4,8" Padding="7" HorizontalContentAlignment="Stretch" Visibility="{Binding ThirdCommand, Converter={StaticResource ntv}}" Command="{Binding ThirdCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="{Binding ThirdCommand.Icon, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="1" TextAlignment="Center" Margin="8,0,0,0" Text="{Binding ThirdCommand.Label, Mode=OneWay}"/>
+                    </Grid>
+                </Button>
+                <Button Tag="1" Width="32" Margin="4,0,4,8" Padding="7" HorizontalContentAlignment="Stretch" Visibility="{Binding MoreCommand, Converter={StaticResource ntv}}" Command="{Binding MoreCommand.Action}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ctrls:FixedFontIcon Glyph="{Binding MoreCommand.Icon, Mode=OneWay}"/>
+                    </Grid>
+                </Button>
+            </StackPanel>
+            <GridView x:Name="SegmentedTabs" Padding="11,7" Style="{StaticResource SegmentedTabStyle}" Background="{ThemeResource LayerFillColorAltBrush}" ItemContainerStyle="{StaticResource SegmentedTabGVIAccentStyle}" VerticalAlignment="Center" SelectionChanged="SegmentedTabs_SelectionChanged">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <TextBlock Margin="8,6,8,7" FontWeight="SemiBold" FontFamily="{StaticResource ContentControlThemeFontFamily}" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
+        <ScrollBar x:Name="scrollBar" Visibility="{Binding Header, Converter={StaticResource ntv}}" Grid.RowSpan="2" HorizontalAlignment="Right"/>
+
+        <muxc:ProgressRing Grid.RowSpan="2" Visibility="{Binding IsLoading}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="48" Height="48"/>
+
+        <StackPanel Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding Placeholder, Converter={StaticResource ntv}}">
+            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding Placeholder.Icon}"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Visibility="{Binding Placeholder.Header, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Header}"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Visibility="{Binding Placeholder.Content, Converter={StaticResource ntv}}" Text="{Binding Placeholder.Content}"/>
+            <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Visibility="{Binding Placeholder.ActionButton, Converter={StaticResource ntv}}" Content="{Binding Placeholder.ActionButton}" Command="{Binding Placeholder.ActionButtonCommand, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</elor:Modal>

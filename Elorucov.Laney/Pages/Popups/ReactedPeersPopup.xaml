@@ -1,0 +1,63 @@
+﻿<elor:OverlayModal
+    x:Class="Elorucov.Laney.Pages.Popups.ReactedPeersPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Popups"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters"
+    mc:Ignorable="d"
+    Background="Transparent" Tapped="OnTapped">
+    
+    <elor:OverlayModal.Transitions>
+        <TransitionCollection>
+            <PopupThemeTransition FromVerticalOffset="-32"/>
+        </TransitionCollection>
+    </elor:OverlayModal.Transitions>
+
+    <elor:OverlayModal.Resources>
+      <converters:ReactionImageConverter x:Key="ric"/>
+    </elor:OverlayModal.Resources>
+  
+    <Grid x:Name="Root" TabFocusNavigation="Local" HorizontalAlignment="Left" VerticalAlignment="Top" Width="298" Height="442" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" BorderBrush="{ThemeResource SurfaceStrokeColorFlyoutBrush}" BorderThickness="1" CornerRadius="{ThemeResource OverlayCornerRadius}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="2" Margin="0,43,0,0" Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0"/>
+
+        <Pivot x:Name="MainPivot" Grid.RowSpan="2">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,0,0,1" Orientation="Horizontal">
+                        <ContentPresenter Height="22" MinWidth="22" VerticalAlignment="Center" FontSize="14" LineHeight="22" FontWeight="SemiBold" Content="{Binding Item1, Converter={StaticResource ric}}"/>
+                        <TextBlock Margin="6,-1,0,0" VerticalAlignment="Center" FontSize="14" LineHeight="14" FontWeight="Normal" Text="{Binding Item2}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <Pivot.ItemTemplate>
+                <DataTemplate>
+                    <ListView ItemsSource="{Binding Item3}" VerticalAlignment="Top" SelectionMode="None" IsItemClickEnabled="True" ShowsScrollingPlaceholders="False" ItemContainerStyle="{ThemeResource WinUIListViewItemStyle}" ItemClick="OpenProfile">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="mdl:Entity">
+                                <Grid Height="32">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <elor:Avatar Width="24" Height="24" Margin="12,4,0,4" DisplayName="{x:Bind Title}" ImageSource="{x:Bind Image, Converter={StaticResource bic}}"/>
+                                    <TextBlock Grid.Column="1" Margin="12,6,12,0" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Text="{x:Bind Title}"/>
+                                    <ContentPresenter Grid.Column="2" Width="22" Height="22" Margin="0,5,10,5" DataContextChanged="OnEntityDataContextChanged"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+        </Pivot>
+    </Grid>
+</elor:OverlayModal>

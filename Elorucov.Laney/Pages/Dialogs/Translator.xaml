@@ -1,0 +1,54 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.Translator"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:controls="using:Elorucov.Laney.Controls"
+    xmlns:uis="using:Elorucov.Laney.Services.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Style="{StaticResource ContentUnderTitleBarModalStyle}"
+    x:Uid="msg_translation" MaxWidth="480" Padding="0">
+    <Grid>
+        <StackPanel Grid.Row="1" Margin="6,42,6,6">
+            <StackPanel Margin="6" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+                <muxc:DropDownButton x:Name="fromLangBtn" Content=" " Padding="12,6,12,7" BorderThickness="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="fromLangBtnClicked"/>
+                <Border BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+                    <ScrollViewer Height="96">
+                        <TextBlock x:Name="OriginalText" Margin="12,8" TextWrapping="Wrap" FontSize="15" LineHeight="20" LineStackingStrategy="BlockLineHeight" IsTextSelectionEnabled="True"/>
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+            <StackPanel Margin="6" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+                <muxc:DropDownButton x:Name="toLangBtn" Content=" " Padding="12,6,12,7" BorderThickness="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Click="toLangBtnClicked"/>
+                <Border BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+                    <ScrollViewer MinHeight="96" MaxHeight="176">
+                        <TextBlock x:Name="TranslatedText" Margin="12,8" TextWrapping="Wrap" FontSize="15" LineHeight="20" LineStackingStrategy="BlockLineHeight" IsTextSelectionEnabled="True"/>
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+            <Button x:Name="copyButton" Margin="6" HorizontalAlignment="Stretch" Click="CopyTranslation">
+                <StackPanel Orientation="Horizontal">
+                    <controls:FixedFontIcon Margin="0,0,8,0" Glyph=""/>
+                    <TextBlock x:Uid="copy_translation"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <StackPanel x:Name="LoaderSkeleton" Grid.Row="1" VerticalAlignment="Top" Padding="0,48,0,0">
+            <StackPanel Opacity="0" HorizontalAlignment="Stretch" Margin="13,0,13,13" Padding="12,38,12,12">
+                <Rectangle HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,64,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,82,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,48,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,240,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Stretch" Margin="13,0,13,13" Padding="12,38,12,12">
+                <Rectangle x:Name="TextSkeleton1" HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,64,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle x:Name="TextSkeleton2" HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,82,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle x:Name="TextSkeleton3" HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,48,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Rectangle x:Name="TextSkeleton4" HorizontalAlignment="Stretch" RadiusX="4" RadiusY="4" Height="8" Margin="0,12,240,0" uis:SkeletonAnimation.IsAnimatable="True" Fill="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</elor:Modal>

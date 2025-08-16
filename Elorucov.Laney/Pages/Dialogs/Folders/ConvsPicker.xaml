@@ -1,0 +1,76 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.Dialogs.Folders.ConvsPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs.Folders"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:conv="using:Elorucov.Laney.Services.Converters"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.ConversationsList"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
+    <Page.Resources>
+        <conv:ValueToBool x:Key="vtb"/>
+        <converters2:NullToVisibility x:Key="ntv"/>
+        <converters2:NullToVisibility2 x:Key="ntv2"/>
+        <converters:VerifiedUser x:Key="vuc"/>
+        <converters:OnlineVia x:Key="ov"/>
+    </Page.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <HyperlinkButton x:Name="BackButton" Grid.Column="1" Width="40" Height="40" Margin="4" Padding="0" Click="GoBack">
+                <vkui:VKIcon Id="Icon28ArrowLeftOutline"/>
+            </HyperlinkButton>
+            <TextBlock Margin="0,8,8,0" FontSize="20" FontWeight="SemiBold" x:Uid="folder_select_convs"/>
+        </StackPanel>
+        <AutoSuggestBox x:Name="SearchBox" Grid.Row="1" Margin="12,0,12,12" QueryIcon="Find" x:Uid="search_convs" QuerySubmitted="OnSearchBoxSubmit"/>
+
+        <ListView x:Name="ConvsList" Grid.Row="2" VerticalAlignment="Top" SelectionMode="Multiple" SelectionChanged="ConvsListSelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:LConversation">
+                    <Grid Margin="4,6" Height="56">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <elor:Avatar IsHitTestVisible="False" Width="48" Height="48" VerticalAlignment="Center" Grid.RowSpan="2" ImageSource="{x:Bind Photo, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{x:Bind Title, Mode=OneWay}"/>
+
+                        <Grid Grid.Column="1" Margin="12,-2,0,0" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Margin="0,2,0,0" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <ContentPresenter Margin="4,2,0,0" Visibility="{x:Bind IsVerified, Mode=OneWay, Converter={StaticResource vuc}}" Foreground="{ThemeResource VKAccentBrush}" ContentTemplate="{StaticResource Icon16Verified}" Width="16" Height="16"/>
+                                <Image Margin="6,5,2,2" Visibility="{x:Bind IsDonut, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/donut.svg" Width="12" Height="12"/>
+                                <Image Margin="4,3,0,0" Visibility="{x:Bind IsDisappearing, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/casper.svg" Width="16" Height="16"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackPanel>
+                    <muxc:ProgressRing x:Name="Loader" IsActive="False" HorizontalAlignment="Center" Width="24" Height="24"/>
+                </StackPanel>
+            </ListView.Footer>
+        </ListView>
+
+        <Border Grid.Row="2" VerticalAlignment="Bottom" Height="24" Background="{ThemeResource GradientUnderModalButtonBrush}"/>
+        <Button Grid.Row="3" Margin="12,0,12,12" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" x:Uid="donebtn" Click="DoneClicked"/>
+    </Grid>
+</Page>

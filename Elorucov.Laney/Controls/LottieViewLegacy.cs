@@ -1,0 +1,513 @@
+﻿// https://github.com/FrayxRulez/RLottie.UWP
+
+using Elorucov.Laney.Services.Common;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using RLottie;
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Windows.ApplicationModel;
+using Windows.Foundation;
+using Windows.Graphics;
+using Windows.Graphics.DirectX;
+using Windows.Storage;
+using Windows.UI.Composition;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
+
+namespace Elorucov.Laney.Controls {
+    public interface IPlayerView {
+        bool Play();
+        void Pause();
+
+#if ARM32
+#else
+        void Unload();
+#endif
+
+        bool IsLoopingEnabled { get; }
+
+        object Tag { get; set; }
+    }
+
+    [TemplatePart(Name = "Canvas", Type = typeof(CanvasControl))]
+    public class LottieViewLegacy : Control, IPlayerView {
+        private CanvasControl _canvas;
+        private CanvasBitmap _bitmap;
+        private TextBlock _dbg;
+
+        private Grid _layoutRoot;
+
+        private bool _hideThumbnail = true;
+
+        private string _source;
+        private LottieAnimation _animation;
+
+        private double _animationFrameRate;
+        private int _animationTotalFrame;
+
+        private bool _shouldPlay;
+
+        // Detect from hardware?
+        private readonly bool _limitFps = true;
+
+        private bool _skipFrame;
+
+        private int _index;
+        private long _currentMs;
+        private bool _backward;
+
+        private bool _isLoopingEnabled = true;
+        private bool _isCachingEnabled = true;
+
+        private SizeInt32 _frameSize = new SizeInt32 { Width = 256, Height = 256 };
+
+        private readonly LoopThreadLegacy _thread;
+        private readonly LoopThreadLegacy _threadUI;
+        private bool _subscribed;
+
+        private bool _loaded;
+        private bool _unloaded;
+
+        public LottieViewLegacy()
+            : this(CompositionCapabilities.GetForCurrentView().AreEffectsFast()) {
+        }
+
+        public LottieViewLegacy(bool fullFps) {
+            _limitFps = !fullFps;
+            _thread = LoopThreadLegacy.Stickers;
+            _threadUI = LoopThreadLegacy.Stickers;
+
+            DefaultStyleKey = typeof(LottieViewLegacy);
+        }
+
+        protected override void OnApplyTemplate() {
+            var canvas = GetTemplateChild("Canvas") as CanvasControl;
+            if (canvas == null) {
+                return;
+            }
+
+            _canvas = canvas;
+            _canvas.CreateResources += OnCreateResources;
+            _canvas.Draw += OnDraw;
+
+            _layoutRoot = GetTemplateChild("LayoutRoot") as Grid;
+            _layoutRoot.Loading += OnLoading;
+            _layoutRoot.Loaded += OnLoaded;
+            _layoutRoot.Unloaded += OnUnloaded;
+
+            _dbg = GetTemplateChild("dbg") as TextBlock;
+
+            OnSourceChanged(UriToPath(Source), _source);
+
+            base.OnApplyTemplate();
+        }
+
+        private void Load() {
+            if (_unloaded && _layoutRoot != null && _layoutRoot.IsLoaded) {
+                while (_layoutRoot.Children.Count > 0) {
+                    _layoutRoot.Children.Remove(_layoutRoot.Children[0]);
+                }
+
+                _canvas = new CanvasControl();
+                _canvas.CreateResources += OnCreateResources;
+                _canvas.Draw += OnDraw;
+
+                _layoutRoot.Children.Add(_canvas);
+
+                _unloaded = false;
+                OnSourceChanged(UriToPath(Source), _source);
+            }
+        }
+
+        private void OnLoading(FrameworkElement sender, object args) {
+            _loaded = true;
+            Load();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e) {
+            _loaded = true;
+            Load();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e) {
+            _shouldPlay = false;
+            _unloaded = true;
+            Subscribe(false);
+
+            if (_canvas != null) {
+                _canvas.CreateResources -= OnCreateResources;
+                _canvas.Draw -= OnDraw;
+                _canvas.RemoveFromVisualTree();
+                _canvas = null;
+            }
+
+            _source = null;
+
+            //_bitmap?.Dispose();
+            _bitmap = null;
+
+            //_animation?.Dispose();
+            _animation = null;
+        }
+
+        private void OnTick(object sender, EventArgs args) {
+            try {
+                Invalidate();
+            } catch {
+                _ = Dispatcher.RunIdleAsync(idle => Subscribe(false));
+            }
+        }
+
+        private void OnInvalidate(object sender, EventArgs e) {
+            _canvas?.Invalidate();
+        }
+
+        private void OnCreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args) {
+            if (_bitmap != null) {
+                _bitmap.Dispose();
+            }
+
+            var buffer = ArrayPool<byte>.Shared.Rent(256 * 256 * 4);
+            _bitmap = CanvasBitmap.CreateFromBytes(sender, buffer, _frameSize.Width, _frameSize.Height, DirectXPixelFormat.B8G8R8A8UIntNormalized);
+            ArrayPool<byte>.Shared.Return(buffer);
+
+            if (args.Reason == CanvasCreateResourcesReason.FirstTime) {
+                OnSourceChanged(UriToPath(Source), _source);
+                Invalidate();
+            }
+        }
+
+        private void OnDraw(CanvasControl sender, CanvasDrawEventArgs args) {
+            if (_bitmap == null || _animation == null || _unloaded) {
+                return;
+            }
+
+            args.DrawingSession.DrawImage(_bitmap, new Rect(0, 0, sender.Size.Width, sender.Size.Height));
+
+            if (_hideThumbnail) {
+                _hideThumbnail = false;
+
+                FirstFrameRendered?.Invoke(this, EventArgs.Empty);
+                ElementCompositionPreview.SetElementChildVisual(this, null);
+            }
+        }
+
+        public void Invalidate() {
+            var animation = _animation;
+            if (animation == null || _canvas == null || _bitmap == null || _unloaded) {
+                return;
+            }
+
+            var index = _index;
+            var framesPerUpdate = _limitFps ? _animationFrameRate < 60 ? 1 : 2 : 1;
+
+            if (_animationFrameRate < 60 && !_limitFps) {
+                if (_skipFrame) {
+                    _skipFrame = false;
+                    return;
+                }
+
+                _skipFrame = true;
+            }
+
+            animation.RenderSync(_bitmap, index);
+
+            IndexChanged?.Invoke(this, index);
+
+            if (_backward) {
+                if (index - framesPerUpdate > 0) {
+                    _index -= framesPerUpdate;
+                } else {
+                    _index = 0;
+                    _backward = false;
+
+                    if (!_isLoopingEnabled) {
+                        //sender.Paused = true;
+                        //sender.ResetElapsedTime();
+                        _ = Dispatcher.RunIdleAsync(idle => Subscribe(false));
+                    }
+                }
+            } else {
+                if (index + framesPerUpdate < _animationTotalFrame) {
+                    PositionChanged?.Invoke(this, Math.Min(1, Math.Max(0, (double)(index + 1) / _animationTotalFrame)));
+
+                    _index += framesPerUpdate;
+                } else {
+                    _index = 0;
+
+                    if (!_isLoopingEnabled) {
+                        //sender.Paused = true;
+                        //sender.ResetElapsedTime();
+                        _ = Dispatcher.RunIdleAsync(idle => Subscribe(false));
+                    }
+
+                    PositionChanged?.Invoke(this, 1);
+                }
+            }
+        }
+
+        public void Seek(double position) {
+            if (position < 0 || position > 1) {
+                return;
+            }
+
+            var animation = _animation;
+            if (animation == null) {
+                return;
+            }
+
+            _index = (int)Math.Min(_animation.TotalFrame - 1, Math.Ceiling(_animation.TotalFrame * position));
+        }
+
+        public int Ciccio => _animation.TotalFrame;
+        public int Index => _index == int.MaxValue ? 0 : _index;
+        public double AnimationFrameRate => _animation.FrameRate;
+
+        private void OnSourceChanged(Uri newValue, Uri oldValue) {
+            OnSourceChanged(UriToPath(newValue), UriToPath(oldValue));
+        }
+
+        private void OnSourceChanged(string newValue, string oldValue) {
+#if ARM32
+            new System.Action(async () => {
+                var canvas = _canvas;
+                if (canvas == null) return;
+
+                if (newValue == null) {
+                    _source = null;
+                    Subscribe(false);
+                    return;
+                }
+
+                if (string.Equals(newValue, oldValue, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(newValue, _source, StringComparison.OrdinalIgnoreCase)) {
+                    return;
+                }
+
+                _source = newValue;
+
+                var shouldPlay = _shouldPlay;
+
+                try {
+                    var animation = await System.Threading.Tasks.Task.Run(() => LottieAnimation.LoadFromFile(newValue, _isCachingEnabled, ColorReplacements));
+                    if (animation == null || !string.Equals(newValue, _source, StringComparison.OrdinalIgnoreCase)) {
+                        // The app can't access the file specified
+                        return;
+                    }
+
+                    _animation = animation;
+                    _hideThumbnail = true;
+
+                    _animationFrameRate = animation.FrameRate;
+                    _animationTotalFrame = animation.TotalFrame;
+                } catch (Exception ex) {
+                    Elorucov.Laney.Services.Logger.Log.Error($"LottieView fileloading error!\n0x{ex.HResult.ToString("x8")}: {ex.Message}");
+                    return;
+                }
+
+                if (_shouldPlay) {
+                    shouldPlay = true;
+                }
+
+                if (_backward) {
+                    _index = _animationTotalFrame - 1;
+                } else {
+                    _index = 0;
+                }
+
+                if (AutoPlay || _shouldPlay) {
+                    _shouldPlay = false;
+                    Subscribe(true);
+                } else if (!_unloaded) {
+                    Subscribe(false);
+
+                    // Invalidate to render the first frame
+                    Invalidate();
+                    _canvas.Invalidate();
+                }
+            })();
+#endif
+        }
+
+        public bool Play() {
+            return Play(false);
+        }
+
+        public bool Play(bool backward = false) {
+            Load();
+
+            var canvas = _canvas;
+            if (canvas == null) {
+                _shouldPlay = true;
+                return false;
+            }
+
+            var animation = _animation;
+            if (animation == null) {
+                _shouldPlay = true;
+                return false;
+            }
+
+            _shouldPlay = false;
+            _backward = backward;
+
+            //canvas.Paused = false;
+            if (_subscribed) {
+                return false;
+            }
+
+            Subscribe(true);
+            return true;
+            //OnInvalidate();
+        }
+
+        public void Pause() {
+            Subscribe(false);
+        }
+
+        private void Subscribe(bool subscribe) {
+            _subscribed = subscribe;
+
+            _thread.Tick -= OnTick;
+            _threadUI.Invalidate -= OnInvalidate;
+
+            if (subscribe) {
+                _thread.Tick += OnTick;
+                _threadUI.Invalidate += OnInvalidate;
+            }
+        }
+
+        private string UriToPath(Uri uri) {
+            if (uri == null) {
+                return null;
+            }
+
+            switch (uri.Scheme) {
+                case "ms-appx":
+                    return Path.Combine(new[] { Package.Current.InstalledLocation.Path }.Union(uri.Segments.Select(x => x.Trim('/'))).ToArray());
+                case "ms-appdata":
+                    switch (uri.Host) {
+                        case "local":
+                            return Path.Combine(new[] { ApplicationData.Current.LocalFolder.Path }.Union(uri.Segments.Select(x => x.Trim('/'))).ToArray());
+                        case "temp":
+                            return Path.Combine(new[] { ApplicationData.Current.TemporaryFolder.Path }.Union(uri.Segments.Select(x => x.Trim('/'))).ToArray());
+                    }
+                    break;
+                case "file":
+                    return uri.LocalPath;
+            }
+
+            return null;
+        }
+
+
+        #region IsLoopingEnabled
+
+        public bool IsLoopingEnabled {
+            get { return (bool)GetValue(IsLoopingEnabledProperty); }
+            set { SetValue(IsLoopingEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsLoopingEnabledProperty =
+            DependencyProperty.Register("IsLoopingEnabled", typeof(bool), typeof(LottieViewLegacy), new PropertyMetadata(true, OnLoopingEnabledChanged));
+
+        private static void OnLoopingEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LottieViewLegacy)d)._isLoopingEnabled = (bool)e.NewValue;
+        }
+
+        #endregion
+
+        #region IsCachingEnabled
+
+        public bool IsCachingEnabled {
+            get { return (bool)GetValue(IsCachingEnabledProperty); }
+            set { SetValue(IsCachingEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsCachingEnabledProperty =
+            DependencyProperty.Register("IsCachingEnabled", typeof(bool), typeof(LottieViewLegacy), new PropertyMetadata(true, OnCachingEnabledChanged));
+
+        private static void OnCachingEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LottieViewLegacy)d)._isCachingEnabled = (bool)e.NewValue;
+        }
+
+        #endregion
+
+        #region IsBackward
+
+        public bool IsBackward {
+            get { return (bool)GetValue(IsBackwardProperty); }
+            set { SetValue(IsBackwardProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsBackwardProperty =
+            DependencyProperty.Register("IsBackward", typeof(bool), typeof(LottieViewLegacy), new PropertyMetadata(false, OnBackwardChanged));
+
+        private static void OnBackwardChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LottieViewLegacy)d)._backward = (bool)e.NewValue;
+        }
+
+        #endregion
+
+        #region FrameSize
+
+        public SizeInt32 FrameSize {
+            get { return (SizeInt32)GetValue(FrameSizeProperty); }
+            set { SetValue(FrameSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty FrameSizeProperty =
+            DependencyProperty.Register("FrameSize", typeof(SizeInt32), typeof(LottieViewLegacy), new PropertyMetadata(new SizeInt32 { Width = 256, Height = 256 }, OnFrameSizeChanged));
+
+        private static void OnFrameSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LottieViewLegacy)d)._frameSize = (SizeInt32)e.NewValue;
+        }
+
+        #endregion
+
+        #region AutoPlay
+
+        public bool AutoPlay {
+            get { return (bool)GetValue(AutoPlayProperty); }
+            set { SetValue(AutoPlayProperty, value); }
+        }
+
+        public static readonly DependencyProperty AutoPlayProperty =
+            DependencyProperty.Register("AutoPlay", typeof(bool), typeof(LottieViewLegacy), new PropertyMetadata(true));
+
+        #endregion
+
+        #region Source
+
+        public Uri Source {
+            get { return (Uri)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register("Source", typeof(Uri), typeof(LottieViewLegacy), new PropertyMetadata(null, OnSourceChanged));
+
+        private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+            ((LottieViewLegacy)d).OnSourceChanged((Uri)e.NewValue, (Uri)e.OldValue);
+        }
+
+        public void Unload() {
+
+        }
+
+        #endregion
+
+        public event EventHandler<double> PositionChanged;
+        public event EventHandler<int> IndexChanged;
+
+        public event EventHandler FirstFrameRendered;
+
+        public IReadOnlyDictionary<uint, uint> ColorReplacements { get; set; }
+    }
+}

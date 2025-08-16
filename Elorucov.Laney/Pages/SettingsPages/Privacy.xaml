@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.SettingsPages.Privacy"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:local="using:Elorucov.Laney.Pages.SettingsPages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Margin="24,0" MaxWidth="1048" Loaded="Load">
+    <Page.Resources>
+        <Style x:Key="DescriptionTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <HyperlinkButton x:Name="BackButton" x:Uid="backButton" Width="36" Height="36" Margin="0,0,12,0" Padding="0" Click="BackButton_Click">
+                <ctrls:FixedFontIcon FontSize="20" Glyph=""/>
+            </HyperlinkButton>
+            <TextBlock Grid.Column="1" Margin="0,2,0,0" Style="{StaticResource TitleTextBlockStyle}" x:Uid="settings_privacy"/>
+        </Grid>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel x:Name="RootStackPanel" Margin="0,0,0,16">
+                <muxc:InfoBar x:Name="ErrorInfo" Severity="Error" IsClosable="False">
+                    <muxc:InfoBar.ActionButton>
+                        <Button x:Uid="retrybtn"/>
+                    </muxc:InfoBar.ActionButton>
+                </muxc:InfoBar>
+                <muxc:ProgressRing x:Name="progress" HorizontalAlignment="Left" VerticalAlignment="Top" IsIndeterminate="False" IsHitTestVisible="False" Width="20" Height="20"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

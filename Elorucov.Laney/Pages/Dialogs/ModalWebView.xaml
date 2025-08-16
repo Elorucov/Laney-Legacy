@@ -1,0 +1,20 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.ModalWebView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:controls="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Background="{ThemeResource VKBackgroundContentBrush}" FullSizeDesired="True" Padding="0" CloseButtonVisibility="Visible">
+    <Grid>
+        <!--<WebView x:Name="web" Loaded="OnLoaded" NavigationStarting="web_NavigationStarting" DOMContentLoaded="web_DOMContentLoaded" NavigationFailed="web_NavigationFailed"/>-->
+        <controls:CustomWebView x:Name="web" Loaded="OnLoaded" NavigationStarting="web_NavigationStarting" ContentLoaded="web_ContentLoaded" NavigationFailed="web_NavigationFailed"/>
+        <Grid x:Name="infocontainer">
+            <muxc:ProgressRing x:Name="progress" Width="64" Height="64"/>
+            <TextBlock x:Name="errorinfo" TextAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+        </Grid>
+    </Grid>
+</elor:Modal>

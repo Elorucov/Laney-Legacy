@@ -1,0 +1,40 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.MessageSearch"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:mxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.MessageItem"
+    mc:Ignorable="d"
+    FullSizeDesired="True" Padding="0" DropShadow="True" MaxWidth="576" CloseButtonVisibility="Visible">
+
+    <elor:Modal.Resources>
+        <converters:NullToVisibility x:Key="ntv"/>
+        <converters:NullToVisibility2 x:Key="ntv2"/>
+        <converters:DateTimeToString x:Key="dt"/>
+    </elor:Modal.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <AutoSuggestBox x:Name="Query" Margin="12,0,0,12" QueryIcon="Find" QuerySubmitted="Query_QuerySubmitted"/>
+        <CalendarDatePicker x:Name="CalendarDP" Grid.Column="1" Margin="12,0,12,12" DateChanged="CalendarDatePicker_DateChanged"/>
+        <ListView x:Name="listView" Grid.Row="1" Grid.ColumnSpan="2" SelectionMode="None" IsItemClickEnabled="True" ContainerContentChanging="ListView_ContainerContentChanging">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="-12,6" Background="Transparent" ContextRequested="ShowConversationContextMenu"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <mxc:ProgressBar x:Name="progress" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top" Background="Transparent"/>
+    </Grid>
+</elor:Modal>

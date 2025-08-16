@@ -1,0 +1,120 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.AudioPlayerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:conv="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:data="using:Elorucov.Laney.Models"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="SetUpPage" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
+    <Page.Resources>
+        <conv:TimeToString x:Name="dts"/>
+        <conv:NullToVisibility x:Name="ntv"/>
+        <conv:NullToVisibility2 x:Name="ntv2"/>
+    </Page.Resources>
+    
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle x:Name="FaceLayer" Grid.RowSpan="2" Fill="{ThemeResource LayerFillColorAltBrush}"/>
+        <Border x:Name="TitleBar" Background="Transparent"/>
+        <StackPanel x:Name="Face" Grid.Row="1" Margin="12">
+            <Grid x:Name="Header" Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="Cover" CornerRadius="4" Width="48" Height="48" Margin="0,0,12,0" Background="{ThemeResource VKPlaceholderIconBackgroundBrush}">
+                    <vkui:VKIcon x:Name="CoverPlaceholderIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Width="28" Height="28" Foreground="{ThemeResource VKIconOutlineMediumBrush}"/>
+                    <Image Stretch="UniformToFill" Visibility="{Binding CurrentSong.CoverUrl, Converter={StaticResource ntv}}" Source="{Binding CurrentSong.CoverUrl}"/>
+                </Grid>
+                <StackPanel x:Name="Info" Grid.Column="1" VerticalAlignment="Center" Margin="0,-3,0,0">
+                    <TextBlock FontSize="16" LineHeight="24" LineStackingStrategy="BlockLineHeight" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding CurrentSong.Title}" TextTrimming="CharacterEllipsis" Margin="0,0,34,0"/>
+                    <TextBlock FontSize="13" LineHeight="15" LineStackingStrategy="BlockLineHeight" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{Binding CurrentSong.Performer}" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Grid>
+            <elor:MediaSlider x:Name="MediaSlider" Margin="0,24,0,12" BufferingProgress="1" Duration="{Binding CurrentSong.Duration, TargetNullValue=0:0:1}" PositionChanged="MediaSlider_PositionChanged"/>
+            <Grid x:Name="Controls" Margin="0,0,-10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" Margin="0,-2,0,0" FontSize="15" Foreground="{ThemeResource TextFillColorPrimaryBrush}">
+                    <Run Text="{Binding Position, Converter={StaticResource dts}, ConverterParameter=m}"/>
+                    <Run Text="/"/>
+                    <Run Text="{Binding CurrentSong.Duration, Converter={StaticResource dts}, ConverterParameter=m}"/>
+                </TextBlock>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Height="36">
+                    <HyperlinkButton x:Name="ShareButton" Padding="0" Width="36" Height="36" Command="{Binding ShareCommand}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="RepeatDisabled" Padding="0" Width="36" Height="36" Command="{Binding RepeatCommand}" Visibility="{Binding RepeatOneSong, Converter={StaticResource ntv2}}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="RepeatEnabled" Padding="0" Width="36" Height="36" Command="{Binding RepeatCommand}" Visibility="{Binding RepeatOneSong}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="PreviousButton" Padding="0" Width="36" Height="36" Command="{Binding GetPreviousCommand}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="PlayButton" Padding="0" Width="36" Height="36" Visibility="{Binding IsPlaying, Converter={StaticResource ntv2}}" Command="{Binding PlayPauseCommand}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="PauseButton" Padding="0" Width="36" Height="36" Visibility="{Binding IsPlaying}" Command="{Binding PlayPauseCommand}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <HyperlinkButton x:Name="NextButton" Padding="0" Width="36" Height="36" Command="{Binding GetNextCommand}">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>
+                    <!--<HyperlinkButton x:Name="PlaylistButton" Grid.Column="2" HorizontalAlignment="Right" Padding="0" Width="36" Height="36" Click="TogglePlaylistVisibility">
+                        <ctrls:FixedFontIcon Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Glyph=""/>
+                    </HyperlinkButton>-->
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <Grid x:Name="PlaylistInfo" Grid.Row="2">
+            <Grid Margin="12,7,12,9">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{Binding Name}"/>
+                <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Column="2" Foreground="{ThemeResource TextFillColorPrimaryBrush}">
+                    <Run Text="{Binding CurrentSongIndex}"/>
+                    <Run Text="/"/>
+                    <Run Text="{Binding Songs.Count}"/>
+                </TextBlock>
+            </Grid>
+            <Rectangle Height="1" VerticalAlignment="Top" Fill="{ThemeResource CardStrokeColorDefaultBrush}"/>
+            <Rectangle Height="1" VerticalAlignment="Bottom" Margin="12,0" Fill="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+        </Grid>
+        <ListView x:Name="AudiosList" Grid.Row="3" ItemContainerStyle="{StaticResource WinUIListViewItemStyle}" ItemsSource="{Binding Songs}" SelectedItem="{Binding CurrentSong, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:AudioPlayerItem">
+                    <Grid Height="36" Margin="6,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="6,-2,6,0" VerticalAlignment="Center" TextWrapping="NoWrap" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorPrimaryBrush}">
+                            <Run Text="{x:Bind Title}"/><Run Text=" · " Foreground="{ThemeResource TextFillColorSecondaryBrush}"/><Run Text="{x:Bind Performer}" Foreground="{ThemeResource VKIconMediumAlphaBrush}"/>
+                        </TextBlock>
+                        <TextBlock Grid.Column="1" Margin="6,-3,6,0" VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{x:Bind Duration, Converter={StaticResource dts}}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Border Height="11"/>
+            </ListView.Footer>
+        </ListView>
+    </Grid>
+</Page>

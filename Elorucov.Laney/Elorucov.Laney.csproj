@@ -1,0 +1,1229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{53C43E3F-EA71-473A-B8A9-599AFAD50559}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Elorucov.Laney</RootNamespace>
+    <AssemblyName>laney</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <PackageCertificateKeyFile>Elorucov.Laney_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
+    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+    <PackageCertificateThumbprint>
+    </PackageCertificateThumbprint>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <AppxOSMinVersionReplaceManifestVersion>False</AppxOSMinVersionReplaceManifestVersion>
+    <AppxOSMaxVersionTestedReplaceManifestVersion>False</AppxOSMaxVersionTestedReplaceManifestVersion>
+    <AppxBundleAutoResourcePackageQualifiers>Scale</AppxBundleAutoResourcePackageQualifiers>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;X86</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;X86</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>true</EnableGatekeeperAnalysis>
+    <LangVersion>7.3</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
+    <UseDotNetNativeSharedAssemblyFrameworkPackage>true</UseDotNetNativeSharedAssemblyFrameworkPackage>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;ARM32</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;ARM32</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>true</EnableGatekeeperAnalysis>
+    <LangVersion>7.3</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
+    <UseDotNetNativeSharedAssemblyFrameworkPackage>true</UseDotNetNativeSharedAssemblyFrameworkPackage>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;X64</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;X64</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>true</EnableGatekeeperAnalysis>
+    <LangVersion>7.3</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
+    <UseDotNetNativeSharedAssemblyFrameworkPackage>true</UseDotNetNativeSharedAssemblyFrameworkPackage>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;ARM64</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;ARM64</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+    <EnableGatekeeperAnalysis>true</EnableGatekeeperAnalysis>
+    <LangVersion>7.3</LangVersion>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
+    <UseDotNetNativeSharedAssemblyFrameworkPackage>true</UseDotNetNativeSharedAssemblyFrameworkPackage>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AdaptiveGridView.cs" />
+    <Compile Include="Controls\AnimatedControl.cs" />
+    <Compile Include="Controls\AudioRecorderControl.xaml.cs">
+      <DependentUpon>AudioRecorderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BotCarouselElement.xaml.cs">
+      <DependentUpon>BotCarouselElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BotKeyboardControl.xaml.cs">
+      <DependentUpon>BotKeyboardControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatBackgroundControl.xaml.cs">
+      <DependentUpon>ChatBackgroundControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatListView.cs" />
+    <Compile Include="Controls\CustomWebView.cs" />
+    <Compile Include="Controls\Date.xaml.cs">
+      <DependentUpon>Date.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FixedFontIcon.cs" />
+    <Compile Include="Controls\GalleryView.xaml.cs">
+      <DependentUpon>GalleryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LottieView.cs" />
+    <Compile Include="Controls\LottieViewLegacy.cs" />
+    <Compile Include="Controls\MentionsPicker.xaml.cs">
+      <DependentUpon>MentionsPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\ArticlePreview.xaml.cs">
+      <DependentUpon>ArticlePreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\AudioUC.xaml.cs">
+      <DependentUpon>AudioUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\CompactMessageControl.xaml.cs">
+      <DependentUpon>CompactMessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\DefaultAttachmentControl.xaml.cs">
+      <DependentUpon>DefaultAttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\ExtendedAttachmentControl.xaml.cs">
+      <DependentUpon>ExtendedAttachmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\GiftPresenter.xaml.cs">
+      <DependentUpon>GiftPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\ReactionsChips.xaml.cs">
+      <DependentUpon>ReactionsChips.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\StickerPresenter.xaml.cs">
+      <DependentUpon>StickerPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\StoryUC.xaml.cs">
+      <DependentUpon>StoryUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\VideoMessageControl.xaml.cs">
+      <DependentUpon>VideoMessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageAttachments\VoiceMessageControl.xaml.cs">
+      <DependentUpon>VoiceMessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageForm.xaml.cs">
+      <DependentUpon>MessageForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageRichEditBox.cs" />
+    <Compile Include="Controls\MessageRichEditBox1809.cs" />
+    <Compile Include="Controls\MessageUI.cs" />
+    <Compile Include="Controls\MiniPlayer.xaml.cs">
+      <DependentUpon>MiniPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OutboundAttachmentUI.xaml.cs">
+      <DependentUpon>OutboundAttachmentUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PhotoVideoThumbnail.xaml.cs">
+      <DependentUpon>PhotoVideoThumbnail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PollBackgroundPreview.xaml.cs">
+      <DependentUpon>PollBackgroundPreview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PollOptionControl.xaml.cs">
+      <DependentUpon>PollOptionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PostComposer.xaml.cs">
+      <DependentUpon>PostComposer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PostUI.xaml.cs">
+      <DependentUpon>PostUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Primitives\Garland.xaml.cs">
+      <DependentUpon>Garland.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RadialProgressBar.cs" />
+    <Compile Include="Controls\ReactionsPicker.xaml.cs">
+      <DependentUpon>ReactionsPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StickersFlyout.xaml.cs">
+      <DependentUpon>StickersFlyout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinUI\GridSplitter.cs" />
+    <Compile Include="Controls\WinUI\MasterDetail.xaml.cs">
+      <DependentUpon>MasterDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinUI\SettingsCard.cs" />
+    <Compile Include="Controls\WinUI\SettingsExpander.cs" />
+    <Compile Include="Controls\WinUI\SettingsGroup.cs" />
+    <Compile Include="Controls\WinUI\SizerBase.cs" />
+    <Compile Include="Controls\WinUI\StyleExtensions.cs" />
+    <Compile Include="Controls\WinUI\Triggers\ControlSizeTrigger.cs" />
+    <Compile Include="Controls\WinUI\Triggers\IsEqualStateTrigger.cs" />
+    <Compile Include="Controls\WinUI\Triggers\IsNullOrEmptyStateTrigger.cs" />
+    <Compile Include="Controls\WrapPanel.cs" />
+    <Compile Include="Main.xaml.cs">
+      <DependentUpon>Main.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AppLanguage.cs" />
+    <Compile Include="Models\AudioPlayerItem.cs" />
+    <Compile Include="Models\AvatarCreator\AvatarCreatorItem.cs" />
+    <Compile Include="Models\AvatarCreator\GradientPreset.cs" />
+    <Compile Include="Models\AvatarCreator\VKSticker.cs" />
+    <Compile Include="Models\ChatSettingsItem.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\ConversationsFolder.cs" />
+    <Compile Include="Models\Emoji.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\FoundMessageItem.cs" />
+    <Compile Include="Models\FriendsGroup.cs" />
+    <Compile Include="Models\GalleryItem.cs" />
+    <Compile Include="Models\Grouping.cs" />
+    <Compile Include="Models\Kaomoji.cs" />
+    <Compile Include="Models\LConversation.cs" />
+    <Compile Include="Models\LMessage.cs" />
+    <Compile Include="Models\MentionItem.cs" />
+    <Compile Include="Models\Reaction.cs" />
+    <Compile Include="Models\SettingPageEntry.cs" />
+    <Compile Include="Models\Stats\HTMLStatsResultExport.cs" />
+    <Compile Include="Models\Stats\IStatsResultExport.cs" />
+    <Compile Include="Models\Stats\MemberCounters.cs" />
+    <Compile Include="Models\Stats\StatsResult.cs" />
+    <Compile Include="Models\StickerFlyoutItem.cs" />
+    <Compile Include="Models\TwoStringTuple.cs" />
+    <Compile Include="Models\UICommand.cs" />
+    <Compile Include="Models\UI\Objects.cs" />
+    <Compile Include="Models\VKSession.cs" />
+    <Compile Include="Pages\AudioPlayerView.xaml.cs">
+      <DependentUpon>AudioPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ChatCreationView.xaml.cs">
+      <DependentUpon>ChatCreationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\AttachmentPicker.xaml.cs">
+      <DependentUpon>AttachmentPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\AvatarCreator.xaml.cs">
+      <DependentUpon>AvatarCreator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\AddChatUserModal.xaml.cs">
+      <DependentUpon>AddChatUserModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ChatInvite.xaml.cs">
+      <DependentUpon>ChatInvite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ChatSettingsModal.xaml.cs">
+      <DependentUpon>ChatSettingsModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\Dev\MessageJSONView.xaml.cs">
+      <DependentUpon>MessageJSONView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\FoldersSettings.xaml.cs">
+      <DependentUpon>FoldersSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\Folders\ConvsPicker.xaml.cs">
+      <DependentUpon>ConvsPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\Folders\FolderEditor.xaml.cs">
+      <DependentUpon>FolderEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\Folders\MainSettings.xaml.cs">
+      <DependentUpon>MainSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ImportantMessages.xaml.cs">
+      <DependentUpon>ImportantMessages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\LinkEditorDialog.xaml.cs">
+      <DependentUpon>LinkEditorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\MessageSearch.xaml.cs">
+      <DependentUpon>MessageSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ModalWebView.xaml.cs">
+      <DependentUpon>ModalWebView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\PeerProfile.xaml.cs">
+      <DependentUpon>PeerProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\PlacePicker.xaml.cs">
+      <DependentUpon>PlacePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\PollEditor.xaml.cs">
+      <DependentUpon>PollEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\PollViewer.xaml.cs">
+      <DependentUpon>PollViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\QRAuthUI.xaml.cs">
+      <DependentUpon>QRAuthUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedSourcePage.xaml.cs">
+      <DependentUpon>FeedSourcePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FeedView.xaml.cs">
+      <DependentUpon>FeedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Experimental.xaml.cs">
+      <DependentUpon>Experimental.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Reactions.xaml.cs">
+      <DependentUpon>Reactions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\SharingModal.xaml.cs">
+      <DependentUpon>SharingModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DirectAuthPage.xaml.cs">
+      <DependentUpon>DirectAuthPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Popups\ReactedPeersPopup.xaml.cs">
+      <DependentUpon>ReactedPeersPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Privacy.xaml.cs">
+      <DependentUpon>Privacy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\StickerPackPreviewModal.xaml.cs">
+      <DependentUpon>StickerPackPreviewModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\Translator.xaml.cs">
+      <DependentUpon>Translator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\WallPostModal.xaml.cs">
+      <DependentUpon>WallPostModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Popups\SharedConversations.xaml.cs">
+      <DependentUpon>SharedConversations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Popups\WhoReadMessagePopup.xaml.cs">
+      <DependentUpon>WhoReadMessagePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\WidgetReportModal.xaml.cs">
+      <DependentUpon>WidgetReportModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EnterPasswordView.xaml.cs">
+      <DependentUpon>EnterPasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EntryPoint\ContactPanelAndShare.xaml.cs">
+      <DependentUpon>ContactPanelAndShare.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ConversationView.xaml.cs">
+      <DependentUpon>ConversationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ChatCreateInviteLink.xaml.cs">
+      <DependentUpon>ChatCreateInviteLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Blacklist.xaml.cs">
+      <DependentUpon>Blacklist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\General.xaml.cs">
+      <DependentUpon>General.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Interface.xaml.cs">
+      <DependentUpon>Interface.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsPages\Notifications.xaml.cs">
+      <DependentUpon>Notifications.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\VKMessageDialog.xaml.cs">
+      <DependentUpon>VKMessageDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EntryPoint\ShareTargetNew.xaml.cs">
+      <DependentUpon>ShareTargetNew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ImView.xaml.cs">
+      <DependentUpon>ImView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PhotoViewer.xaml.cs">
+      <DependentUpon>PhotoViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Popups\ReactionsPickerFull.xaml.cs">
+      <DependentUpon>ReactionsPickerFull.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SettingsCategoriesView.xaml.cs">
+      <DependentUpon>SettingsCategoriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StatsPage.xaml.cs">
+      <DependentUpon>StatsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StoryViewer.xaml.cs">
+      <DependentUpon>StoryViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\UnhandledErrorPage.xaml.cs">
+      <DependentUpon>UnhandledErrorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\VideoPlayerView.xaml.cs">
+      <DependentUpon>VideoPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\APICall.xaml.cs">
+      <DependentUpon>APICall.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\AudioRecorderTest.xaml.cs">
+      <DependentUpon>AudioRecorderTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\FileUploader.xaml.cs">
+      <DependentUpon>FileUploader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\HiddenSettings.xaml.cs">
+      <DependentUpon>HiddenSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\LongPollTest.xaml.cs">
+      <DependentUpon>LongPollTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\MessageUITest.xaml.cs">
+      <DependentUpon>MessageUITest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PreviewDebug\Pages\XAMLTest.xaml.cs">
+      <DependentUpon>XAMLTest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActionMessageHelper.cs" />
+    <Compile Include="Services\APIHelper.cs" />
+    <Compile Include="Services\ApplicationInfo.cs" />
+    <Compile Include="Services\Common\AppParameters.cs" />
+    <Compile Include="Services\Common\DelayedAction.cs" />
+    <Compile Include="Services\Common\DisposableMutex.cs" />
+    <Compile Include="Services\Common\Functions.cs" />
+    <Compile Include="Services\Common\HResults.cs" />
+    <Compile Include="Services\Common\Locale.cs" />
+    <Compile Include="Services\Common\LoopThread.cs" />
+    <Compile Include="Services\Common\LoopThreadLegacy.cs" />
+    <Compile Include="Services\Converters\BitmapImageConverter.cs" />
+    <Compile Include="Services\Converters\BoolToOpacity.cs" />
+    <Compile Include="Services\Converters\ConversationsList\InlineMessage.cs" />
+    <Compile Include="Services\Converters\ConversationsList\OnlineInfoToIndicatorConverter.cs" />
+    <Compile Include="Services\Converters\ConversationsList\OnlineVia.cs" />
+    <Compile Include="Services\Converters\ConversationsList\PinnedConvIcon.cs" />
+    <Compile Include="Services\Converters\ConversationsList\PinnedConvSeparator.cs" />
+    <Compile Include="Services\Converters\ConversationsList\UnreadMessagesCount.cs" />
+    <Compile Include="Services\Converters\ConversationsList\VerifiedUser.cs" />
+    <Compile Include="Services\Converters\CornerRadiusConverter.cs" />
+    <Compile Include="Services\Converters\CounterConverter.cs" />
+    <Compile Include="Services\Converters\DocumentInfo.cs" />
+    <Compile Include="Services\Converters\ExactlyValueConverter.cs" />
+    <Compile Include="Services\Converters\GeopointToString.cs" />
+    <Compile Include="Services\Converters\Int64ToInt32Lol.cs" />
+    <Compile Include="Services\Converters\MessageFormTemplateConverter.cs" />
+    <Compile Include="Services\Converters\MessageItem\DocsIconConverter.cs" />
+    <Compile Include="Services\Converters\MessageItem\NullToVisibility.cs" />
+    <Compile Include="Services\Converters\MessageItem\DateTimeToString.cs" />
+    <Compile Include="Services\Converters\ReactionChipMembersConverter.cs" />
+    <Compile Include="Services\Converters\ReactionImageConverter.cs" />
+    <Compile Include="Services\Converters\StickerToBitmap.cs" />
+    <Compile Include="Services\Converters\ValueToBool.cs" />
+    <Compile Include="Services\Converters\VideoAttachmentInfoConverter.cs" />
+    <Compile Include="Services\DataPackageParser.cs" />
+    <Compile Include="Services\DTSelectors\StickersViewSelector.cs" />
+    <Compile Include="Services\Elapser.cs" />
+    <Compile Include="Services\Execute\Execute.cs" />
+    <Compile Include="Services\Execute\Objects\MultiSendResult.cs" />
+    <Compile Include="Services\Execute\Objects\Objects.cs" />
+    <Compile Include="Services\Extensions.cs" />
+    <Compile Include="Services\AppSession.cs" />
+    <Compile Include="Services\ListHelpers\ThreadSafeObservableCollection.cs" />
+    <Compile Include="Services\Logger\Logger.cs" />
+    <Compile Include="Services\LongPoll\LongPoll.cs" />
+    <Compile Include="Services\LongPoll\VKQueue.cs" />
+    <Compile Include="Services\DocumentIcons.cs" />
+    <Compile Include="Services\Media\AudioRecorder2.cs" />
+    <Compile Include="Services\MentionsHelper.cs" />
+    <Compile Include="Services\MicrosoftStoreUpdater.cs" />
+    <Compile Include="Services\MyPeople\ContactsPanel.cs" />
+    <Compile Include="Services\Network\HttpRequestExtensions.cs" />
+    <Compile Include="Services\Network\LNet.cs" />
+    <Compile Include="Services\Network\LNetExtensions.cs" />
+    <Compile Include="Services\Network\TimeoutHandler.cs" />
+    <Compile Include="Services\PushNotifications\PushChannelUpdater.cs" />
+    <Compile Include="Services\PushNotifications\RawPushNotificationHandler.cs" />
+    <Compile Include="Services\PushNotifications\ToastBackgroundActivation.cs" />
+    <Compile Include="Services\PushNotifications\WNSHelper.cs" />
+    <Compile Include="Services\RelayCommand.cs" />
+    <Compile Include="Services\StickersKeywords.cs" />
+    <Compile Include="Services\UI\ChatThemeService.cs" />
+    <Compile Include="Services\UI\CompositionHelper.cs" />
+    <Compile Include="Services\UI\EmojiFontManager.cs" />
+    <Compile Include="Services\UI\MessagesCollection.cs" />
+    <Compile Include="Services\UI\MessageUIHelper.cs" />
+    <Compile Include="Services\UI\ModernPhotoLayout.cs" />
+    <Compile Include="Services\UI\Shadow.cs" />
+    <Compile Include="Services\UI\SkeletonAnimation.cs" />
+    <Compile Include="Services\UI\TextFormatConverter.cs" />
+    <Compile Include="Services\UI\Theme.cs" />
+    <Compile Include="Services\UI\Tips.cs" />
+    <Compile Include="Services\UI\TitleAndStatusBar.cs" />
+    <Compile Include="Services\UI\VisualTreeHelperExtensions.cs" />
+    <Compile Include="Services\UI\VKButtonHelper.cs" />
+    <Compile Include="Services\UI\VKTextParser.cs" />
+    <Compile Include="Services\UI\WidgetRenderer.cs" />
+    <Compile Include="Services\ViewManagement.cs" />
+    <Compile Include="Services\VKClientsHelper.cs" />
+    <Compile Include="Services\VKFileUploader.cs" />
+    <Compile Include="Services\VKLinks.cs" />
+    <Compile Include="Services\VKSessionManager.cs" />
+    <Compile Include="Services\WeakEventListener.cs" />
+    <Compile Include="ViewModel\AttachmentPickerViewModel.cs" />
+    <Compile Include="ViewModel\AudioPlayerViewModel.cs" />
+    <Compile Include="ViewModel\AvatarCreatorViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\ChatCreationViewModel.cs" />
+    <Compile Include="ViewModel\Controls\MessageFormViewModel.cs" />
+    <Compile Include="ViewModel\Controls\OutboundAttachmentViewModel.cs" />
+    <Compile Include="ViewModel\Controls\PlaceholderViewModel.cs" />
+    <Compile Include="ViewModel\Controls\PostComposerViewModel.cs" />
+    <Compile Include="ViewModel\ConversationViewModel.cs" />
+    <Compile Include="ViewModel\FeedSourceViewModel.cs" />
+    <Compile Include="ViewModel\FeedViewModel.cs" />
+    <Compile Include="ViewModel\ItemsViewModel.cs" />
+    <Compile Include="ViewModel\ImViewModel.cs" />
+    <Compile Include="ViewModel\PeerProfileViewModel.cs" />
+    <Compile Include="ViewModel\SearchViewModel.cs" />
+    <Compile Include="ViewModel\ShareTargetViewModel.cs" />
+    <Compile Include="ViewModel\SharingModalViewModel.cs" />
+    <Compile Include="ViewModel\StatsViewModel.cs" />
+    <Compile Include="WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <Content Include="Assets\bb2.mp3" />
+    <Content Include="Assets\chime.mp3" />
+    <Content Include="Assets\Execute\addChatUser.1.js" />
+    <Content Include="Assets\Execute\addVoteAndGetResult.1.js" />
+    <Content Include="Assets\Execute\caGetIdsByRange.1.js" />
+    <Content Include="Assets\Execute\caPrepare.1.js" />
+    <Content Include="Assets\Execute\checkChatRights.1.js" />
+    <Content Include="Assets\Execute\getAudiosAndPlaylists.1.js" />
+    <Content Include="Assets\Execute\getChatInfo.1.js" />
+    <Content Include="Assets\Execute\getConvsFoldersAndCounters.1.js" />
+    <Content Include="Assets\Execute\getFeedSourcesShort.1.js" />
+    <Content Include="Assets\Execute\getGroupCard.2.js" />
+    <Content Include="Assets\Execute\getHistoryWithMembers.7.js" />
+    <Content Include="Assets\Execute\getPhotoAlbums.1.js" />
+    <Content Include="Assets\Execute\getReactedPeersMulti.1.js" />
+    <Content Include="Assets\Execute\getUGCPacks.1.js" />
+    <Content Include="Assets\Execute\getUserCard.3.js" />
+    <Content Include="Assets\Execute\getVideoAlbums.1.js" />
+    <Content Include="Assets\Execute\multiSend.1.js" />
+    <Content Include="Assets\Execute\registerDevice.2.js" />
+    <Content Include="Assets\Execute\searchUsersAndGroups.1.js" />
+    <Content Include="Assets\Execute\startup.17.js" />
+    <Content Include="Assets\Execute\getRecentStickersAndGraffities.2.js" />
+    <Content Include="Assets\Logos\LargeTile.scale-100_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-125_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-150_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-200_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-400_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-100_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-125_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-150_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-200_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-400_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-100_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-125_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-150_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-200_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-400_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-100_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-125_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-150_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-200_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-400_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-100_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-125_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-150_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-200_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-400_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-24_altform-lightunplated.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-100_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-125_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-150_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-200_altform-colorful_theme-light.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-400_altform-colorful_theme-light.png" />
+    <Content Include="Assets\MessageStats\template.html" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-100_theme-dark.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-100_theme-light.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-150_theme-dark.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-150_theme-light.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-200_theme-dark.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-200_theme-light.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-300_theme-dark.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-300_theme-light.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-400_theme-dark.png" />
+    <Content Include="Assets\NonVector\StickerKeywordBot.scale-400_theme-light.png" />
+    <Content Include="Assets\Reactions\placeholder.svg" />
+    <Content Include="Assets\send.png" />
+    <Content Include="Assets\vk\casper.svg" />
+    <Content Include="Assets\vk\donut.svg" />
+    <Content Include="Assets\vk\Poll.svg" />
+    <PRIResource Include="Strings\uk-UA\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\ru-RU\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+    <PRIResource Include="Strings\en-US\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Logos\BadgeLogo.scale-100.png" />
+    <Content Include="Assets\Logos\BadgeLogo.scale-125.png" />
+    <Content Include="Assets\Logos\BadgeLogo.scale-150.png" />
+    <Content Include="Assets\Logos\BadgeLogo.scale-200.png" />
+    <Content Include="Assets\Logos\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-100.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-125.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-150.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-200.png" />
+    <Content Include="Assets\Logos\LargeTile.scale-400.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-100.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-125.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-150.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-200.png" />
+    <Content Include="Assets\Logos\SmallTile.scale-400.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-100.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-125.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-150.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Logos\SplashScreen.scale-400.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-125.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-150.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Logos\Square150x150Logo.scale-400.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-unplated_targetsize-24.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-100.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-125.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-150.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.scale-400.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Assets\Logos\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Assets\Logos\StoreLogo.scale-100.png" />
+    <Content Include="Assets\Logos\StoreLogo.scale-125.png" />
+    <Content Include="Assets\Logos\StoreLogo.scale-150.png" />
+    <Content Include="Assets\Logos\StoreLogo.scale-200.png" />
+    <Content Include="Assets\Logos\StoreLogo.scale-400.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-100.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-125.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-150.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\Logos\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\SegoeIcons.ttf" />
+    <Content Include="Assets\ChatBackgrounds\default.json" />
+    <None Include="Elorucov.Laney_TemporaryKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Properties\Default.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Controls\AudioRecorderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BotCarouselElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BotKeyboardControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChatBackgroundControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Date.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GalleryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MentionsPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\ArticlePreview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\AudioUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\CompactMessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\DefaultAttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\ExtendedAttachmentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\GiftPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\ReactionsChips.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\StickerPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\StoryUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\VideoMessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageAttachments\VoiceMessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MiniPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OutboundAttachmentUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PhotoVideoThumbnail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PollBackgroundPreview.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PollOptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PostComposer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PostUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Primitives\Garland.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ReactionsPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StickersFlyout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WinUI\MasterDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ControlTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AudioPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ChatCreationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\AttachmentPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\AvatarCreator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\AddChatUserModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\ChatInvite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\ChatSettingsModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\Dev\MessageJSONView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\FoldersSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\Folders\ConvsPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\Folders\FolderEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\Folders\MainSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\ImportantMessages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\LinkEditorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\MessageSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\ModalWebView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\PeerProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\PlacePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\PollEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dialogs\PollViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\QRAuthUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedSourcePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FeedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Experimental.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Reactions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\SharingModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DirectAuthPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Popups\ReactedPeersPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Privacy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\StickerPackPreviewModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\Translator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\WallPostModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Popups\SharedConversations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Popups\WhoReadMessagePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\WidgetReportModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EnterPasswordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EntryPoint\ContactPanelAndShare.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ConversationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\Dialogs\ChatCreateInviteLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Blacklist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\General.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Interface.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsPages\Notifications.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Dialogs\VKMessageDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\EntryPoint\ShareTargetNew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ImView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PhotoViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Popups\ReactionsPickerFull.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SettingsCategoriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StatsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StoryViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\UnhandledErrorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\VideoPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDebug\Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDebug\Pages\APICall.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDebug\Pages\AudioRecorderTest.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PreviewDebug\Pages\FileUploader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PreviewDebug\Pages\HiddenSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PreviewDebug\Pages\LongPollTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDebug\Pages\MessageUITest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PreviewDebug\Pages\XAMLTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\GridViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ListViewItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\CTE\CTEBrushesOutgoing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\CalendarView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>4.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.7.3</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="QRCoder">
+      <Version>1.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="QueryString.NET">
+      <Version>1.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Win2D.uwp">
+      <Version>1.28.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsDesktop, Version=10.0.22621.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.22621.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Elorucov.VkAPI\Elorucov.VkAPI.csproj">
+      <Project>{e43d5045-abce-406a-8bf9-386c96297fb4}</Project>
+      <Name>Elorucov.VkAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UWP-Toolkit\Elorucov.Toolkit.UWP\Elorucov.Toolkit.UWP.csproj">
+      <Project>{87f61fb7-1110-40c5-b940-e9828efc5fca}</Project>
+      <Name>Elorucov.Toolkit.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vkui-uwp\VK.UI.UWP\VK.UI.UWP.csproj">
+      <Project>{ca48097b-bf80-44c3-9cc0-989665c589d6}</Project>
+      <Name>VK.UI.UWP</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="RLottie">
+      <HintPath>$(SolutionDir)\rlottie\$(Platform)\RLottie.winmd</HintPath>
+      <Implementation>RLottie.dll</Implementation>
+    </Reference>
+    <ReferenceCopyLocalPaths Include="$(SolutionDir)\rlottie\$(Platform)\RLottie.dll" />
+    <ReferenceCopyLocalPaths Include="$(SolutionDir)\rlottie\$(Platform)\RLottie.pri" />
+    <ReferenceCopyLocalPaths Include="$(SolutionDir)\rlottie\$(Platform)\zlib1.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

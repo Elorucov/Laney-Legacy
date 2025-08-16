@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.EntryPoint.ContactPanelAndShare"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.EntryPoint"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource LegacyPageBackgroundBrush}">
+
+    <Grid x:Name="LayoutRoot">
+        <Frame x:Name="frm">
+            <muxc:ProgressRing VerticalAlignment="Center" HorizontalAlignment="Center" Height="64" Width="64" IsActive="True"/>
+        </Frame>
+    </Grid>
+</Page>

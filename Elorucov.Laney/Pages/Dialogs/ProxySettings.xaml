@@ -1,0 +1,15 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.Dialogs.ProxySettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <TextBox x:Name="srv" x:Uid="proxy_server" PlaceholderText="https://api.vk.com"/>
+        <TextBlock Margin="0,12,0,0" x:Name="errortext" TextWrapping="Wrap" Foreground="{ThemeResource SystemControlErrorTextForegroundBrush}"/>
+        <TextBlock Margin="0,12,0,0" x:Uid="restart_required" TextWrapping="Wrap" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+    </StackPanel>
+</Page>

@@ -1,0 +1,96 @@
+﻿<elor:OverlayModal
+    x:Class="Elorucov.Laney.Pages.PhotoViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ph="using:Elorucov.Laney.Models"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    mc:Ignorable="d"
+    RequestedTheme="Dark">
+
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource LegacyPageBackgroundBrush}">
+        <FlipView x:Name="imgs" Background="Transparent" Grid.RowSpan="4">
+            <FlipView.ItemTemplate>
+                <DataTemplate x:DataType="ph:GalleryItem">
+                    <ctrls:GalleryView Item="{x:Bind}"/>
+                </DataTemplate>
+            </FlipView.ItemTemplate>
+        </FlipView>
+        <Grid x:Name="Overlay">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="Top">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#7f000000" Offset="0"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="CounterContainer" Grid.Row="1" Height="48" Grid.ColumnSpan="2">
+                    <TextBlock x:Name="Counter" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                </Border>
+                <HyperlinkButton x:Name="CloseButton" Grid.Column="1" VerticalAlignment="Bottom" Padding="0" Width="48" Height="48" Click="Exit">
+                    <ctrls:FixedFontIcon Glyph=""/>
+                </HyperlinkButton>
+            </Grid>
+
+            <StackPanel x:Name="Bottom" Grid.Row="2" Background="#4f000000">
+                <TextBlock x:Name="Desc" Margin="12,36,12,0"/>
+                <Grid Margin="12" Height="48">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="48"/>
+                    </Grid.ColumnDefinitions>
+                    <elor:Avatar x:Name="OwnerPhoto" Visibility="Collapsed" Margin="0,0,12,0" Width="48" Height="48"/>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock x:Name="OwnerName" Visibility="Collapsed" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="PhotoPublishedTime" FontSize="14" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+                    </StackPanel>
+
+                    <HyperlinkButton Grid.Column="2" Width="48" Height="48" Padding="0" Click="ShowContextMenu">
+                        <HyperlinkButton.Content>
+                            <ctrls:FixedFontIcon Glyph=""/>
+                        </HyperlinkButton.Content>
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout Placement="Top" Opening="CheckContextMenu">
+                                <MenuFlyoutItem x:Name="downloadBtn" Click="Download">
+                                    <MenuFlyoutItem.Icon>
+                                        <ctrls:FixedFontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="saveVkBtn" Click="SaveToVk">
+                                    <MenuFlyoutItem.Icon>
+                                        <ctrls:FixedFontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="copyBtn" Click="CopyToClipboard">
+                                    <MenuFlyoutItem.Icon>
+                                        <ctrls:FixedFontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="shareBtn" x:Uid="ctxsharebtn" Click="SharePhoto">
+                                    <MenuFlyoutItem.Icon>
+                                        <ctrls:FixedFontIcon Glyph=""/>
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </HyperlinkButton>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</elor:OverlayModal>

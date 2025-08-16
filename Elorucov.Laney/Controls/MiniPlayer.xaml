@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.MiniPlayer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="Root"
+    d:DesignHeight="36"
+    d:DesignWidth="360"
+    Height="36">
+
+    <UserControl.Resources>
+        <converters:NullToVisibility x:Key="ntv"/>
+        <converters:NullToVisibility2 x:Key="ntv2"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <HyperlinkButton x:Name="PlayButton" BorderThickness="0" Padding="10" VerticalAlignment="Center" Command="{Binding PlayPauseCommand}" Visibility="{Binding IsPlaying, Converter={StaticResource ntv2}}">
+            <local:FixedFontIcon Glyph=""/>
+        </HyperlinkButton>
+        <HyperlinkButton x:Name="PauseButton" BorderThickness="0" Padding="10" VerticalAlignment="Center" Command="{Binding PlayPauseCommand}" Visibility="{Binding IsPlaying}">
+            <local:FixedFontIcon Glyph=""/>
+        </HyperlinkButton>
+        <HyperlinkButton Grid.Column="1" BorderThickness="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="InvokeClick">
+            <StackPanel>
+                <TextBlock TextAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}" FontSize="13" LineHeight="15" LineStackingStrategy="BlockLineHeight" FontWeight="SemiBold" Text="{Binding CurrentSong.Title}"/>
+                <TextBlock TextAlignment="Center" Foreground="{ThemeResource TextFillColorPrimaryBrush}" FontSize="11" LineHeight="15" LineStackingStrategy="BlockLineHeight" Text="{Binding CurrentSong.Performer}"/>
+            </StackPanel>
+        </HyperlinkButton>
+        <HyperlinkButton x:Name="CloseButton" Grid.Column="2" BorderThickness="0" Padding="10" VerticalAlignment="Center" Click="InvokeCloseButtonClicked">
+            <local:FixedFontIcon Glyph=""/>
+        </HyperlinkButton>
+    </Grid>
+</UserControl>

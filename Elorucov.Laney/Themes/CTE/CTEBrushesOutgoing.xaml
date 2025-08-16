@@ -1,0 +1,19 @@
+﻿<ResourceDictionary x:Key="Default"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="TransparentBubbleBrush" Color="#000"/>
+    <SolidColorBrush x:Key="AccentTextFillColorPrimaryBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="AccentTextFillColorSecondaryBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="AccentTextFillColorTertiaryBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="SystemControlHyperlinkTextBrush" Color="#FFF" />
+    <SolidColorBrush x:Key="SystemControlHyperlinkBaseHighBrush" Color="#FFF" />
+    <SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumBrush" Color="#FFF" />
+    <SolidColorBrush x:Key="SystemControlHyperlinkBaseMediumHighBrush" Color="#FFF" />
+    <SolidColorBrush x:Key="AlternativeAccentBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="AlternativeMessageControlForegroundAccentBrush" Color="#FFF"/>
+    <SolidColorBrush x:Key="VKTextSecondaryBrush" Color="#FFF" Opacity="0.8"/>
+    <SolidColorBrush x:Key="VKTextSubheadBrush" Color="#FFF" Opacity="0.8"/>
+    <StaticResource x:Key="HyperlinkForeground" ResourceKey="SystemControlHyperlinkTextBrush"/>
+    <StaticResource x:Key="HyperlinkForegroundPointerOver" ResourceKey="SystemControlHyperlinkTextBrush"/>
+    <StaticResource x:Key="HyperlinkForegroundPressed" ResourceKey="SystemControlHyperlinkTextBrush"/>
+</ResourceDictionary>

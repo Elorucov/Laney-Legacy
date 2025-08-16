@@ -1,0 +1,14 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.VKMessageDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" MaxWidth="540" CloseButtonVisibility="Visible" Padding="0" DropShadow="True">
+
+    <ScrollViewer>
+        <StackPanel x:Name="MessagesLists"/>
+    </ScrollViewer>
+</elor:Modal>

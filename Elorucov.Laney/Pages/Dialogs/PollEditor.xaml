@@ -1,0 +1,64 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.PollEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Style="{StaticResource ContentUnderTitleBarModalStyle}"
+    Loaded="Init" DropShadow="True" MaxWidth="576">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Padding="0,48,0,0" Background="{ThemeResource LayerFillColorAltBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Margin="12,0,12,12">
+                <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" x:Uid="polleditor_question"/>
+                <TextBox x:Name="Question" Margin="0,8,0,0" TextWrapping="Wrap" MaxLength="140"/>
+                <TextBlock x:Name="QuError" Visibility="Collapsed" Foreground="Red" x:Uid="polleditor_error1"/>
+
+                <TextBlock Margin="0,20,0,0" Style="{ThemeResource BodyStrongTextBlockStyle}" x:Uid="polleditor_answers"/>
+                <StackPanel x:Name="Options" LayoutUpdated="OptionsLayoutUpdated">
+                    <StackPanel.ChildrenTransitions>
+                        <TransitionCollection>
+                            <RepositionThemeTransition/>
+                        </TransitionCollection>
+                    </StackPanel.ChildrenTransitions>
+                    <HyperlinkButton x:Name="AddOptionButton" Margin="0,8,0,0" Click="AddOption">
+                        <StackPanel Orientation="Horizontal">
+                            <ctrls:FixedFontIcon Glyph="" Margin="0,0,8,0"/>
+                            <TextBlock x:Uid="polleditor_addanswer"/>
+                        </StackPanel>
+                    </HyperlinkButton>
+                </StackPanel>
+                <TextBlock x:Name="OpError" Visibility="Collapsed" Foreground="Red" x:Uid="polleditor_error2"/>
+
+                <TextBlock Margin="0,20,0,0" Style="{ThemeResource BodyStrongTextBlockStyle}" x:Uid="background"/>
+                <ScrollViewer Margin="0,8,0,0" VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="PollBackgroundPreviews" Orientation="Horizontal" Height="164"/>
+                </ScrollViewer>
+
+                <TextBlock Margin="0,20,0,0" Style="{ThemeResource BodyStrongTextBlockStyle}" x:Uid="polleditor_params"/>
+                <CheckBox x:Name="AnonymousPoll" x:Uid="polleditor_anon"/>
+                <CheckBox x:Name="MultAnswers" x:Uid="polleditor_multi"/>
+                <CheckBox x:Name="DisableUnvote" x:Uid="polleditor_disable_unvote"/>
+                <CheckBox x:Name="Limited" x:Uid="polleditor_limittime"/>
+                <TextBlock x:Name="TimeError" Visibility="Collapsed" Foreground="Red" Text="The voting end time cannot be in the past"/>
+                <DatePicker x:Name="LimitDate" Visibility="{Binding IsChecked, ElementName=Limited}" Margin="0,8,0,0" HorizontalAlignment="Stretch"/>
+                <TimePicker x:Name="LimitTime" Visibility="{Binding IsChecked, ElementName=Limited}" Margin="0,8,0,0" HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="1" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="primarybtn" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" Grid.Column="0" Margin="0,0,4,0" x:Uid="polleditor_save" Click="SaveButtonClick"/>
+            <Button x:Name="secondarybtn" HorizontalAlignment="Stretch" Grid.Column="1" Margin="4,0,0,0" x:Uid="cancelbtn" Click="CloseButtonClick"/>
+        </Grid>
+    </Grid>
+</elor:Modal>

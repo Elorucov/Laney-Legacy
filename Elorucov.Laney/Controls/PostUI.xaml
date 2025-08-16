@@ -1,0 +1,105 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.PostUI"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <StackPanel>
+        <Grid Height="44" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar x:Name="Ava" Width="44" Height="44" Margin="0,0,8,0" Click="ShowAuthorInfo"/>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <HyperlinkButton Padding="0" Click="ShowAuthorInfo">
+                    <TextBlock x:Name="AuthorName" Style="{StaticResource VKText}" Foreground="{ThemeResource VKTextPrimaryBrush}" FontWeight="SemiBold"/>
+                </HyperlinkButton>
+                <HyperlinkButton Padding="0" Click="OpenPostInBrowser">
+                    <TextBlock x:Name="PostTime" Style="{StaticResource VKSubhead}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+                </HyperlinkButton>
+            </StackPanel>
+            <StackPanel x:Name="Indicators" Grid.Column="2" VerticalAlignment="Top" Orientation="Horizontal">
+                <Border x:Name="PrivacyIndicator" Width="32" Height="32" Visibility="Collapsed">
+                    <local:FixedFontIcon x:Name="PrivacyIndicatorIcon" Glyph=""/>
+                </Border>
+                <Border x:Name="PinnedIndicator" Width="32" Height="32" Visibility="Collapsed">
+                    <local:FixedFontIcon Glyph=""/>
+                </Border>
+            </StackPanel>
+            <TextBlock x:Name="debug" x:DeferLoadStrategy="Lazy"  Grid.ColumnSpan="3" IsHitTestVisible="False" TextAlignment="Right" Opacity="0.8" Foreground="{ThemeResource SystemControlErrorTextForegroundBrush}" FontSize="12" FontFamily="Lucida Console">
+                <Run x:Name="dbgId"/>
+                <Run x:Name="dbgWidth"/>
+                <Run x:Name="dbgMaybeWidth"/>
+            </TextBlock>
+        </Grid>
+
+        <StackPanel x:Name="DonutPlaceholder" x:DeferLoadStrategy="Lazy" Padding="0,60" CornerRadius="4" Background="{ThemeResource VKFieldBackgroundBrush}">
+            <vkui:VKIcon Id="Icon56FavoriteOutline" HorizontalAlignment="Center" Foreground="{ThemeResource VKDynamicGrayBrush}"/>
+            <TextBlock x:Name="DonutPlaceholderText" TextAlignment="Center" Margin="0,13,0,0" Style="{StaticResource VKText}" Foreground="{ThemeResource VKTextSubheadBrush}"/>
+            <Button HorizontalAlignment="Center" Style="{StaticResource VKButtonPrimaryMedium}" Margin="0,24,0,0" x:Uid="donut_support" Click="OpenDonutPage"/>
+        </StackPanel>
+
+        <RichTextBlock x:Name="PostText" x:DeferLoadStrategy="Lazy" Margin="0,-3,0,12" IsTextSelectionEnabled="True"/>
+        <StackPanel x:Name="AttachmentsContainer"/>
+
+        <HyperlinkButton x:Name="Place" x:DeferLoadStrategy="Lazy" Margin="0,0,0,12" Padding="0" Click="OpenMap">
+            <StackPanel Orientation="Horizontal">
+                <vkui:VKIcon Id="Icon16Place" Foreground="{ThemeResource VKTextPrimaryBrush}"/>
+                <TextBlock x:Name="PlaceName" Margin="2,0,0,0" Style="{StaticResource VKCaption1}" FontWeight="SemiBold" Foreground="{ThemeResource VKTextPrimaryBrush}"/>
+            </StackPanel>
+        </HyperlinkButton>
+        <HyperlinkButton x:Name="Signer" x:DeferLoadStrategy="Lazy" Margin="0,0,0,12" Padding="0" Click="ShowSignerInfo">
+            <StackPanel Orientation="Horizontal">
+                <vkui:VKIcon Id="Icon16User" Foreground="{ThemeResource AlternativeAccentBrush}"/>
+                <TextBlock x:Name="SignerName" Margin="2,0,0,0" Style="{StaticResource VKCaption1}" FontWeight="SemiBold" Foreground="{ThemeResource AlternativeAccentBrush}"/>
+            </StackPanel>
+        </HyperlinkButton>
+        <HyperlinkButton x:Name="CopyrightLink" x:DeferLoadStrategy="Lazy" Margin="0,0,0,12" Padding="0" Click="GoToSource">
+            <TextBlock x:Name="Copyright" Style="{StaticResource VKCaption1}" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+        </HyperlinkButton>
+
+        <Grid x:Name="PostCounters" x:DeferLoadStrategy="Lazy">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="LikeButton" Style="{StaticResource VKPostButtonStyle}" Margin="0,0,8,0" Click="LikeButtonClicked">
+                    <StackPanel Orientation="Horizontal">
+                        <vkui:VKIcon x:Name="LikeIcon" Id="Icon24LikeOutline" Width="24" Height="24"/>
+                        <TextBlock x:Name="LikeCounter" x:DeferLoadStrategy="Lazy" VerticalAlignment="Center" Margin="4,-1,2,0"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="CommentButton" x:DeferLoadStrategy="Lazy" Style="{StaticResource VKPostButtonStyle}" Margin="0,0,8,0" Click="OpenPostInBrowser">
+                    <StackPanel Orientation="Horizontal">
+                        <vkui:VKIcon Id="Icon24CommentOutline" Width="24" Height="24"/>
+                        <TextBlock x:Name="CommentCounter" x:DeferLoadStrategy="Lazy" VerticalAlignment="Center" Margin="4,-1,2,0"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="RepostButton" x:DeferLoadStrategy="Lazy" Style="{StaticResource VKPostButtonStyle}" Margin="0,0,8,0" Click="SharePost">
+                    <StackPanel Orientation="Horizontal">
+                        <vkui:VKIcon Id="Icon24ShareOutline" Width="24" Height="24"/>
+                        <TextBlock x:Name="RepostCounter" x:DeferLoadStrategy="Lazy" VerticalAlignment="Center" Margin="4,-1,2,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button x:Name="ViewsButton" x:DeferLoadStrategy="Lazy" IsHitTestVisible="False" Style="{StaticResource VKPostButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                    <StackPanel Orientation="Horizontal">
+                        <vkui:VKIcon Id="Icon24ViewOutline" Width="24" Height="24"/>
+                        <TextBlock x:Name="ViewsCounter" VerticalAlignment="Center" Margin="4,-1,2,0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

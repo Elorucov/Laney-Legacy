@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.StickersFlyout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:obj="using:Elorucov.VkAPI.Objects"
+    xmlns:dt="using:Elorucov.Laney.Services.DTSelectors"
+    xmlns:conv="using:Elorucov.Laney.Services.Converters"
+    xmlns:conv2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="282"
+    d:DesignWidth="296" Loaded="InitStickers">
+
+    <UserControl.Resources>
+        <conv:BoolToOpacity x:Key="bto"/>
+        <conv2:NullToVisibility x:Key="ntv"/>
+        <conv:StickerToBitmap x:Key="stu"/>
+        <DataTemplate x:Key="StickersTemplate" x:DataType="mdl:StickerFlyoutItem">
+            <GridView HorizontalAlignment="Left" Padding="0,4,0,0" ShowsScrollingPlaceholders="False" IsItemClickEnabled="True" ItemsSource="{x:Bind Stickers}" SelectionMode="None" ItemContainerStyle="{StaticResource StickerItemStyle}" ItemClick="SelectSticker">
+                <GridView.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="8,2,4,4" Style="{StaticResource VKCaption1}" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Text="{x:Bind Title}"/>
+                        <HyperlinkButton Padding="0" Margin="3,0,0,0" Width="18" Height="18" Visibility="{x:Bind Hint, Converter={StaticResource ntv}}" Click="ShowPackHint">
+                            <local:FixedFontIcon Glyph="" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        </HyperlinkButton>
+                    </StackPanel>
+                </GridView.Header>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="obj:Sticker">
+                        <Image Width="64" Height="64" Margin="4" Opacity="{x:Bind IsAllowed, Converter={StaticResource bto}}" Source="{x:Bind Converter={StaticResource stu}, ConverterParameter=64}" ToolTipService.ToolTip="{x:Bind StickerId}" ContextRequested="Image_ContextRequested"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChatStickersTemplate" x:DataType="mdl:StickerFlyoutItem">
+            <GridView HorizontalAlignment="Left" Padding="0,4,0,0" ShowsScrollingPlaceholders="False" IsItemClickEnabled="True" ItemsSource="{x:Bind ChatStickers}" SelectionMode="None" ItemContainerStyle="{StaticResource StickerItemStyle}" ItemClick="SelectSticker">
+                <GridView.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="8,2,4,4" Style="{StaticResource VKCaption1}" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Text="{x:Bind Title}"/>
+                        <!-- Первоначально тут был только FixedFontIcon с тултипом, но когда винда пыталась отображать тултип, происходил краш в Windows.UI.Xaml.dll (Access violation) -->
+                        <HyperlinkButton Padding="0" Margin="3,0,0,0" Width="18" Height="18" Visibility="{x:Bind Hint, Converter={StaticResource ntv}}" Click="ShowPackHint">
+                            <local:FixedFontIcon Glyph="" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        </HyperlinkButton>
+                    </StackPanel>
+                </GridView.Header>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="obj:UGCSticker">
+                        <Image Width="64" Height="64" Margin="4" Source="{x:Bind Converter={StaticResource stu}, ConverterParameter=64}" ToolTipService.ToolTip="{x:Bind Id}" ContextRequested="Image_ContextRequested"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </DataTemplate>
+
+        <DataTemplate x:Key="GraffitiTemplate" x:DataType="mdl:StickerFlyoutItem">
+            <GridView HorizontalAlignment="Center" ShowsScrollingPlaceholders="False" IsItemClickEnabled="True" ItemsSource="{x:Bind Graffities}" SelectionMode="None" ItemContainerStyle="{StaticResource StickerItemStyle}" ItemClick="SelectGraffiti">
+                <GridView.Header>
+                    <Grid Margin="0,6" VerticalAlignment="Top" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="2,0,3,0" x:Uid="stickersflyout_graffiti_file" Click="GraffitiFile"/>
+                        <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="3,0,2,0" x:Uid="stickersflyout_graffiti_draw" Click="GraffitiDraw"/>
+                    </Grid>
+                </GridView.Header>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="obj:Document">
+                        <Image Width="64" Height="64" Stretch="Uniform" Margin="4" Source="{x:Bind Uri, Converter={StaticResource bic}}"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </DataTemplate>
+        <dt:StickersViewSelector x:Key="sdt" GraffitiViewTemplate="{StaticResource GraffitiTemplate}" StickersTemplate="{StaticResource StickersTemplate}" ChatStickersTemplate="{StaticResource ChatStickersTemplate}"/>
+    </UserControl.Resources>
+
+    <Grid Height="282" Width="296" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="36"/>
+        </Grid.RowDefinitions>
+        <Rectangle Fill="{ThemeResource LayerFillColorAltBrush}"/>
+        <FlipView Background="Transparent" ItemTemplateSelector="{StaticResource sdt}" ItemsSource="{Binding ItemsSource, ElementName=Items, Mode=OneWay}" SelectedItem="{Binding SelectedItem, ElementName=Items, Mode=TwoWay}"/>
+
+        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Top" Fill="{ThemeResource CardStrokeColorDefaultBrush}"/>
+        <ListView x:Name="Items" Grid.Row="1" ShowsScrollingPlaceholders="False" IsItemClickEnabled="True" ItemClick="Items_ItemClick" SelectionChanged="Items_SelectionChanged" ScrollViewer.BringIntoViewOnFocusChange="True" ScrollViewer.IsDeferredScrollingEnabled="True" ScrollViewer.HorizontalScrollBarVisibility="Hidden" UseSystemFocusVisuals="False" ItemContainerStyle="{StaticResource StickerFlyoutItemsStyle}" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsHorizontalScrollChainingEnabled="True" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.IsHorizontalRailEnabled="True" SelectionMode="Single">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="18" FromVerticalOffset="0" IsStaggeringEnabled="True"/>
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel ItemsUpdatingScrollMode="KeepScrollOffset" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:StickerFlyoutItem">
+                    <Grid Width="36" Height="36" ToolTipService.ToolTip="{Binding Title}">
+                        <Image Width="24" Height="24" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" Source="{x:Bind PreviewImage, Converter={StaticResource bic}, ConverterParameter=sticker2}"/>
+                        <TextBlock FontSize="16" FontFamily="{StaticResource SymbolThemeFontFamily}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Glyph}"/>
+                        <Path Fill="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" Data="{x:Bind Path}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Border x:Name="loader" Grid.RowSpan="2" Background="Transparent">
+            <muxc:ProgressRing Width="64" Height="64" IsActive="True"/>
+        </Border>
+    </Grid>
+</UserControl>

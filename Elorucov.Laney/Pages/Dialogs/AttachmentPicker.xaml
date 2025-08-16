@@ -1,0 +1,293 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.AttachmentPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:ctrlsma="using:Elorucov.Laney.Controls.MessageAttachments"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vk="using:Elorucov.VkAPI.Objects"
+    xmlns:vke="using:Elorucov.Laney.Services.Execute.Objects"
+    xmlns:converter="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:converter2="using:Elorucov.Laney.Services.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource ContentUnderTitleBarModalStyle}" MaxWidth="540" FullSizeDesired="True">
+    
+    <elor:Modal.Resources>
+        <converter2:DocumentInfo x:Key="fzh"/>
+        <converter2:VideoAttachmentInfoConverter x:Key="vaic"/>
+        <converter:DocsIconConverter x:Key="dic"/>
+        <converter:NullToVisibility x:Key="vis"/>
+
+        <DataTemplate x:Key="AlbumTemplate" x:DataType="vke:AlbumLite">
+            <Grid RequestedTheme="Dark" Width="180" Height="120" Background="#3f7f7f7f" CornerRadius="{StaticResource ControlCornerRadius}">
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <ImageBrush AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill" ImageSource="{x:Bind ThumbUri, Converter={StaticResource bic}}"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Grid VerticalAlignment="Bottom">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#00000000"/>
+                                <GradientStop Offset="1" Color="#80000000"/>
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Margin="8,8,4,8" VerticalAlignment="Bottom" Style="{StaticResource BaseTextBlockStyle}" Text="{x:Bind Title}"/>
+                    <TextBlock Grid.Column="1" Margin="4,8,8,8" VerticalAlignment="Bottom" Style="{StaticResource BaseTextBlockStyle}" Text="{x:Bind Size}"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="AudioPlaylistTemplate" x:DataType="vk:AudioPlaylist">
+            <StackPanel Width="164" MinHeight="228" Padding="4,4,4,0" VerticalAlignment="Top">
+                <Grid Width="156" Height="156" CornerRadius="{StaticResource OverlayCornerRadius}">
+                    <Border CornerRadius="{StaticResource OverlayCornerRadius}" BorderThickness="1" BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}">
+                        <vkui:VKIcon Id="Icon56PlaylistOutline" Foreground="{ThemeResource SurfaceStrokeColorDefaultBrush}"/>
+                    </Border>
+                    <Rectangle>
+                        <Rectangle.Fill>
+                            <ImageBrush AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill" ImageSource="{x:Bind Photo.Photo300Url, Converter={StaticResource bic}}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
+                <TextBlock Margin="0,6,0,0" MaxLines="2" Style="{StaticResource BaseTextBlockStyle}" Text="{x:Bind Title}"/>
+                <TextBlock Margin="0,0,0,5" MaxLines="2" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" DataContextChanged="UpdateAudiosCount"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PhotoTemplate" x:DataType="vk:Photo">
+            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RadiusX="2" RadiusY="2" ContextRequested="OpenPhotoViewer">
+                <Rectangle.Fill>
+                    <ImageBrush AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill" ImageSource="{x:Bind MinimalSizedPhoto.Uri, Converter={StaticResource bic}}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+        </DataTemplate>
+        <DataTemplate x:Key="VideoTemplate" x:DataType="vk:Video">
+            <Grid Height="63" Margin="6,6,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="0,0,12,0" Background="{ThemeResource VKButtonSecondaryBackgroundBrush}" Width="96" Height="64" CornerRadius="4">
+                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill" Source="{x:Bind Photo, Converter={StaticResource bic}}"/>
+                </Grid>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" MaxLines="2" Text="{x:Bind Title}"/>
+                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Converter={StaticResource vaic}}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="AudioTemplate" x:DataType="vk:Audio">
+            <ctrlsma:AudioUC Margin="6,6,0,6" Audio="{x:Bind}" IsPlayButtonClicked="AudioUC_IsPlayButtonClicked"/>
+        </DataTemplate>
+        <DataTemplate x:Key="DocTemplate" x:DataType="vk:Document">
+            <Grid Margin="6,6,0,6" Height="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ContentControl Margin="0,0,12,0" Content="{x:Bind Converter={StaticResource dic}}"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind Title}"/>
+                    <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" Text="{x:Bind Converter={StaticResource fzh}}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </elor:Modal.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Pivot x:Name="MainPivot">
+            <Pivot.RightHeader>
+                <Border Width="48"/>
+            </Pivot.RightHeader>
+            <PivotItem x:Uid="atchpickerw_photo">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="6,0" Height="32" Click="OpenFilePickerForPhoto">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ctrls:FixedFontIcon Margin="0,0,8,0" Glyph=""/>
+                                <TextBlock x:Uid="upload_photo"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="6,0" Height="32" Click="ShowCameraCaptureWindowForPhoto">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ctrls:FixedFontIcon Margin="0,0,8,0" Glyph=""/>
+                                <TextBlock x:Uid="take_photo"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <ctrls:AdaptiveGridView x:Name="PhotosGrid" Grid.Row="1" VerticalAlignment="Top" Margin="0,6,0,0" ItemHeight="70" DesiredWidth="104" StretchContentForSingleRow="False" SelectionMode="Multiple" ItemTemplate="{StaticResource PhotoTemplate}" ItemsSource="{Binding Photos}" SelectionChanged="ItemChecked" Tag="1" Loaded="RegisterIncrementalLoadingEvent" LayoutUpdated="FixPhotosGridMargin">
+                        <ctrls:AdaptiveGridView.Header>
+                            <GridView VerticalAlignment="Top" ItemTemplate="{StaticResource AlbumTemplate}" ItemsSource="{Binding PhotoAlbums}" SelectedItem="{Binding SelectedPhotoAlbum, Mode=TwoWay}" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsHorizontalScrollChainingEnabled="True" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.IsHorizontalRailEnabled="True">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="12,0,0,0" Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
+                        </ctrls:AdaptiveGridView.Header>
+                        <ctrls:AdaptiveGridView.Footer>
+                            <muxc:ProgressRing Width="24" Height="24" Margin="12" HorizontalAlignment="Center" Visibility="{Binding IsPhotosLoading}"/>
+                        </ctrls:AdaptiveGridView.Footer>
+                    </ctrls:AdaptiveGridView>
+                    <Border Grid.Row="1" Visibility="{Binding PhotosPlaceholder, Converter={StaticResource vis}}">
+                        <StackPanel MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}">
+                            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding PhotosPlaceholder.Icon}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding PhotosPlaceholder.Header}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding PhotosPlaceholder.Content}"/>
+                            <Button Margin="0,16,0,24" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Content="{Binding PhotosPlaceholder.ActionButton}" Command="{Binding PhotosPlaceholder.ActionButtonCommand, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" VerticalAlignment="Bottom" Height="24" Background="{ThemeResource GradientUnderModalButtonBrush}"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Uid="atchpickerw_video">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="6,0" Height="32" Click="OpenFilePickerForVideo">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <ctrls:FixedFontIcon Margin="0,0,8,0" Glyph=""/>
+                                <TextBlock x:Uid="upload_video"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="6,0" Height="32" Click="ShowCameraCaptureWindowForVideo">
+                            <StackPanel Orientation="Horizontal">
+                                <ctrls:FixedFontIcon Margin="0,0,8,0" Glyph=""/>
+                                <TextBlock x:Uid="take_video"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                    <ListView x:Name="VideosList" Grid.Row="1" VerticalAlignment="Top" Margin="0,6,0,0" SelectionMode="Multiple" ItemTemplate="{StaticResource VideoTemplate}" ItemsSource="{Binding Videos}" SelectionChanged="ItemChecked" Tag="2" Loaded="RegisterIncrementalLoadingEvent">
+                        <ListView.Header>
+                            <GridView VerticalAlignment="Top" ItemTemplate="{StaticResource AlbumTemplate}" ItemsSource="{Binding VideoAlbums}" SelectedItem="{Binding SelectedVideoAlbum, Mode=TwoWay}" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsHorizontalScrollChainingEnabled="True" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.IsHorizontalRailEnabled="True">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="12,0,0,0" Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
+                        </ListView.Header>
+                        <ListView.Footer>
+                            <muxc:ProgressRing Width="24" Height="24" Margin="12" HorizontalAlignment="Center" Visibility="{Binding IsVideosLoading}"/>
+                        </ListView.Footer>
+                    </ListView>
+                    <Border Grid.Row="1" Visibility="{Binding VideosPlaceholder, Converter={StaticResource vis}}">
+                        <StackPanel MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}">
+                            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding VideosPlaceholder.Icon}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding VideosPlaceholder.Header}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding VideosPlaceholder.Content}"/>
+                            <Button Margin="0,16,0,24" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Content="{Binding VideosPlaceholder.ActionButton}" Command="{Binding VideosPlaceholder.ActionButtonCommand, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" VerticalAlignment="Bottom" Height="24" Background="{ThemeResource GradientUnderModalButtonBrush}"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Uid="atchpickerw_docs">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Margin="6,0" Padding="0" Width="32" Height="32" FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="" Click="OpenFilePickerForDocs"/>
+                        <ComboBox Grid.Column="1" SelectedIndex="{Binding DocumentTypeIndex, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="6,0">
+                            <ComboBoxItem x:Uid="atchpicker_doctype_all"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_texts"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_archives"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_animations"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_pictures"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_audio"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_video"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_books"/>
+                            <ComboBoxItem x:Uid="atchpicker_doctype_other"/>
+                        </ComboBox>
+                    </Grid>
+                    <ListView x:Name="DocsList" Grid.Row="1" VerticalAlignment="Top" Margin="0,6,0,0" SelectionMode="Multiple" ItemTemplate="{StaticResource DocTemplate}" ItemsSource="{Binding Documents}" SelectionChanged="ItemChecked" Tag="3" Loaded="RegisterIncrementalLoadingEvent">
+                        <ListView.Footer>
+                            <muxc:ProgressRing Width="24" Height="24" Margin="12" HorizontalAlignment="Center" Visibility="{Binding IsDocsLoading}"/>
+                        </ListView.Footer>
+                    </ListView>
+                    <Border Grid.Row="1" Visibility="{Binding DocsPlaceholder, Converter={StaticResource vis}}">
+                        <StackPanel MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}">
+                            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding DocsPlaceholder.Icon}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding DocsPlaceholder.Header}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding DocsPlaceholder.Content}"/>
+                            <Button Margin="0,16,0,24" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Content="{Binding DocsPlaceholder.ActionButton}" Command="{Binding DocsPlaceholder.ActionButtonCommand, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" VerticalAlignment="Bottom" Height="24" Background="{ThemeResource GradientUnderModalButtonBrush}"/>
+                </Grid>
+            </PivotItem>
+            <PivotItem x:Uid="atchpickerw_audio">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListView x:Name="AudiosList" Grid.Row="1" VerticalAlignment="Top" Margin="0,6,0,0" SelectionMode="Multiple" ItemTemplate="{StaticResource AudioTemplate}" ItemsSource="{Binding Audios}" SelectionChanged="ItemChecked" Tag="4" Loaded="RegisterIncrementalLoadingEvent">
+                        <ListView.Header>
+                            <GridView VerticalAlignment="Top" ItemTemplate="{StaticResource AudioPlaylistTemplate}" ItemsSource="{Binding AudioPlaylists}" SelectedItem="{Binding SelectedAudioPlaylist, Mode=TwoWay}" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsHorizontalScrollChainingEnabled="True" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.IsHorizontalRailEnabled="True">
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Margin="12,0,0,0" Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
+                        </ListView.Header>
+                        <ListView.Footer>
+                            <muxc:ProgressRing Width="24" Height="24" Margin="12" HorizontalAlignment="Center" Visibility="{Binding IsAudiosLoading}"/>
+                        </ListView.Footer>
+                    </ListView>
+                    <Border Grid.Row="1" Visibility="{Binding AudiosPlaceholder, Converter={StaticResource vis}}">
+                        <StackPanel MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}">
+                            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph="{Binding AudiosPlaceholder.Icon}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding AudiosPlaceholder.Header}"/>
+                            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding AudiosPlaceholder.Content}"/>
+                            <Button Margin="0,16,0,24" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" Content="{Binding AudiosPlaceholder.ActionButton}" Command="{Binding AudiosPlaceholder.ActionButtonCommand, Mode=OneWay}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" VerticalAlignment="Bottom" Height="24" Background="{ThemeResource GradientUnderModalButtonBrush}"/>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+        <Button x:Name="AttachButton" Grid.Row="1" Style="{StaticResource AccentButtonStyle}" Margin="12,0,12,12" Height="32" HorizontalAlignment="Stretch" IsEnabled="False" Click="AttachAndClose">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" x:Uid="attach"/>
+                <muxc:InfoBadge x:Name="CounterBadge" Margin="8,0,0,0" Visibility="Collapsed" Background="{ThemeResource TextOnAccentFillColorPrimaryBrush}" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Value="{Binding SelectedAttachmentsCount}"/>
+            </StackPanel>
+        </Button>
+    </Grid>
+</elor:Modal>

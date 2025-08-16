@@ -1,0 +1,127 @@
+﻿<Page
+    x:Class="Elorucov.Laney.PreviewDebug.Pages.HiddenSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.PreviewDebug.Pages"
+    xmlns:ctrl="using:Elorucov.Laney.Controls"
+    xmlns:wuix="using:Elorucov.Laney.Controls.WinUI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer>
+        <StackPanel Margin="12" MaxWidth="576">
+            <wuix:SettingsGroup>
+                <wuix:SettingsCard Header="Display RAM usage" Description="Restart required">
+                    <ToggleSwitch x:Name="p01"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Don't mark messages as read (aka нечиталка)" Description="Restart required">
+                    <ToggleSwitch x:Name="p22"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Don't set activity (aka неписалка)">
+                    <ToggleSwitch x:Name="p23"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Debug infos on PhotoViewer">
+                    <ToggleSwitch x:Name="p02"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Debug infos on StoryViewer">
+                    <ToggleSwitch x:Name="p10"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Debug infos from LongPoll on titlebar">
+                    <ToggleSwitch x:Name="p03"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Online app id" Description="Laney will display the online application ID in PeerProfile">
+                    <ToggleSwitch x:Name="p04"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Advanced message &amp; conv info for its context menus" Description="For debug purposes">
+                    <ToggleSwitch x:Name="p05"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Spell check and text prediction for message form">
+                    <ToggleSwitch x:Name="p06"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Open some attachments in Laney's webview instead of external browser">
+                    <ToggleSwitch x:Name="p07"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Show &quot;quick debug&quot; in main menu" Description="Restart required">
+                    <ToggleSwitch x:Name="p08"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Keep deleted messages in UI" Description="When deleting, the message keep on the screen until the message list is updated">
+                    <ToggleSwitch x:Name="p09"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Feed debug" Description="Display post ID, post UI width, various variable values from FeedViewModel and PostComposerViewModel on UI. Also displaying preview instead posting.">
+                    <ToggleSwitch x:Name="p11"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Log push notifications" Description="Log file saved in app's local data folder">
+                    <ToggleSwitch x:Name="p12"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Activate VKM's future (under development) features">
+                    <ToggleSwitch x:Name="p13"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="StoryViewer: Show border around clickable stickers">
+                    <ToggleSwitch x:Name="p14"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="CTE: Force draw solid color instead gradient on outgoing messages">
+                    <ToggleSwitch x:Name="p21"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Message rendering phase" Description="On: In ListViewItem.DataContextChanged event in ConversationView. Off: In ChatListView.ContainerContentChanging. Restart required">
+                    <ToggleSwitch x:Name="p27"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Alternative message text box" Description="When enabled on Win 10 1809+, a message text box for old versions of Win 10 will be used. Restart required.">
+                    <ToggleSwitch x:Name="p28"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Show all privacy settings">
+                    <ToggleSwitch x:Name="p29"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Show audio player in modal for Desktop">
+                    <ToggleSwitch x:Name="p30"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Get keywords for non-purchased (promoted) stickers and cache words for sticker">
+                    <ToggleSwitch x:Name="p31"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="My People feature on Win 11">
+                    <ToggleSwitch x:Name="p32"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Thread-safety in BaseViewModel and ObservableCollection">
+                    <ToggleSwitch x:Name="p33"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Use Acrylic background instead Mica on Win 11">
+                    <ToggleSwitch x:Name="p34"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Show back button (desktop)" Description="For navigation debugging purposes. Restart required.">
+                    <ToggleSwitch x:Name="p35"/>
+                </wuix:SettingsCard>
+                <wuix:SettingsCard Header="Disable auto logoff after receiving error 5 from API">
+                    <ToggleSwitch x:Name="p36"/>
+                </wuix:SettingsCard>
+            </wuix:SettingsGroup>
+
+            <wuix:SettingsGroup>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16" Text="Conversations load count:"/>
+                    <TextBox x:Name="tb01" Grid.Column="1" Width="96" InputScope="Digits"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16" Text="Messages load count:"/>
+                    <TextBox x:Name="tb02" Grid.Column="1" Width="96" InputScope="Digits"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16" Text="FileUploader provider:"/>
+                    <TextBox x:Name="tb03" Grid.Column="1" Width="96" InputScope="Digits"/>
+                </Grid>
+            </wuix:SettingsGroup>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

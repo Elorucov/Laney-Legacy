@@ -1,0 +1,45 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Pages.Dialogs.QRAuthUI"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    MaxWidth="320" MaxHeight="392" FullSizeDesired="True" Style="{StaticResource ContentUnderTitleBarModalStyle}" Loaded="Initialize">
+
+    <Grid>
+        <StackPanel x:Name="LoadingPhase" Margin="32,0" VerticalAlignment="Center">
+            <muxc:ProgressRing HorizontalAlignment="Center" Width="48" Height="48"/>
+            <TextBlock Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap" x:Uid="loadingx"/>
+        </StackPanel>
+        <StackPanel x:Name="FirstPhase" Margin="32,0" Visibility="Collapsed">
+            <TextBlock Margin="48,12,48,12" FontWeight="SemiBold" TextAlignment="Center" TextWrapping="Wrap" x:Uid="qr_auth_title"/>
+            <Image x:Name="QR" Width="256" Height="256"/>
+            <Grid Margin="0,11,0,10" Width="256">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="0" VerticalAlignment="Center" Height="1" Fill="{ThemeResource ControlStrongStrokeColorDefaultBrush}"/>
+                <Rectangle Grid.Column="2" VerticalAlignment="Center" Height="1" Fill="{ThemeResource ControlStrongStrokeColorDefaultBrush}"/>
+                <TextBlock Grid.Column="1" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="6,0,6,3" x:Uid="qr_auth_link"/>
+            </Grid>
+            <HyperlinkButton x:Name="AuthLinkButton" Margin="0,0,0,19" Foreground="{ThemeResource TextFillColorPrimaryBrush}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" FontSize="13" Padding="0" FontFamily="Lucida Console"/>
+        </StackPanel>
+        <StackPanel x:Name="SecondPhase" Margin="32,0" Visibility="Collapsed" VerticalAlignment="Center">
+            <ctrls:FixedFontIcon Glyph="" FontSize="64" Margin="24" Foreground="{ThemeResource AccentFillColorTertiaryBrush}"/>
+            <TextBlock Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="qr_auth_confirm"/>
+            <TextBlock Margin="0,6,0,0" TextAlignment="Center" TextWrapping="Wrap" x:Uid="qr_auth_confirm_desc"/>
+        </StackPanel>
+        <StackPanel x:Name="ErrorPhase" Margin="32,0" Visibility="Collapsed" VerticalAlignment="Center">
+            <ctrls:FixedFontIcon Glyph="" FontSize="64" Margin="24" Foreground="{ThemeResource SystemFillColorCriticalBrush}"/>
+            <TextBlock Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="load_error_xaml"/>
+            <TextBlock x:Name="ErrorText" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap" x:Uid="qr_auth_error"/>
+        </StackPanel>
+    </Grid>
+</elor:Modal>

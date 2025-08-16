@@ -1,0 +1,42 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.MessageAttachments.AudioUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls.MessageAttachments"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Height="40" Background="Transparent" PointerEntered="OnPointerEntered" PointerExited="OnPointerExited">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Width="40" Height="40" CornerRadius="4">
+            <Border CornerRadius="4" Background="{ThemeResource VKButtonSecondaryBackgroundBrush}">
+                <vkui:VKIcon Id="Icon24Song" Width="24" Height="24" Foreground="{ThemeResource VKIconSecondaryAlphaBrush}"/>
+            </Border>
+            <Rectangle x:Name="Cover" Width="40" Height="40" RadiusX="4" RadiusY="4"/>
+            <HyperlinkButton x:Name="PlayPauseButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0" Click="PlayPauseClicked" Opacity="0" BorderThickness="0">
+                <Border Height="28" Width="28" CornerRadius="20" Background="{ThemeResource AlternativeMessageControlForegroundAccentBrush}">
+                    <vkui:VKIcon x:Name="Icon" Height="16" Width="16" Foreground="{ThemeResource VKImBubbleOutgoingBrush}" Id="Icon16Play"/>
+                </Border>
+            </HyperlinkButton>
+        </Grid>
+
+        <StackPanel x:Name="AudioInfo" Grid.Column="1" Margin="10,0,0,2" VerticalAlignment="Center">
+            <TextBlock FontSize="15" MaxLines="1" >
+                <Run x:Name="SongName" FontWeight="SemiBold"/>
+                <Run x:Name="SongSubtitle" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+            </TextBlock>
+            <TextBlock x:Name="SongArtist" Margin="0,0,0,0" FontSize="14" Foreground="{ThemeResource VKTextSecondaryBrush}" MaxLines="1"/>
+        </StackPanel>
+
+        <TextBlock x:Name="duration" Grid.Column="2" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}" FontSize="14" Text="-:--"/>
+    </Grid>
+</UserControl>

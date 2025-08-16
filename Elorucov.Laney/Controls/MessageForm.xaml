@@ -1,0 +1,115 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.MessageForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:msgatch="using:Elorucov.Laney.Controls.MessageAttachments"
+    xmlns:vmc="using:Elorucov.Laney.ViewModel.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    mc:Ignorable="d"
+    d:DesignHeight="120"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <converters:NullToVisibility x:Key="vis"/>
+        <converters2:ValueToBool x:Key="vtb"/>
+        <converters:NullToVisibility2 x:Key="ntv2"/>
+
+        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent"/>
+        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+
+        <MenuFlyout x:Name="SendMethodsFlyoutForEmpty" Placement="Top">
+            <MenuFlyoutItem Text="¯\_(ツ)_/¯" Click="InsertThatKaomoji"/>
+        </MenuFlyout>
+
+        <MenuFlyout x:Name="SendMethodsFlyout" Placement="Top">
+            <MenuFlyoutSubItem x:Uid="send_disappear_mfi">
+                <MenuFlyoutSubItem.Icon>
+                    <PathIcon Data="{StaticResource FluentBomb}"/>
+                </MenuFlyoutSubItem.Icon>
+                <MenuFlyoutItem Click="SendSelfDestructMessage" Tag="15" x:Uid="send_disappear_15s"/>
+                <MenuFlyoutItem Click="SendSelfDestructMessage" Tag="60" x:Uid="send_disappear_1m"/>
+                <MenuFlyoutItem Click="SendSelfDestructMessage" Tag="300" x:Uid="send_disappear_5m"/>
+                <MenuFlyoutItem Click="SendSelfDestructMessage" Tag="3600" x:Uid="send_disappear_1h"/>
+                <MenuFlyoutItem Click="SendSelfDestructMessage" Tag="86400" x:Uid="send_disappear_1d"/>
+            </MenuFlyoutSubItem>
+            <MenuFlyoutItem x:Uid="send_silent_mfi" Click="SendSilentMessage">
+                <MenuFlyoutItem.Icon>
+                    <local:FixedFontIcon Glyph=""/>
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="¯\_(ツ)_/¯" Click="InsertThatKaomoji"/>
+        </MenuFlyout>
+
+        <DataTemplate x:Name="MessageRichTextBoxLegacy">
+            <local:MessageRichEditBox x:Name="MyMessage" Grid.Column="1" Grid.Row="3" Loading="MyMessage_Loading" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Format="{Binding FormatData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" MinHeight="48" MaxHeight="150" MaxLength="3500" VerticalAlignment="Bottom" Margin="0" Padding="0,12" FontSize="16" TextWrapping="Wrap" x:Uid="msgformtext" AcceptsReturn="True" TextChanging="CheckMentions"/>
+        </DataTemplate>
+        <DataTemplate x:Name="MessageRichTextBoxModern">
+            <local:MessageRichEditBox1809 x:Name="MyMessage" Grid.Column="1" Grid.Row="3" Loading="MyMessage_Loading" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Format="{Binding FormatData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" MinHeight="48" MaxHeight="150" MaxLength="3500" VerticalAlignment="Bottom" Margin="0" Padding="0,12" FontSize="16" TextWrapping="Wrap" x:Uid="msgformtext" AcceptsReturn="True" TextChanging="CheckMentions"/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="3" VerticalAlignment="Center" Visibility="{Binding EditingMessageInfoVisibility}" Margin="8" FontSize="12" x:Uid="msgedit"/>
+        <HyperlinkButton Width="32" Height="32" Grid.Column="2" Visibility="{Binding EditingMessageInfoVisibility}" Command="{Binding CancelEditingMessageCommand}" HorizontalAlignment="Right" Padding="0" FontSize="12" FontFamily="{StaticResource SymbolThemeFontFamily}" Content=""/>
+
+        <Grid Margin="8,8,8,0" Grid.Row="1" Grid.ColumnSpan="3" Height="36" Visibility="{Binding ReplyMessage, Converter={StaticResource vis}}" BorderBrush="{ThemeResource AlternativeAccentBrush}" BorderThickness="2,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <msgatch:CompactMessageControl Grid.Column="1" Margin="10,0,0,0" Message="{Binding ReplyMessage}"/>
+
+            <HyperlinkButton Grid.Column="2" Padding="0" Height="36" Width="36" FontSize="16" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="" Foreground="#7f7f7f" Command="{Binding RemoveReplyMessageCommand}"/>
+        </Grid>
+
+        <GridView x:Name="OutboundAttachments" Grid.Row="2" Grid.ColumnSpan="3" Margin="4,4,4,0" SelectionMode="None" ItemsSource="{Binding Attachments, Mode=OneWay}" MaxHeight="130" Visibility="{Binding HasAttachments, TargetNullValue=Collapsed, FallbackValue=Collapsed}">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="vmc:OutboundAttachmentViewModel">
+                    <local:OutboundAttachmentUI Width="104" Height="78" DataContext="{x:Bind}" OnRemoveButtonClick="RemoveOutboundAttachment"/>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+            </GridView.ItemContainerStyle>
+        </GridView>
+
+        <HyperlinkButton x:Name="atchBtn" x:Uid="attachButton" Grid.Column="0" Grid.Row="3" VerticalAlignment="Bottom" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE723;" FontSize="20" Command="{Binding ShowAttachmentPickerCommand}" CommandParameter="{Binding ElementName=atchBtn}" Foreground="{ThemeResource WriteBarIconBrush}"/>
+        <ContentPresenter x:Name="MessageFormContainer" Grid.Column="1" Grid.Row="3" VerticalAlignment="Bottom"/>
+        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <ToggleButton x:Name="bkbdBtn" Style="{StaticResource TransparentToggleButtonStyle}" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="" FontSize="20" BorderThickness="0" Visibility="{Binding Keyboard, Converter={StaticResource vis}}" Foreground="{ThemeResource WriteBarIconBrush}"/>
+            <HyperlinkButton x:Name="stckBtn" x:Uid="stickersButton" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="" FontSize="20" Command="{Binding ShowStickersAndGraffitiFlyoutCommand}" CommandParameter="{Binding ElementName=stckBtn}" Foreground="{ThemeResource WriteBarIconBrush}"/>
+            <HyperlinkButton x:Name="micBtn" x:Uid="recordVoiceButton" Visibility="Visible" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE720;" FontSize="20" Click="ShowAudioRecorder" Foreground="{ThemeResource WriteBarIconBrush}"/>
+            <Grid>
+                <HyperlinkButton x:Name="FakeButtonForFlyout" x:Uid="sendButton" Width="48" Height="48" Padding="0" BorderThickness="0" RightTapped="ShowSendSettings"/>
+                <HyperlinkButton x:Name="sendBtn" x:Uid="sendButton" IsEnabled="{Binding IsMessageNotEmpty}" IsHitTestVisible="{Binding IsMessageNotEmpty}" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE724;" FontSize="20" Command="{Binding MessageSendCommand}" RightTapped="ShowSendSettings" Foreground="{ThemeResource WriteBarIconBrush}"/>
+            </Grid>
+        </StackPanel>
+        <local:BotKeyboardControl x:Name="botKeyboard" Grid.Row="5" Grid.ColumnSpan="3" MaxHeight="192" Padding="6,0,6,6" Visibility="{Binding IsChecked, ElementName=bkbdBtn}" Keyboard="{Binding Keyboard}" ButtonClicked="BotButtonClicked"/>
+
+        <muxc:ProgressBar Grid.ColumnSpan="5" Grid.Row="3" VerticalAlignment="Top" Background="Transparent" IsIndeterminate="{Binding IsProgressIndeterminate}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}"/>
+        <local:AudioRecorderControl x:Name="audioRec" Grid.RowSpan="4" Grid.ColumnSpan="5" DoneButtonClicked="AttachAudioMessage" SendRecordingActivityRequested="AudioRec_SendRecordingActivityRequested"/>
+    </Grid>
+</UserControl>

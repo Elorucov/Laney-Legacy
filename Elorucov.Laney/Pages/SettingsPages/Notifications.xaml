@@ -1,0 +1,87 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.SettingsPages.Notifications"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.SettingsPages"
+    xmlns:wuix="using:Elorucov.Laney.Controls.WinUI"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Margin="24,0" MaxWidth="1048" Loaded="LoadSettings">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <HyperlinkButton x:Name="BackButton" x:Uid="backButton" Width="36" Height="36" Margin="0,0,12,0" Padding="0" Click="BackButton_Click">
+                <ctrls:FixedFontIcon FontSize="20" Glyph=""/>
+            </HyperlinkButton>
+            <TextBlock Grid.Column="1" Margin="0,2,0,0" Style="{StaticResource TitleTextBlockStyle}" x:Uid="settings_notifications"/>
+        </Grid>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="0,0,0,16">
+                <wuix:SettingsGroup>
+                    <wuix:SettingsCard x:Uid="push_notification_type">
+                        <wuix:SettingsCard.HeaderIcon>
+                            <ctrls:FixedFontIcon Glyph=""/>
+                        </wuix:SettingsCard.HeaderIcon>
+                        <ToggleSwitch x:Name="notifs" Style="{StaticResource SettingEntityToggleSwitchStyle}"/>
+                    </wuix:SettingsCard>
+                    <wuix:SettingsCard x:Name="Reply" x:Uid="push_notification_reply">
+                        <ToggleSwitch x:Name="replyMsg" Style="{StaticResource SettingEntityToggleSwitchStyle}"/>
+                    </wuix:SettingsCard>
+                </wuix:SettingsGroup>
+                <wuix:SettingsGroup x:Uid="push_settings" x:Name="NotifSettings" Visibility="Collapsed">
+                    <wuix:SettingsExpander x:Uid="push_msg" IsExpanded="True">
+                        <wuix:SettingsExpander.HeaderIcon>
+                            <ctrls:FixedFontIcon Glyph=""/>
+                        </wuix:SettingsExpander.HeaderIcon>
+                        <ToggleSwitch x:Name="nsMsg" Grid.Column="2" Toggled="ChangeMsgPushSettings"/>
+                        <wuix:SettingsExpander.Items>
+                            <wuix:SettingsCard Padding="16,0,39,0" Background="Transparent" BorderThickness="0" x:Uid="push_sound">
+                                <wuix:SettingsCard.HeaderIcon>
+                                    <ctrls:FixedFontIcon Glyph=""/>
+                                </wuix:SettingsCard.HeaderIcon>
+                                <ToggleSwitch x:Name="nsMsgSound" Toggled="ChangeMsgPushSettings"/>
+                            </wuix:SettingsCard>
+                            <wuix:SettingsCard Padding="16,0,39,0" Background="Transparent" BorderThickness="0" x:Uid="push_show_content">
+                                <wuix:SettingsCard.HeaderIcon>
+                                    <ctrls:FixedFontIcon Glyph=""/>
+                                </wuix:SettingsCard.HeaderIcon>
+                                <ToggleSwitch x:Name="nsMsgContent" Toggled="ChangeMsgPushSettings"/>
+                            </wuix:SettingsCard>
+                        </wuix:SettingsExpander.Items>
+                    </wuix:SettingsExpander>
+
+                    <wuix:SettingsExpander x:Uid="push_chat" IsExpanded="True">
+                        <wuix:SettingsExpander.HeaderIcon>
+                            <ctrls:FixedFontIcon Glyph=""/>
+                        </wuix:SettingsExpander.HeaderIcon>
+                        <ToggleSwitch x:Name="nsChat" Grid.Column="2"  Toggled="ChangeChatPushSettings"/>
+                        <wuix:SettingsExpander.Items>
+                            <wuix:SettingsCard Padding="16,0,39,0" Background="Transparent" BorderThickness="0" x:Uid="push_sound">
+                                <wuix:SettingsCard.HeaderIcon>
+                                    <ctrls:FixedFontIcon Glyph=""/>
+                                </wuix:SettingsCard.HeaderIcon>
+                                <ToggleSwitch x:Name="nsChatSound" Toggled="ChangeChatPushSettings"/>
+                            </wuix:SettingsCard>
+                            <wuix:SettingsCard Padding="16,0,39,0" Background="Transparent" BorderThickness="0" x:Uid="push_show_content">
+                                <wuix:SettingsCard.HeaderIcon>
+                                    <ctrls:FixedFontIcon Glyph=""/>
+                                </wuix:SettingsCard.HeaderIcon>
+                                <ToggleSwitch x:Name="nsChatContent" Toggled="ChangeChatPushSettings"/>
+                            </wuix:SettingsCard>
+                        </wuix:SettingsExpander.Items>
+                    </wuix:SettingsExpander>
+                </wuix:SettingsGroup>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -1,0 +1,177 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.EntryPoint.ShareTargetNew"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.EntryPoint"
+    xmlns:conv="using:Elorucov.Laney.Services.Converters"
+    xmlns:converters="using:Elorucov.Laney.Services.Converters.ConversationsList"
+    xmlns:converters2="using:Elorucov.Laney.Services.Converters.MessageItem"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    xmlns:vmc="using:Elorucov.Laney.ViewModel.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:ValueToBool x:Key="vtb"/>
+        <converters2:NullToVisibility x:Key="ntv"/>
+        <converters2:NullToVisibility2 x:Key="ntv2"/>
+        <converters:UnreadMessagesCounterColor x:Key="umcc"/>
+        <converters:UnreadMessagesCounterVisibility x:Key="umcv"/>
+        <converters:VerifiedUser x:Key="vuc"/>
+        <converters:OnlineVia x:Key="ov"/>
+        <converters:PinnedConvIcon x:Key="pci" />
+        <converters:PinnedConvSeparator x:Key="pcs" />
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource MicaLikeAcrylicWindowBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="TitleBar" Background="Transparent" x:DeferLoadStrategy="Lazy"/>
+
+        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom" Fill="{ThemeResource NavigationViewContentGridBorderBrush}"/>
+        <TextBlock Visibility="{Binding IsSelectedPeersIsEmpty}" Grid.Row="1" Style="{StaticResource BodyTextBlockStyle}" TextAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}" x:Uid="sharetarget_selected"/>
+        
+        <ListView x:Name="SelectedPeersListView" Grid.Row="1" SelectionMode="None" ItemsSource="{Binding SelectedPeers}" Height="94" Margin="0,12,0,0" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Disabled">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="MinWidth" Value="0"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:Entity">
+                    <Grid>
+                        <StackPanel Width="64" Margin="4,0" VerticalAlignment="Top">
+                            <elor:Avatar Width="48" Height="48" HorizontalAlignment="Center" IsHitTestVisible="False" ImageSource="{x:Bind Image, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{x:Bind Title, Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind Title}" TextWrapping="Wrap" MaxLines="2" HorizontalAlignment="Center" TextAlignment="Center" FontSize="12" Margin="0,6,0,0" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource CircleButtonStyle}" BorderBrush="{ThemeResource CircleElevationBorderBrush}" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" FontFamily="{StaticResource SymbolThemeFontFamily}" BorderThickness="1" Padding="0" Width="24" Height="24" FontSize="13" Content="" Command="{x:Bind ExtraButtonCommand}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Rectangle Grid.Row="2" Grid.RowSpan="3" Fill="{ThemeResource NavigationViewContentBackground}"/>
+        
+        <TextBox x:Name="SearchBox" Grid.Row="2" Margin="12" InputScope="Search" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <ListView Grid.Row="3" VerticalAlignment="Top" ItemsSource="{Binding Conversations}" ItemContainerStyle="{ThemeResource WinUIListViewItemStyle}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AddConvToSelectedPeers">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="mdl:LConversation">
+                    <Grid Margin="12,6" Height="56">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <elor:Avatar IsHitTestVisible="False" Width="48" Height="48" VerticalAlignment="Center" Grid.RowSpan="2" ImageSource="{x:Bind Photo, Converter={StaticResource bic}, ConverterParameter=ava, Mode=OneWay}" DisplayName="{x:Bind Title, Mode=OneWay}"/>
+
+                        <Grid Grid.Column="1" Margin="12,-2,0,0" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{x:Bind Title, Mode=OneWay}" FontWeight="SemiBold" Margin="0,2,0,0" Foreground="{ThemeResource TextFillColorPrimaryBrush}"/>
+                            <StackPanel Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <ContentPresenter Margin="4,2,0,0" Visibility="{x:Bind IsVerified, Mode=OneWay, Converter={StaticResource vuc}}" Foreground="{ThemeResource VKAccentBrush}" ContentTemplate="{StaticResource Icon16Verified}" Width="16" Height="16"/>
+                                <Image Margin="6,5,2,2" Visibility="{x:Bind IsDonut, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/donut.svg" Width="12" Height="12"/>
+                                <Image Margin="4,3,0,0" Visibility="{x:Bind IsDisappearing, Mode=OneWay, Converter={StaticResource ntv}}" Source="ms-appx:///Assets/vk/casper.svg" Width="16" Height="16"/>
+                            </StackPanel>
+                            <!--<TextBlock Grid.Column="2" FontFamily="ms-appx:///Assets/icons.ttf#Laney Internal Icons" FontSize="16" Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,0,0" LineHeight="16" Text="{x:Bind Online, Mode=OneWay, Converter={StaticResource ov}}">
+                                <TextBlock.RenderTransform>
+                                    <CompositeTransform TranslateY="1"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>-->
+                        </Grid>
+
+                        <Border Grid.Column="2" Margin="12,0,0,0" Visibility="{x:Bind UnreadMessagesCount, Mode=OneWay, Converter={StaticResource umcv}}" VerticalAlignment="Center" Background="{x:Bind IsMuted, Mode=OneWay, Converter={StaticResource umcc}}" CornerRadius="10" Height="20" MinWidth="20" HorizontalAlignment="Right">
+                            <TextBlock Text="{x:Bind UnreadMessagesCount, Mode=OneWay}" Foreground="White" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" TextAlignment="Center" Padding="6,0">
+                                <TextBlock.RenderTransform>
+                                    <TranslateTransform Y="-1"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+            <ListView.Footer>
+                <Border Height="24" Margin="12">
+                    <muxc:ProgressRing HorizontalAlignment="Center" Width="24" Height="24" IsIndeterminate="{Binding IsLoading}"/>
+                </Border>
+            </ListView.Footer>
+        </ListView>
+        <StackPanel x:Name="ErrorPlaceholder" Grid.Row="3" MaxWidth="480" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0" Padding="24,0" CornerRadius="{StaticResource OverlayCornerRadius}" Visibility="{Binding ErrorInfo, Converter={StaticResource ntv}, TargetNullValue=Collapsed, FallbackValue=Collapsed}">
+            <ctrls:FixedFontIcon Margin="0,24,0,0" FontSize="48" Glyph=""/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource SubtitleTextBlockStyle}" x:Uid="load_error_xaml"/>
+            <TextBlock Margin="0,10,0,0" TextAlignment="Center" TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding ErrorInfo}"/>
+            <Button Margin="0,16,0,24" Tag="retry" HorizontalAlignment="Center" Style="{StaticResource AccentButtonStyle}" x:Uid="retrybtn" Command="{Binding TryAgainCommand}"/>
+        </StackPanel>
+
+        <Grid x:Name="BottomControlsWrapper" Grid.Row="4" VerticalAlignment="Bottom">
+            <Grid.Resources>
+                <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent"/>
+                <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent"/>
+                <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent"/>
+                <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent"/>
+            </Grid.Resources>
+            <Rectangle x:Name="BottomControlsShadow" Margin="12,0,12,12" RadiusX="12" RadiusY="12" Fill="{ThemeResource MicaContentBackgroundOpaqueBrush}"/>
+            <Grid x:Name="BottomControls" MinHeight="48" Margin="11,-1,11,11" CornerRadius="12" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <GridView x:Name="OutboundAttachments" Grid.ColumnSpan="2" VerticalAlignment="Bottom" MaxHeight="130" Margin="4,4,4,-6" Visibility="{Binding HasAttachments, TargetNullValue=Collapsed, FallbackValue=Collapsed}" ItemsSource="{Binding Attachments}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="vmc:OutboundAttachmentViewModel">
+                            <ctrls:OutboundAttachmentUI Width="104" Height="78" DataContext="{x:Bind}" OnRemoveButtonClick="RemoveOutboundAttachment"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="Margin" Value="4"/>
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                </GridView>
+                <TextBox x:Name="MessageText" Grid.Row="1" IsEnabled="{Binding IsSending, Converter={StaticResource ntv2}}" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" MinHeight="48" MaxHeight="150" VerticalAlignment="Bottom" Margin="0" Padding="12,12,0,12" FontSize="16" TextWrapping="Wrap" x:Uid="msgformtext" AcceptsReturn="True"/>
+                <HyperlinkButton x:Name="sendBtn" Grid.Column="1" Grid.Row="1" Width="48" Height="48" Padding="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE724;" FontSize="20" Command="{Binding SendCommand}" Visibility="{Binding IsSending, Converter={StaticResource ntv2}}" IsEnabled="{Binding IsNotEmpty}"/>
+                <Border Grid.Column="1" Grid.Row="1" Width="48" Height="48" Background="{ThemeResource MicaContentBackgroundOpaqueBrush}" Visibility="{Binding IsSending, FallbackValue=Collapsed}">
+                    <muxc:ProgressRing Width="20" Height="20"/>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" Width="48" Height="48" CornerRadius="8" Background="{ThemeResource SystemFillColorSuccessBrush}" Visibility="{Binding IsSuccess, FallbackValue=Collapsed}">
+                    <ctrls:FixedFontIcon Glyph="" FontSize="20" Foreground="White"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

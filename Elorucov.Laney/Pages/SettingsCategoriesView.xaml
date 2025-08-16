@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Pages.SettingsCategoriesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:mdl="using:Elorucov.Laney.Models"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="SettingPageEntryTemplate" x:DataType="mdl:SettingPageEntry">
+            <Grid Margin="16,0">
+                <Grid.RenderTransform>
+                    <TranslateTransform Y="-1"/>
+                </Grid.RenderTransform>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ctrls:FixedFontIcon FontSize="16" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Glyph="{x:Bind Icon}"/>
+                <TextBlock Grid.Column="1" Margin="16,0,0,0" Foreground="{ThemeResource TextFillColorPrimaryBrush}" Text="{x:Bind Title}"/>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Height="48" Orientation="Horizontal">
+                <HyperlinkButton x:Uid="backButton" Grid.Column="0" Height="48" Width="48" FontSize="16" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="" Click="GoBack"/>
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" FontSize="15" LineHeight="22" x:Uid="settings"/>
+            </StackPanel>
+        </Grid>
+        <ListView x:Name="PrimaryPages" Grid.Row="1" ItemContainerStyle="{StaticResource WinUIListViewItemStyle}" ItemTemplate="{StaticResource SettingPageEntryTemplate}" ItemContainerTransitions="{x:Null}" IsItemClickEnabled="True" ItemClick="PrimaryPages_ItemClick"/>
+    </Grid>
+</Page>

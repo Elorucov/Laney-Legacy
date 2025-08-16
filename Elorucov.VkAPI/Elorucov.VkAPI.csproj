@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E43D5045-ABCE-406A-8BF9-386C96297FB4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Elorucov.VkAPI</RootNamespace>
+    <AssemblyName>Elorucov.VkAPI</AssemblyName>
+    <DefaultLanguage>ru-RU</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget>ARM</PlatformTarget>
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <GenerateLibraryLayout>false</GenerateLibraryLayout>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="API.cs" />
+    <Compile Include="Dialogs\CaptchaDialog.xaml.cs">
+      <DependentUpon>CaptchaDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DirectAuth.cs" />
+    <Compile Include="Helpers\VKResponseHelper.cs" />
+    <Compile Include="Methods\Account.cs" />
+    <Compile Include="Methods\Apps.cs" />
+    <Compile Include="Methods\Audios.cs" />
+    <Compile Include="Methods\Auth.cs" />
+    <Compile Include="Methods\Docs.cs" />
+    <Compile Include="Methods\Friends.cs" />
+    <Compile Include="Methods\Groups.cs" />
+    <Compile Include="Methods\Likes.cs" />
+    <Compile Include="Methods\LongPollServer.cs" />
+    <Compile Include="Methods\Messages.cs" />
+    <Compile Include="Methods\Newsfeed.cs" />
+    <Compile Include="Methods\Photos.cs" />
+    <Compile Include="Methods\Places.cs" />
+    <Compile Include="Methods\Polls.cs" />
+    <Compile Include="Methods\Queue.cs" />
+    <Compile Include="Methods\Store.cs" />
+    <Compile Include="Methods\Users.cs" />
+    <Compile Include="Methods\Utils.cs" />
+    <Compile Include="Methods\Videos.cs" />
+    <Compile Include="Methods\Wall.cs" />
+    <Compile Include="Objects\Album.cs" />
+    <Compile Include="Objects\App.cs" />
+    <Compile Include="Objects\Article.cs" />
+    <Compile Include="Objects\Artist.cs" />
+    <Compile Include="Objects\Audio.cs" />
+    <Compile Include="Objects\AudioMessage.cs" />
+    <Compile Include="Objects\AudioPlaylist.cs" />
+    <Compile Include="Objects\AudioRestrictionInfo.cs" />
+    <Compile Include="Objects\Auth\AnonymToken.cs" />
+    <Compile Include="Objects\Auth\DirectAuthResponse.cs" />
+    <Compile Include="Objects\Auth\ValidationsResponse.cs" />
+    <Compile Include="Objects\BotKeyboard.cs" />
+    <Compile Include="Objects\BotTemplate.cs" />
+    <Compile Include="Objects\Call.cs" />
+    <Compile Include="Objects\CarouselElement.cs" />
+    <Compile Include="Objects\ChatPreview.cs" />
+    <Compile Include="Objects\CheckLinkResult.cs" />
+    <Compile Include="Objects\Contact.cs" />
+    <Compile Include="Objects\ConversationAttachmentsResponse.cs" />
+    <Compile Include="Objects\Conversations.cs" />
+    <Compile Include="Objects\Counters.cs" />
+    <Compile Include="Objects\CreateChatResponse.cs" />
+    <Compile Include="Objects\Curator.cs" />
+    <Compile Include="Objects\Document.cs" />
+    <Compile Include="Objects\Error.cs" />
+    <Compile Include="Objects\Folder.cs" />
+    <Compile Include="Objects\GetReactedPeersResponse.cs" />
+    <Compile Include="Objects\Gift.cs" />
+    <Compile Include="Objects\Graffiti.cs" />
+    <Compile Include="Objects\Group.cs" />
+    <Compile Include="Objects\IPreview.cs" />
+    <Compile Include="Objects\Link.cs" />
+    <Compile Include="Objects\LongPollHistoryResponse.cs" />
+    <Compile Include="Objects\LongPollServer.cs" />
+    <Compile Include="Objects\Market.cs" />
+    <Compile Include="Objects\Message.cs" />
+    <Compile Include="Objects\Attachment.cs" />
+    <Compile Include="Objects\MoneyRequest.cs" />
+    <Compile Include="Objects\Narrative.cs" />
+    <Compile Include="Objects\Note.cs" />
+    <Compile Include="Objects\Page.cs" />
+    <Compile Include="Objects\Photo.cs" />
+    <Compile Include="Objects\PhotoAlbum.cs" />
+    <Compile Include="Objects\PhotoSaveResult.cs" />
+    <Compile Include="Objects\Place.cs" />
+    <Compile Include="Objects\Podcast.cs" />
+    <Compile Include="Objects\Poll.cs" />
+    <Compile Include="Objects\Privacy.cs" />
+    <Compile Include="Objects\NotificationSettings.cs" />
+    <Compile Include="Objects\QueueSubscribeResponse.cs" />
+    <Compile Include="Objects\ReactionAsset.cs" />
+    <Compile Include="Objects\SituationalTheme.cs" />
+    <Compile Include="Objects\Sticker.cs" />
+    <Compile Include="Objects\StoreItem.cs" />
+    <Compile Include="Objects\Story.cs" />
+    <Compile Include="Objects\Textlive.cs" />
+    <Compile Include="Objects\TextpostPublish.cs" />
+    <Compile Include="Objects\Upload\DocumentUploadResult.cs" />
+    <Compile Include="Objects\Upload\UploadError.cs" />
+    <Compile Include="Objects\Upload\VideoUploadResult.cs" />
+    <Compile Include="Objects\Upload\VideoUploadServer.cs" />
+    <Compile Include="Objects\Upload\VkUploadServer.cs" />
+    <Compile Include="Objects\Upload\PhotoUploadResult.cs" />
+    <Compile Include="Objects\Upload\PhotoUploadServer.cs" />
+    <Compile Include="Objects\User.cs" />
+    <Compile Include="Objects\Video.cs" />
+    <Compile Include="Objects\VideoMessage.cs" />
+    <Compile Include="Objects\VideoMessageShapes.cs" />
+    <Compile Include="Objects\VKList.cs" />
+    <Compile Include="Objects\VKResponse.cs" />
+    <Compile Include="Objects\WallPost.cs" />
+    <Compile Include="Objects\Widget.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Elorucov.VkAPI.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Dialogs\CaptchaDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

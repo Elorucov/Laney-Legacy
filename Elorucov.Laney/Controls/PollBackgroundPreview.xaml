@@ -1,0 +1,24 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.PollBackgroundPreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="112"
+    d:DesignWidth="84"
+    x:Name="Root">
+
+    <Grid Height="112" Width="84">
+        <Border CornerRadius="4" Background="{Binding PollBackgroundColor, TargetNullValue=#3f7f7f7f}"/>
+        <Grid CornerRadius="4" Background="{Binding PollBackground}">
+            <Rectangle HorizontalAlignment="Left" Margin="16,20,0,0" Width="52" Height="4" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Left" Margin="24,28,0,0" Width="36" Height="4" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Left" Margin="8,48,0,0" Width="68" Height="12" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Left" Margin="8,64,0,0" Width="68" Height="12" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Left" Margin="8,80,0,0" Width="68" Height="12" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+            <Rectangle HorizontalAlignment="Left" Margin="24,100,0,0" Width="36" Height="4" RadiusX="2" RadiusY="2" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Opacity="0.2" VerticalAlignment="Top"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,113 @@
+﻿{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.6",
+  "body": [
+    {
+      "type": "Container",
+      "isVisible": "${if(length($root.errorText) > 0, true, false)}",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "${$root.errorText}",
+          "spacing": "None",
+          "style": "default",
+          "size": "Default",
+          "weight": "Bolder",
+          "color": "Default",
+          "wrap": true,
+          "maxLines": 3
+        }
+      ],
+      "horizontalAlignment": "Center",
+      "height": "stretch",
+      "verticalContentAlignment": "Center"
+    },
+    {
+      "type": "Container",
+      "isVisible": "${if(length($root.errorText) == 0, true, false)}",
+      "$data": "${$root.friends}",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "url": "${avatar}",
+                  "width": "46px",
+                  "height": "46px",
+                  "style": "Person",
+                  "$when": "${$host.widgetSize == \"large\"}"
+                },
+                {
+                  "type": "Image",
+                  "url": "${avatar}",
+                  "width": "40px",
+                  "height": "40px",
+                  "style": "Person",
+                  "$when": "${$host.widgetSize == \"medium\"}"
+                },
+                {
+                  "type": "Image",
+                  "url": "${avatar}",
+                  "width": "34px",
+                  "height": "34px",
+                  "style": "Person",
+                  "$when": "${$host.widgetSize == \"small\"}"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${name}",
+                  "style": "heading",
+                  "size": "Default"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "${info}",
+                  "size": "Default",
+                  "color": "${if(unread > 0, 'accent', 'default')}",
+                  "spacing": "None",
+                  "weight": "Default",
+                  "isSubtle": true,
+                  "$when": "${$host.widgetSize != \"small\"}"
+                }
+              ],
+              "verticalContentAlignment": "Center"
+            },
+            {
+              "type": "Column",
+              "width": "auto",
+              "$when": "${unread > 0}",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": " ${unread}",
+                  "horizontalAlignment": "Right",
+                  "style": "heading",
+                  "size": "Default",
+                  "color": "Accent"
+                }
+              ],
+              "horizontalAlignment": "Right",
+              "verticalContentAlignment": "Center"
+            }
+          ],
+          "selectAction": {
+            "type": "Action.OpenUrl",
+            "url": "${link}"
+          }
+        }
+      ]
+    }
+  ]
+}

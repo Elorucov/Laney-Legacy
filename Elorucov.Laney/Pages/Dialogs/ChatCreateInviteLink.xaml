@@ -1,0 +1,36 @@
+﻿<ContentDialog
+    x:Class="Elorucov.Laney.Pages.Dialogs.ChatCreateInviteLink"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Pages.Dialogs"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" x:Uid="chatinvdlg" Style="{StaticResource DefaultContentDialogStyle}"
+    DefaultButton="Secondary"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <muxc:ProgressBar x:Name="Progress" IsIndeterminate="True" VerticalAlignment="Top"/>
+        <StackPanel x:Name="Content">
+            <TextBox x:Name="Link" IsReadOnly="True" IsSpellCheckEnabled="False"/>
+            <TextBlock Margin="0,8,0,0" FontSize="12" x:Uid="chatinvdlg_hint" TextWrapping="Wrap"/>
+            <Grid Margin="0,12,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <CheckBox x:Name="cb" Click="GetLinkWithHistory">
+                <CheckBox.Content>
+                    <StackPanel Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock x:Uid="chatinvdlg_vmc_1"/>
+                        <TextBox x:Name="VisibleMessagesCount" IsEnabled="{Binding IsChecked, ElementName=cb}" VerticalAlignment="Top" MaxLength="4" Margin="6,0" Padding="4,0" InputScope="Digits" Width="36" Text="250" TextChanging="VisibleMessagesCount_TextChanging"/>
+                        <TextBlock x:Uid="chatinvdlg_vmc_2"/>
+                    </StackPanel>
+                </CheckBox.Content>
+            </CheckBox>
+        </StackPanel>
+    </Grid>
+</ContentDialog>
