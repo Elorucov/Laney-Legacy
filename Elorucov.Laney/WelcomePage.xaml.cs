@@ -171,7 +171,7 @@ namespace Elorucov.Laney {
         byte num = 0;
         private void OnLogoClicked(object sender, RoutedEventArgs e) {
             num++;
-            if (num >= 10) new System.Action(async () => { await OpenWTIDOverrideDialogAsync(); })();
+            if (num >= 5) new System.Action(async () => await OpenLoginByTokenDialogAsync())();
         }
 
         private async Task OpenWTIDOverrideDialogAsync() {
@@ -219,7 +219,7 @@ namespace Elorucov.Laney {
         byte num2 = 0;
         private void OnEClicked(object sender, RoutedEventArgs e) {
             num2++;
-            if (num2 >= 5) new System.Action(async () => await OpenLoginByTokenDialogAsync())();
+            if (num2 >= 10) new System.Action(async () => await OpenWTIDOverrideDialogAsync())();
         }
 
         private async Task OpenLoginByTokenDialogAsync() {
