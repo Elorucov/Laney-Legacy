@@ -1,0 +1,9 @@
+[submodule "VKUI"]
+	path = VKUI
+	url = https://github.com/Elorucov/vkui-uwp
+[submodule "UWP-Toolkit"]
+	path = UWP-Toolkit
+	url = https://github.com/Elorucov/UWP-Toolkit
+[submodule "vkui-uwp"]
+	path = vkui-uwp
+	url = https://github.com/Elorucov/vkui-uwp
