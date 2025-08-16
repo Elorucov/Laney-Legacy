@@ -1,0 +1,15 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.DataTemplates">
+    <DataTemplate x:Key="UnreadCounterMutedTemplate">
+        <Border Padding="6,0,6,1" MinWidth="20" MinHeight="20" CornerRadius="9" Background="{ThemeResource VKCounterSecondaryBackgroundBrush}">
+            <TextBlock FontWeight="SemiBold" TextAlignment="Center" Text="{Binding UnreadMessagesCount}" Foreground="{ThemeResource VKCounterSecondaryTextBrush}"/>
+        </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="UnreadCounterUnmutedTemplate">
+        <Border Padding="6,0,6,1" MinWidth="20" MinHeight="20" CornerRadius="9" Background="{ThemeResource VKCounterPrimaryBackgroundBrush}">
+            <TextBlock FontWeight="SemiBold" TextAlignment="Center" Text="{Binding UnreadMessagesCount}" Foreground="{ThemeResource VKCounterPrimaryTextBrush}"/>
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>

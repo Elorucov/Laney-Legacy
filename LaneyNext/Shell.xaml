@@ -1,0 +1,86 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Shell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Background="{ThemeResource VKBackgroundPageAcrylicBrush}" SizeChanged="ShellSizeChanged">
+    <Page.Resources>
+        <Storyboard x:Name="ForwardAnimationStoryboard" Completed="ForwardAnimationCompleted">
+            <DoubleAnimation x:Name="LeftForwardAnimation" Storyboard.TargetName="LeftContentTransform" Storyboard.TargetProperty="TranslateX" Duration="0:0:0.37">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation x:Name="RightForwardAnimation" Storyboard.TargetName="RightContentTransform" Storyboard.TargetProperty="TranslateX" Duration="0:0:0.37">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="BackAnimationStoryboard" Completed="BackAnimationCompleted">
+            <DoubleAnimation x:Name="LeftBackAnimation" Storyboard.TargetName="LeftContentTransform" Storyboard.TargetProperty="TranslateX" Duration="0:0:0.37">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation x:Name="RightBackAnimation" Storyboard.TargetName="RightContentTransform" Storyboard.TargetProperty="TranslateX" Duration="0:0:0.37">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Page.Resources>
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <SuppressNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="LeftColumnDefinition" MinWidth="320"/>
+            <ColumnDefinition x:Name="RightColumnDefinition"/>
+        </Grid.ColumnDefinitions>
+        <Frame x:Name="LeftFrame" Grid.Column="0" Grid.RowSpan="2" Background="Transparent">
+            <Frame.RenderTransform>
+                <CompositeTransform x:Name="LeftContentTransform" TranslateX="0"/>
+            </Frame.RenderTransform>
+        </Frame>
+        <Grid x:Name="RightFrameRoot" Grid.Column="1" Grid.RowSpan="2" DataContext="{Binding SessionBase.SelectedConversation, Mode=OneWay}">
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="RightContentTransform" TranslateX="0"/>
+            </Grid.RenderTransform>
+            <Rectangle x:Name="RightFrameShadow" Fill="#7F7F7F"/>
+            <Border x:Name="ConversationBackgroundWithoutImage" Background="{ThemeResource VKBackgroundContentBrush}"/>
+            <Frame x:Name="RightFrame" Visibility="{Binding Converter={StaticResource ntv}, FallbackValue=Collapsed, TargetNullValue=Collapsed}"/>
+            <vkui:Placeholder Background="{ThemeResource VKBackgroundContentBrush}" VerticalAlignment="Stretch"
+                              Visibility="{Binding Converter={StaticResource ntv2}}"
+                              Icon="Icon56WriteOutline"
+                              Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=shell_no_conv_selected}"/>
+        </Grid>
+        <Grid x:Name="TitleBarRoot" Grid.ColumnSpan="2">
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="TitleBarTransform"/>
+            </Grid.RenderTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="TitleBarFullScreenBackgroundElement" Grid.ColumnSpan="2" Visibility="Collapsed" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            <Image x:Name="WindowIcon" Margin="8" Width="16" Height="16" HorizontalAlignment="Left" VerticalAlignment="Center" Source="ms-appx:///Assets/Logo.png"/>
+            <TextBlock x:Name="WindowNameCentered" FontSize="12" TextTrimming="CharacterEllipsis" Margin="0,8,0,0" HorizontalAlignment="Center" Grid.ColumnSpan="4" Text="Laney"/>
+            <TextBlock x:Name="DebugRamUsage" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="32,-1,0,0" FontSize="12" FontFamily="Consolas" HorizontalAlignment="Left" TextAlignment="Left"/>
+            <Border x:Name="TitleBarArea" Background="Transparent" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</Page>

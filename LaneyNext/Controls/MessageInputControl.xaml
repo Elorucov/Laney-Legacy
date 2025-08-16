@@ -1,0 +1,159 @@
+﻿<UserControl x:Name="Root"
+    x:Class="Elorucov.Laney.Controls.MessageInputControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:atch="using:Elorucov.Laney.Controls.Attachments"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vkuif="using:VK.VKUI.Popups"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vm="using:Elorucov.Laney.ViewModels.Controls"
+    xmlns:vkobjm="using:ELOR.VKAPILib.Objects.Messages"
+    mc:Ignorable="d"
+    d:DesignHeight="240"
+    d:DesignWidth="360">
+    <UserControl.Resources>
+        <DataTemplate x:DataType="vm:OutboundAttachmentViewModel" x:Key="OutboundAttachmentTemplate">
+            <Grid Background="#7f7f7f7f" Width="104" Height="78" CornerRadius="6" RequestedTheme="Dark">
+                <StackPanel VerticalAlignment="Center">
+                    <ContentPresenter HorizontalAlignment="Center" Width="24" Height="24" ContentTemplate="{x:Bind Icon, Mode=OneWay}"/>
+                    <TextBlock TextAlignment="Center" FontSize="13" Text="{x:Bind DisplayName, Mode=OneWay}"/>
+                </StackPanel>
+                <Image Source="{x:Bind PreviewImage, Mode=OneWay}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="#7F000000" CornerRadius="3" Height="24" Visibility="{x:Bind ExtraInfo, Converter={StaticResource ntv}, Mode=OneWay}">
+                    <TextBlock Text="{x:Bind ExtraInfo, Mode=OneWay}" Foreground="White" FontSize="11" LineHeight="11" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center" Padding="7,0"/>
+                </Border>
+                <ProgressBar Margin="4" BorderBrush="#7F000000" VerticalAlignment="Bottom" BorderThickness="1" Background="#7F000000" Foreground="White" Visibility="{x:Bind UploadState, Mode=OneWay, Converter={StaticResource vtb}, ConverterParameter=InProgress}" Value="{x:Bind UploadProgress, Mode=OneWay}"/>
+                <Button Width="28" Height="28" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Click="RemoveOutboundAttachment">
+                    <Border Width="20" Height="20" CornerRadius="10" Background="#7F000000">
+                        <ContentPresenter Foreground="White" ContentTemplate="{StaticResource Icon16Cancel}" Width="12" Height="12"/>
+                    </Border>
+                </Button>
+                <Button Width="28" Height="28" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Visibility="{x:Bind UploadState, Mode=OneWay, Converter={StaticResource vtb}, ConverterParameter=Failed}">
+                    <Border Width="20" Height="20" CornerRadius="10" Background="#FF0000">
+                        <ContentPresenter Foreground="White" ContentTemplate="{StaticResource Icon24Error}" Width="12" Height="12"/>
+                    </Border>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid Background="{Binding Background, ElementName=Root}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Grid Height="28" Visibility="{Binding MessageInput.IsInEditMode}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="12" Margin="12,6,0,0" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=msginput_edit}"/>
+                <Button Grid.Column="1" Style="{StaticResource TransparentButtonStyle}" Padding="2" Width="28" Height="28" Foreground="{ThemeResource MessageInputControlForegroundBrush}" ContentTemplate="{StaticResource Icon24Cancel}" Click="CancelEditing"/>
+            </Grid>
+            <Grid Visibility="{Binding MessageInput.ReplyMessage, Converter={StaticResource ntv}}" Margin="12,12,12,0" BorderBrush="{StaticResource VKAccentBrush}" BorderThickness="2,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <atch:CompactMessageControl Message="{Binding MessageInput.ReplyMessage}" Margin="12,0"/>
+                <Button Grid.Column="1" Style="{StaticResource MessageInputVKUIButtonStyle}" VerticalAlignment="Center" Padding="8" Width="32" Height="32" ContentTemplate="{StaticResource Icon16Cancel}" Click="DetachReplyMessage"/>
+            </Grid>
+            <GridView x:Name="OutboundAttachments" VerticalAlignment="Bottom" MaxHeight="130" Margin="4,8,4,-10" Visibility="{Binding MessageInput.HasAttachments}" ItemsSource="{Binding MessageInput.OutboundAttachments}" ItemTemplate="{StaticResource OutboundAttachmentTemplate}">
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="4"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.Clip>
+                    <RectangleGeometry Rect="0,0,9999,130">
+                        <RectangleGeometry.Transform>
+                            <CompositeTransform TranslateY="-10"/>
+                        </RectangleGeometry.Transform>
+                    </RectangleGeometry>
+                </GridView.Clip>
+            </GridView>
+            <Grid x:Name="InputForm" Padding="4,0" MinHeight="52">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="MessageText" Grid.Row="2" Grid.Column="1" Style="{StaticResource MessageInputFieldStyle}" Margin="4,8" VerticalAlignment="Bottom" TextWrapping="Wrap" AcceptsReturn="True" TextChanging="CheckMentions" Text="{Binding MessageInput.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=msginput_placeholder}"/>
+
+                <Button Grid.Row="2" VerticalAlignment="Bottom" Style="{StaticResource MessageInputVKUIButtonStyle}" ContentTemplate="{StaticResource Icon28AddCircleOutline}">
+                    <Button.Flyout>
+                        <vkuif:MenuFlyout>
+                            <vkuif:MenuFlyout.Items>
+                                <vkui:CellButton Icon="Icon28PictureOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_photo}" Tag="0" Click="ShowAttachmentPicker"/>
+                                <vkui:CellButton Icon="Icon28VideoOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_video}" Tag="1" Click="ShowAttachmentPicker"/>
+                                <vkui:CellButton Icon="Icon28DocumentOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_doc}" Tag="2" Click="ShowAttachmentPicker"/>
+                                <vkui:CellButton Icon="Icon28PollSquareOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_poll}" Click="ShowPollCreatorModal"/>
+                                <vkui:CellButton Icon="Icon28PlaceOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_geo}" Click="ShowPlacePickerModal"/>
+                                <vkui:CellButton Icon="Icon24BrushOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=a_graffiti}" Click="ShowGraffitiPickerModal" x:Name="GraffitiPickerMenuItem"/>
+                            </vkuif:MenuFlyout.Items>
+                        </vkuif:MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <StackPanel Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom" Orientation="Horizontal">
+                    <ToggleButton x:Name="kbdToggle" Style="{StaticResource MessageInputVKUIToggleButtonStyle}" ContentTemplate="{StaticResource Icon28KeyboardBotsOutline}" Visibility="{Binding CurrentKeyboard, Converter={StaticResource ntv}}"/>
+                    <Button x:Name="TemplatesButton" Style="{StaticResource MessageInputVKUIButtonStyle}" ContentTemplate="{StaticResource Icon28ListOutline}" Visibility="Collapsed" Command="{Binding MessageInput.LoadTemplatesCommand}">
+                        <Button.Flyout>
+                            <vkuif:Flyout x:Name="TemplatesFlyout" Placement="Top">
+                                <vkuif:Flyout.Content>
+                                    <Grid MaxHeight="400" Width="320" Height="320" Margin="-12">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid Margin="12,12,12,5" x:Name="TemplatesTitle">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock FontSize="13" LineHeight="17" LineStackingStrategy="BlockLineHeight" FontWeight="SemiBold" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=templates}"/>
+                                            <HyperlinkButton Grid.Column="1" Padding="0" Command="{Binding MessageInput.AddTemplateCommand}">
+                                                <TextBlock FontSize="13" LineHeight="17" LineStackingStrategy="BlockLineHeight" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=create}"/>
+                                            </HyperlinkButton>
+                                        </Grid>
+                                        <ListView x:Name="TemplatesList" Grid.Row="1" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemsSource="{Binding MessageInput.MessageTemplates}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="TemplatesList_ItemClick">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="vkobjm:MessageTemplate">
+                                                    <StackPanel Padding="0,8,0,10" Margin="12,0" BorderBrush="{ThemeResource VKSeparatorAlphaBrush}" BorderThickness="0,0,0,1">
+                                                        <TextBlock Text="{x:Bind Name}" Style="{StaticResource VKCaption1}" TextWrapping="Wrap" FontWeight="SemiBold" MaxLines="2" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{x:Bind Text}" Style="{StaticResource VKCaption1}" TextWrapping="Wrap" Foreground="{ThemeResource VKTextSecondaryBrush}" MaxLines="3" TextTrimming="CharacterEllipsis"/>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <HyperlinkButton Padding="0" Click="ChangeTemplate">
+                                                                <TextBlock FontSize="13" LineHeight="17" LineStackingStrategy="BlockLineHeight" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=change}"/>
+                                                            </HyperlinkButton>
+                                                            <TextBlock FontSize="13" LineHeight="17" LineStackingStrategy="BlockLineHeight" Margin="6,0" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="∙"/>
+                                                            <HyperlinkButton Padding="0" Click="DeleteTemplate">
+                                                                <TextBlock FontSize="13" LineHeight="17" LineStackingStrategy="BlockLineHeight" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=delete}"/>
+                                                            </HyperlinkButton>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                        <vkui:Spinner Grid.Row="1" Width="44" Height="44" Foreground="{ThemeResource VKAccentBrush}" Visibility="{Binding MessageInput.IsTemplatesLoading}"/>
+                                    </Grid>
+                                </vkuif:Flyout.Content>
+                            </vkuif:Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button x:Name="StickerButton" Style="{StaticResource MessageInputVKUIButtonStyle}" ContentTemplate="{StaticResource Icon28StickerOutline}" Command="{Binding MessageInput.StickerPickerCommand}" CommandParameter="{Binding ElementName=StickerButton}"/>
+                    <Button x:Name="SendMsgButton" Style="{StaticResource MessageInputVKUIButtonStyle}" ContentTemplate="{StaticResource Icon28Send}" Visibility="{Binding MessageInput.SendButtonVisibility}" Command="{Binding MessageInput.SendCommand}"/>
+                    <Button x:Name="VoiceRecButton" Style="{StaticResource MessageInputVKUIButtonStyle}" ContentTemplate="{StaticResource Icon28VoiceOutline}" Visibility="{Binding MessageInput.SendButtonVisibility, Converter={StaticResource ntv2}}" Click="ShowAudioRecorder"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Background="{ThemeResource VKBackgroundContentBrush}" VerticalScrollBarVisibility="Auto" MaxHeight="192" Visibility="{Binding IsChecked, ElementName=kbdToggle}">
+            <local:BotKeyboardControl Keyboard="{Binding CurrentKeyboard}" ButtonClicked="BotKeyboardButtonClicked"/>
+        </ScrollViewer>
+        <local:AudioRecorder x:Name="AudioRecorderControl" Visibility="Collapsed" OnHide="AudioRecorded"/>
+    </Grid>
+</UserControl>

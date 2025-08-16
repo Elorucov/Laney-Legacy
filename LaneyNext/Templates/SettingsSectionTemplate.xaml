@@ -1,0 +1,15 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Templates">
+    <DataTemplate x:Key="SettingsSectionTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ContentPresenter ContentTemplate="{Binding Icon}" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}" Width="24" Height="24" Margin="12"/>
+            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="16" LineHeight="16" LineStackingStrategy="BlockLineHeight"/>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

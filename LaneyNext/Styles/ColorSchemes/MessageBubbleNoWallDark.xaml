@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Styles.ColorSchemes">
+    <SolidColorBrush x:Key="BubbleIncomingBackgroundBrush" Color="{StaticResource VKGray800Color}"/>
+    <SolidColorBrush x:Key="BubbleOutgoingBackgroundBrush" Color="{StaticResource VKGray700Color}"/>
+    <SolidColorBrush x:Key="BubbleForegroundBrush" Color="{StaticResource VKGray100Color}"/>
+    <SolidColorBrush x:Key="BubbleForegroundSecondaryBrush" Color="{StaticResource VKGray500Color}"/>
+    <SolidColorBrush x:Key="BubbleGiftBrush" Color="{StaticResource VKGold500Color}"/>
+    <SolidColorBrush x:Key="BubbleGiftForegroundBrush" Color="{StaticResource VKWhiteColor}"/>
+    <SolidColorBrush x:Key="BubbleGiftForegroundSecondaryBrush" Color="{StaticResource VKGold250Color}"/>
+</ResourceDictionary>

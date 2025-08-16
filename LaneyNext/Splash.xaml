@@ -1,0 +1,61 @@
+﻿<Page x:Name="Root"
+    x:Class="Elorucov.Laney.Splash"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ModernSplashScreenBrush}">
+
+    <Page.Resources>
+        <Storyboard x:Name="WrongPasswordAnimation">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="X" Storyboard.TargetName="PasswordBoxTransform">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.08" Value="-16">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.16" Value="8">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.24" Value="-4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.32" Value="2">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="-1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.48" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <SineEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    
+    <Canvas>
+        <Image x:Name="extendedSplashImage" Source="Assets/SplashScreen.png"/>
+        <vkui:Spinner Name="splashProgressRing" Foreground="{ThemeResource VKHeaderTintBrush}" Width="24" Height="24" HorizontalAlignment="Center"/>
+        <StackPanel x:Name="splashLocalPassContainer" Visibility="Collapsed" Width="288" CornerRadius="12" Padding="8" Background="{ThemeResource ModernSplashScreenBrush}">
+            <StackPanel.RenderTransform>
+                <TranslateTransform x:Name="PasswordBoxTransform"/>
+            </StackPanel.RenderTransform>
+            <PasswordBox x:Name="PassBox" Margin="8" Style="{StaticResource VKPasswordBox}" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=enter_password}" PasswordChanging="CheckPassLength" KeyDown="CheckEnterButton"/>
+            <Button x:Name="EnterButton" IsEnabled="False" Style="{StaticResource VKButtonPrimaryLarge}" Margin="8" HorizontalAlignment="Stretch" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=login}" Click="CheckPassword"/>
+            <HyperlinkButton HorizontalAlignment="Center" Margin="8,0,8,3" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=logout}" Click="Logout"/>
+        </StackPanel>
+    </Canvas>
+</Page>

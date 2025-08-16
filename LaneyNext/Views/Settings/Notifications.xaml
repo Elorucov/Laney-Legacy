@@ -1,0 +1,16 @@
+﻿<local:SettingsPageBase
+    x:Class="Elorucov.Laney.Views.Settings.Notifications"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16,0">
+            <TextBlock Text="Under construction."/>
+        </StackPanel>
+    </ScrollViewer>
+</local:SettingsPageBase>

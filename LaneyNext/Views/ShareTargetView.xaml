@@ -1,0 +1,97 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Views.ShareTargetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views"
+    xmlns:vmc="using:Elorucov.Laney.ViewModels.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource VKBackgroundContentBrush}" Loaded="OnLoaded">
+
+    <Page.Resources>
+        <DataTemplate x:DataType="vmc:OutboundAttachmentViewModel" x:Key="OutboundAttachmentTemplate">
+            <Grid Background="#7f7f7f7f" Width="104" Height="78" CornerRadius="6" RequestedTheme="Dark">
+                <StackPanel VerticalAlignment="Center">
+                    <ContentPresenter HorizontalAlignment="Center" Width="24" Height="24" ContentTemplate="{x:Bind Icon, Mode=OneWay}"/>
+                    <TextBlock TextAlignment="Center" FontSize="13" Text="{x:Bind DisplayName, Mode=OneWay}"/>
+                </StackPanel>
+                <Image Source="{x:Bind PreviewImage, Mode=OneWay}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Margin="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="#7F000000" CornerRadius="3" Height="24" Visibility="{x:Bind ExtraInfo, Converter={StaticResource ntv}, Mode=OneWay}">
+                    <TextBlock Text="{x:Bind ExtraInfo, Mode=OneWay}" Foreground="White" FontSize="11" LineHeight="11" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center" Padding="7,0"/>
+                </Border>
+                <ProgressBar Margin="4" BorderBrush="#7F000000" VerticalAlignment="Bottom" BorderThickness="1" Background="#7F000000" Foreground="White" Visibility="{x:Bind UploadState, Mode=OneWay, Converter={StaticResource vtb}, ConverterParameter=InProgress}" Value="{x:Bind UploadProgress, Mode=OneWay}"/>
+                <Button Width="28" Height="28" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Click="RemoveOutboundAttachment">
+                    <Border Width="20" Height="20" CornerRadius="10" Background="#7F000000">
+                        <ContentPresenter Foreground="White" ContentTemplate="{StaticResource Icon16Cancel}" Width="12" Height="12"/>
+                    </Border>
+                </Button>
+                <Button Width="28" Height="28" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" BorderThickness="0" Visibility="{x:Bind UploadState, Mode=OneWay, Converter={StaticResource vtb}, ConverterParameter=Failed}">
+                    <Border Width="20" Height="20" CornerRadius="10" Background="#FF0000">
+                        <ContentPresenter Foreground="White" ContentTemplate="{StaticResource Icon24Error}" Width="12" Height="12"/>
+                    </Border>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid x:Name="Root" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Height="52" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Style="{StaticResource ModalTitleBarComboBoxStyle}" Margin="0,2" HorizontalAlignment="Left" FontSize="17" Background="Transparent" BorderThickness="0" ItemsSource="{Binding Sessions}" SelectedItem="{Binding SelectedSession, Mode=TwoWay}"/>
+            <Border x:Name="TitleBar" Grid.Column="1" Background="Transparent"/>
+        </Grid>
+        <TextBox Grid.Row="1" Style="{StaticResource VKSearchBar}" InputScope="Search" Margin="16,0,8,8" Height="36" BorderThickness="0" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=search}" PreviewKeyDown="SearchBoxKeyDown"/>
+        <Border Grid.Column="1" Grid.Row="1" Margin="8,0,16,8">
+            <TextBlock FontSize="16" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,-2,0,0" Text="{Binding SelectedPeersInfo}"/>
+        </Border>
+        
+        <ListView Grid.Row="2" ItemsSource="{Binding Conversations}" ItemTemplate="{StaticResource ConversationDataTemplateLite}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AddConvToSelectedPeers"/>
+        <vkui:Placeholder Grid.Row="2" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Grid.Row="2" Width="44" Height="44" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+
+        <ListView Grid.Column="1" Grid.Row="2" SelectionMode="None" ItemsSource="{Binding SelectedPeers}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemTemplate="{StaticResource DefaultEntityWithoutSubtitleTemplate}"/>
+
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="3" Padding="8">
+            <GridView x:Name="OutboundAttachments" VerticalAlignment="Bottom" MaxHeight="130" Margin="4,4,4,-6" Visibility="{Binding HasAttachments}" ItemsSource="{Binding Attachments}" ItemTemplate="{StaticResource OutboundAttachmentTemplate}">
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="Margin" Value="4"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+            </GridView>
+
+            <TextBox Margin="8,8,8,0" Style="{StaticResource VKTextBox}" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxHeight="64" TextWrapping="Wrap" IsEnabled="{Binding IsSending, Converter={StaticResource rbc}}" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=msginput_placeholder}"/>
+        </StackPanel>
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Padding="8">
+            <Button Margin="8" Style="{StaticResource VKButtonPrimaryExtraLarge}" HorizontalAlignment="Stretch" Command="{Binding SendCommand}" Visibility="{Binding IsSending, Converter={StaticResource ntv2}}" IsEnabled="{Binding IsNotEmpty}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=send}"/>
+            <Border Margin="8" Height="44" Background="{ThemeResource VKButtonPrimaryBackgroundBrush}" CornerRadius="8" Visibility="{Binding IsSending}">
+                <vkui:Spinner Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKButtonPrimaryForegroundBrush}"/>
+            </Border>
+            <Border Margin="8" Height="44" Background="{ThemeResource VKButtonCommerceBackgroundBrush}" CornerRadius="8" Visibility="{Binding IsSuccess}">
+                <vkui:VKIcon Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" Id="Icon16Done" Foreground="{ThemeResource VKButtonCommerceForegroundBrush}"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

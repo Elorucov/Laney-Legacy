@@ -1,0 +1,93 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DataTemplate x:Key="ImportantMessageIconTemplate">
+        <FontIcon Foreground="{ThemeResource VKTextSubheadBrush}" FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph=""/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="UnreadMessageIconTemplate">
+        <FontIcon Foreground="{ThemeResource VKTextSubheadBrush}" FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph=""/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SendingMessageIconTemplate">
+        <FontIcon Foreground="{ThemeResource VKTextSubheadBrush}" FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph=""/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DeletedMessageIconTemplate">
+        <FontIcon Foreground="{ThemeResource VKTextSubheadBrush}" FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph=""/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="FailedMessageIconTemplate">
+        <FontIcon Foreground="Red" FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph=""/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OnlineIcon">
+        <Ellipse Width="12" Height="12" Fill="#8AC176" Stroke="{ThemeResource VKBackgroundContentBrush}" StrokeThickness="2"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OnlineMobileIcon">
+        <Border Width="11" Height="15" Background="{ThemeResource VKBackgroundContentBrush}" BorderBrush="{ThemeResource VKBackgroundContentBrush}" CornerRadius="2">
+            <PathIcon Width="7" Height="11" Foreground="#8AC176" Data="M0 1.5C0 .7.7 0 1.5 0h4C6.3 0 7 .7 7 1.5v8c0 .8-.7 1.5-1.5 1.5h-4A1.5 1.5 0 010 9.5v-8zM1 2h5v6H1V2z"/>
+        </Border>
+    </DataTemplate>
+
+    <!-- VKPay icon -->
+    <DataTemplate x:Key="VKPayIcon">
+        <Viewbox Stretch="Uniform">
+            <PathIcon Width="278" Height="100" Data="M 34.645023 1.8798828e-7 C 6.6622043 1.8798828e-7 0 6.6659015 0 34.66552 V 65.332526 C 0 93.333479 6.6622043 100 34.645023 100 H 65.292169 C 93.273654 100 99.93524 93.333479 99.93524 65.332526 V 34.66552 C 99.93524 6.6659015 93.273654 1.8798828e-7 65.292169 1.8798828e-7 Z M 160.3409 26.269812 c -8.25032 0 -13.40765 5.159374 -13.40765 5.159374 l -2.06045 -4.643437 h -8.76721 v 63.976236 h 11.86083 V 70.124489 c 0 0 4.63881 4.645391 12.37448 4.645391 11.8595 0 22.17094 -10.322578 22.17094 -24.251011 0 -13.931101 -10.31144 -24.249057 -22.17094 -24.249057 z m 49.05261 0 c -11.8595 0 -19.07594 7.222081 -20.10657 15.994059 h 11.85692 c 0 0 1.03143 -5.159374 7.2165 -5.159374 4.64247 0 7.73599 3.095874 7.73599 8.254998 -21.65641 0 -28.36013 6.705769 -28.36013 15.994059 0 7.739353 5.67277 13.416326 15.98566 13.416326 8.25033 0 13.40569 -5.163282 13.40569 -5.163282 l 2.06436 4.64539 h 8.76526 v -29.40843 c 0 -10.834559 -7.73347 -18.573746 -18.56368 -18.573746 z m 21.17099 0.515937 18.04416 45.40249 -1.03121 2.581641 c -1.44394 3.610186 -4.12312 6.189294 -9.2789 6.189294 v 9.802811 c 0 0 2.06225 0.517891 4.12481 0.517891 7.73302 0 11.85818 -4.127869 16.49931 -15.480075 C 259.9533 73.220906 278 26.785749 278 26.785749 H 265.62552 L 254.7959 57.741992 242.93703 26.785749 Z M 19.266766 31.77119 h 7.286803 c 1.862587 0 2.562944 0.815812 3.26158 2.835702 3.56385 10.387622 9.571898 19.46491 12.042461 19.464909 0.926628 0 1.351507 -0.426221 1.351507 -2.78098 v -10.73697 c -0.270656 -4.944326 -2.894411 -5.350755 -2.894411 -7.107819 0 -0.81516 0.696154 -1.674842 1.853438 -1.674842 h 11.45069 c 1.543934 0 2.081943 0.826854 2.081943 2.681311 v 14.444293 c 0 1.544934 0.67207 2.085246 1.134717 2.085246 0.926628 0 1.697746 -0.539942 3.396341 -2.239637 5.249112 -5.870221 8.954701 -14.909418 8.954701 -14.909418 0.46398 -1.080654 1.316533 -2.061795 3.169789 -2.061795 h 7.288755 c 2.202573 0 2.667012 1.136376 2.203032 2.681311 -0.926628 4.247905 -9.804274 16.762102 -9.804274 16.762102 -0.773301 1.236749 -1.081288 1.853977 0 3.244151 0.771967 1.080655 3.318771 3.244679 5.017366 5.251227 3.130535 3.524801 5.48892 6.498904 6.146226 8.548144 0.601307 2.054577 -0.440753 3.095625 -2.523332 3.095625 h -7.286801 c -2.779884 0 -3.593053 -2.216259 -8.532844 -7.160586 -4.323818 -4.171859 -6.177552 -4.713792 -7.257507 -4.713792 -1.466605 0 -1.906169 0.415633 -1.906169 2.49956 v 6.539116 c 0 1.79442 -0.573054 2.835702 -5.204859 2.835702 -7.721007 0 -16.204546 -4.691492 -22.225626 -13.342064 C 19.238674 45.342683 16.768824 35.764822 16.768824 33.832985 c 0 -1.080654 0.415363 -2.061795 2.497942 -2.061795 z m 139.527324 5.849244 c 6.70238 0 11.85887 5.159083 11.85887 12.898435 0 7.739353 -5.15649 12.898434 -11.85887 12.898434 -6.70239 0 -11.86084 -5.159081 -11.86084 -12.898434 0 -7.739352 5.15845 -12.898435 11.86084 -12.898435 z m 57.30226 15.994059 v 2.06375 c 0 5.67677 -4.12369 9.80281 -10.3101 9.80281 -3.60919 0 -6.18919 -2.579145 -6.18919 -5.159374 0 -4.126498 2.57856 -6.707186 16.49929 -6.707186 z"/>
+        </Viewbox>
+    </DataTemplate>
+
+    <!-- VKPay label -->
+    <DataTemplate x:Key="VKPayLabel">
+        <StackPanel Orientation="Horizontal" Height="20" Margin="8,7,8,7">
+            <TextBlock VerticalAlignment="Center" FontSize="17" Margin="0,-3,6,0" Text="{Binding Converter={StaticResource loc}, ConverterParameter=botbtn_paywith}"/>
+            <ContentPresenter Height="20" ContentTemplate="{StaticResource VKPayIcon}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- Casper chat icon 56 -->
+    <DataTemplate x:Key="Icon56CasperOutline">
+        <Viewbox Stretch="Uniform">
+            <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Width="56" Height="56" Data="F1 M56,56z M0,0z M33.567,34.518C34.179,35.171 34.137,36.188 33.473,36.79 30.463,39.517 27.123,39.517 24.137,37.894 23.405,37.495 22.859,37.091 22.527,36.79A1.588,1.588,0,0,1,22.433,34.518A1.658,1.658,0,0,1,24.617,34.321L24.746,34.426C24.899,34.565 25.242,34.819 25.722,35.08 27.584,36.092 29.415,36.092 31.254,34.426 31.919,33.824 32.954,33.865 33.567,34.518z M19.5,22A3.5,3.5,0,1,1,19.5,29A3.5,3.5,0,0,1,19.5,22z M27.998,4.004C33.829,4.004 38.751,6.058 43.256,10.266 47.461,14.193 49.874,19.494 49.996,25.052L49.976,45.87C49.907,48.415 48.089,50.434 45.489,50.434 44.893,50.414 44.189,50.314 43.237,49.93L41.316,49.118C39.962,48.55,39.097,48.31,38.242,48.31L38.092,48.315C37.671,48.349,37.261,48.552,36.124,49.343L34.374,50.591C32.156,52.158 30.026,52.931 28,53 25.96,53 24.168,52.31 21.997,50.822L20.061,49.449 19.513,49.073C18.749,48.563,18.373,48.38,18.033,48.328L17.777,48.31C16.919,48.31,16.052,48.55,14.696,49.118L12.771,49.93C11.967,50.253,11.547,50.373,11.078,50.414L10.517,50.434C8.011,50.434,6.203,48.47,6.022,46.004L6,25.49C6,19.773 8.433,14.295 12.756,10.265 17.154,6.165 22.38,4.112 27.998,4.005z M28.016,7.004L27.591,7.018C22.807,7.215 18.475,9.035 14.802,12.459 11.187,15.829 9.12,20.349 9.005,25.069L9,25.488 9.021,45.858 9.032,45.961C9.154,46.822,9.682,47.364,10.376,47.428L10.494,47.433 10.865,47.42 10.897,47.415C10.987,47.397,11.113,47.358,11.341,47.271L11.605,47.167 13.538,46.351C15.148,45.678,16.301,45.355,17.515,45.315L17.777,45.311 17.989,45.318 18.244,45.336A3,3,0,0,1,18.487,45.364C19.466,45.514,20.161,45.874,21.532,46.819L21.797,47.003 23.693,48.349C25.352,49.486,26.531,49.949,27.779,49.997L27.94,50 28.168,49.987C29.442,49.884,30.823,49.363,32.312,48.37L32.632,48.15 34.411,46.882C36.109,45.7 36.925,45.311 38.242,45.311 39.466,45.311 40.592,45.589 42.145,46.216L42.485,46.356 44.357,47.148C44.87,47.354 45.211,47.424 45.489,47.435 46.307,47.435 46.879,46.887 46.966,46.032L46.976,45.869 46.996,25.119C46.893,20.374 44.826,15.838 41.208,12.459 37.34,8.84600000000002 33.268,7.10900000000002 28.438,7.01000000000002L28.016,7.00500000000002z M39.482,24.85C40.086,25.373,40.175,26.314,39.681,26.952A1.36,1.36,0,0,1,37.811,27.253L37.694,27.163 37.535,27.033C36.635,26.338,35.732,26.365,34.801,26.849A3.835,3.835,0,0,0,34.521,27.009L34.388,27.099 34.189,27.253A1.36,1.36,0,0,1,32.319,26.953C31.825,26.313,31.914,25.373,32.518,24.85A5.49,5.49,0,0,1,33.557,24.167C35.447,23.186,37.56,23.186,39.482,24.85zZ"/>
+        </Viewbox>
+    </DataTemplate>
+
+    <!-- Stop and play icons 8x8 -->
+    <DataTemplate x:Key="Icon8Stop">
+        <Viewbox Stretch="Uniform">
+            <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="8" Data="M 0,0 L 8,0 L 8,8 L 0,8 z"/>
+        </Viewbox>
+    </DataTemplate>
+    <DataTemplate x:Key="Icon8Play">
+        <Viewbox Stretch="Uniform">
+            <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="8" Data="M 0,0 L 8,4 L 0,8 z"/>
+        </Viewbox>
+    </DataTemplate>
+    <DataTemplate x:Key="Icon8Pause">
+        <Viewbox Stretch="Uniform">
+            <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="8" Data="M 0,0 L 3,0 L 3,8 L 0,8 z M 5,0 L 8,0 L 8,8 L 5,8 z"/>
+        </Viewbox>
+    </DataTemplate>
+
+    <!-- Laney logo -->
+    <DataTemplate x:Key="LaneyLogo">
+        <Image Stretch="Uniform" Width="96" Height="96" Source="ms-appx:///Assets/Logo.png"/>
+    </DataTemplate>
+
+    <!-- Old logo -->
+    <DataTemplate x:Key="OldLaneyLogo">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid HorizontalAlignment="Center" Width="96" Height="96">
+                <Ellipse x:Name="LogoEllipse" Width="96" Height="96" Fill="{ThemeResource VKBackgroundContentBrush}"/>
+                <Viewbox Width="64" Height="64" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform">
+                    <Canvas Width="492" Height="628">
+                        <Path Fill="{ThemeResource LaneyLogoBrush}" Opacity="0.6" Data="M226.67,622.58s324-55,116-622.58h0A20.22,20.22,0,0,0,331.5,3.36h0C410.67,478.58,41.16,502.7,41.16,502.7h0C54,521.62,70.32,540.34,90.67,558.58c35.11,31.5,84.12,53.95,136,63.95"/>
+                        <Path Fill="{ThemeResource LaneyLogoBrush}" Opacity="1" Data="M41.16,502.7S410.67,478.58,331.51,3.36h0a18.78,18.78,0,0,0-8.27,14.22c-7.74,84-28.45,217.73-82.55,242.23-79.57,36-116.61-50-130.74-98.66A15.94,15.94,0,0,0,81.88,156C37.91,214.5-53,364.1,41.16,502.7"/>
+                        <Path Fill="{ThemeResource LaneyLogoBrush}" Opacity="0.8" Data="M226.68,622.53c91.45,17.61,191.86-3.47,241-81.95,76.82-122.71-45.95-404.35-107.8-529.77A18.83,18.83,0,0,0,342.62,0h0c208,567.58-116,622.58-116,622.58"/>
+                    </Canvas>
+                </Viewbox>
+            </Grid>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

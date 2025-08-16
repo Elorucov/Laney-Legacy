@@ -1,0 +1,52 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.Primitives.AppearancePreview"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls.Primitives"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:vm="using:Elorucov.Laney.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="220"
+    d:DesignWidth="360" Loaded="OnLoaded">
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Name="GroupedMessages" x:Key="GroupedMessages" IsSourceGrouped="True" Source="{Binding Messages.GroupedMessages}"/>
+    </UserControl.Resources>
+    
+    <Grid x:Name="BackgroundContainer" IsHitTestVisible="False">
+        <ctrls:ChatBackgroundPresenter/>
+        <ListView x:Name="MessagesListView" SelectionMode="None" IsItemClickEnabled="True" Margin="0,0,0,4" ItemContainerTransitions="{x:Null}" ShowsScrollingPlaceholders="False" ItemsSource="{Binding Source={StaticResource GroupedMessages}}" IsMultiSelectCheckBoxEnabled="False">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel AreStickyGroupHeadersEnabled="False" GroupPadding="0" VerticalAlignment="Bottom" ItemsUpdatingScrollMode="KeepLastItemInView"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="MinHeight" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:MessageViewModel">
+                    <Border DataContextChanged="DrawMessage"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <ContentControl HorizontalAlignment="Center" Template="{StaticResource ServiceMessageTemplate}">
+                                <TextBlock TextAlignment="Center" Text="{Binding Key, Converter={StaticResource dts}, ConverterParameter='d'}" />
+                            </ContentControl>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+        </ListView>
+    </Grid>
+</UserControl>

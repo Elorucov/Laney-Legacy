@@ -1,0 +1,1510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="apilang" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="landing_title" xml:space="preserve">
+    <value>This is Laney</value>
+  </data>
+  <data name="landing_subtitle" xml:space="preserve">
+    <value>The messenger of VK social network</value>
+  </data>
+  <data name="login" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="botbtn_position" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="botbtn_paywith" xml:space="preserve">
+    <value>Pay with</value>
+  </data>
+  <data name="botbtn_services" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="sbv_header_tab_all" xml:space="preserve">
+    <value>All conversations</value>
+  </data>
+  <data name="sbv_header_tab_starred" xml:space="preserve">
+    <value>Starred</value>
+  </data>
+  <data name="sbv_header_tab_unanswered" xml:space="preserve">
+    <value>Unanswered</value>
+  </data>
+  <data name="sbv_header_tab_unread" xml:space="preserve">
+    <value>Unread</value>
+  </data>
+  <data name="sbv_header_tab_starred_msgs" xml:space="preserve">
+    <value>Starred messages</value>
+  </data>
+  <data name="no_conversations" xml:space="preserve">
+    <value>You don't have any conversations yet</value>
+  </data>
+  <data name="no_conversations_unread" xml:space="preserve">
+    <value>No unread conversations</value>
+  </data>
+  <data name="no_conversations_unanswered" xml:space="preserve">
+    <value>No unanswered conversations</value>
+  </data>
+  <data name="no_conversations_important" xml:space="preserve">
+    <value>No starred conversations</value>
+  </data>
+  <data name="shell_no_conv_selected" xml:space="preserve">
+    <value>Please select a conversation or create a new one</value>
+  </data>
+  <data name="empty_conversation_default" xml:space="preserve">
+    <value>You don't have any messages yet.
+Start chatting!</value>
+  </data>
+  <data name="empty_conversation_default_restricted" xml:space="preserve">
+    <value>You don't have any messages.</value>
+  </data>
+  <data name="empty_conversation_casper" xml:space="preserve">
+    <value>No one has written for an hour.</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="msg_action_createMale" xml:space="preserve">
+    <value>created the group chat</value>
+  </data>
+  <data name="msg_action_invitedByLinkMale" xml:space="preserve">
+    <value>joined the conversation via link</value>
+  </data>
+  <data name="msg_action_invitedMale" xml:space="preserve">
+    <value>invited</value>
+  </data>
+  <data name="msg_action_kickMale" xml:space="preserve">
+    <value>removed</value>
+  </data>
+  <data name="msg_action_leftMale" xml:space="preserve">
+    <value>left the group chat</value>
+  </data>
+  <data name="msg_action_photoRemoveMale" xml:space="preserve">
+    <value>deleted the group chat cover</value>
+  </data>
+  <data name="msg_action_photoUpdateMale" xml:space="preserve">
+    <value>changed the group chat cover</value>
+  </data>
+  <data name="msg_action_pinMale" xml:space="preserve">
+    <value>pinned a</value>
+  </data>
+  <data name="msg_action_renameMale" xml:space="preserve">
+    <value>changed the group chat name to</value>
+  </data>
+  <data name="msg_action_returnedToConvMale" xml:space="preserve">
+    <value>returned to the group chat</value>
+  </data>
+  <data name="msg_action_unpinMale" xml:space="preserve">
+    <value>unpinned a</value>
+  </data>
+  <data name="msg_action_createFemale" xml:space="preserve">
+    <value>created the group chat</value>
+  </data>
+  <data name="msg_action_invitedByLinkFemale" xml:space="preserve">
+    <value>joined the conversation via link</value>
+  </data>
+  <data name="msg_action_invitedFemale" xml:space="preserve">
+    <value>invited</value>
+  </data>
+  <data name="msg_action_kickFemale" xml:space="preserve">
+    <value>removed</value>
+  </data>
+  <data name="msg_action_leftFemale" xml:space="preserve">
+    <value>left the group chat</value>
+  </data>
+  <data name="msg_action_photoRemoveFemale" xml:space="preserve">
+    <value>deleted the group chat cover</value>
+  </data>
+  <data name="msg_action_photoUpdateFemale" xml:space="preserve">
+    <value>changed the group chat cover</value>
+  </data>
+  <data name="msg_action_pinFemale" xml:space="preserve">
+    <value>pinned a message</value>
+  </data>
+  <data name="msg_action_renameFemale" xml:space="preserve">
+    <value>changed the group chat name to</value>
+  </data>
+  <data name="msg_action_returnedToConvFemale" xml:space="preserve">
+    <value>returned to the group chat</value>
+  </data>
+  <data name="msg_action_unpinFemale" xml:space="preserve">
+    <value>unpinned a message</value>
+  </data>
+  <data name="msg_attachment_audiomsg_gen" xml:space="preserve">
+    <value>voice messages</value>
+  </data>
+  <data name="msg_attachment_audiomsg_nom" xml:space="preserve">
+    <value>voice message</value>
+  </data>
+  <data name="msg_attachment_audiomsg_plu" xml:space="preserve">
+    <value>voice messages</value>
+  </data>
+  <data name="msg_attachment_audio_gen" xml:space="preserve">
+    <value>audios</value>
+  </data>
+  <data name="msg_attachment_audio_nom" xml:space="preserve">
+    <value>audio</value>
+  </data>
+  <data name="msg_attachment_audio_plu" xml:space="preserve">
+    <value>audios</value>
+  </data>
+  <data name="msg_attachment_call" xml:space="preserve">
+    <value>call</value>
+  </data>
+  <data name="msg_attachment_curator" xml:space="preserve">
+    <value>curator</value>
+  </data>
+  <data name="msg_attachment_doc_gen" xml:space="preserve">
+    <value>files</value>
+  </data>
+  <data name="msg_attachment_doc_nom" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="msg_attachment_doc_plu" xml:space="preserve">
+    <value>files</value>
+  </data>
+  <data name="msg_attachment_geo" xml:space="preserve">
+    <value>location</value>
+  </data>
+  <data name="msg_attachment_gift" xml:space="preserve">
+    <value>gift</value>
+  </data>
+  <data name="msg_attachment_graffiti" xml:space="preserve">
+    <value>graffiti</value>
+  </data>
+  <data name="msg_attachment_group_call_in_progress" xml:space="preserve">
+    <value>group call</value>
+  </data>
+  <data name="msg_attachment_link" xml:space="preserve">
+    <value>link</value>
+  </data>
+  <data name="msg_attachment_market_gen" xml:space="preserve">
+    <value>products</value>
+  </data>
+  <data name="msg_attachment_market_nom" xml:space="preserve">
+    <value>product</value>
+  </data>
+  <data name="msg_attachment_market_plu" xml:space="preserve">
+    <value>products</value>
+  </data>
+  <data name="msg_attachment_photo_gen" xml:space="preserve">
+    <value>photos</value>
+  </data>
+  <data name="msg_attachment_photo_nom" xml:space="preserve">
+    <value>photo</value>
+  </data>
+  <data name="msg_attachment_photo_plu" xml:space="preserve">
+    <value>photos</value>
+  </data>
+  <data name="msg_attachment_podcast" xml:space="preserve">
+    <value>podcast</value>
+  </data>
+  <data name="msg_attachment_poll" xml:space="preserve">
+    <value>poll</value>
+  </data>
+  <data name="msg_attachment_sticker" xml:space="preserve">
+    <value>sticker</value>
+  </data>
+  <data name="msg_attachment_story" xml:space="preserve">
+    <value>story</value>
+  </data>
+  <data name="msg_attachment_video_gen" xml:space="preserve">
+    <value>videos</value>
+  </data>
+  <data name="msg_attachment_video_nom" xml:space="preserve">
+    <value>video</value>
+  </data>
+  <data name="msg_attachment_video_plu" xml:space="preserve">
+    <value>videos</value>
+  </data>
+  <data name="msg_attachment_wallreply" xml:space="preserve">
+    <value>wall reply</value>
+  </data>
+  <data name="msg_attachment_wall" xml:space="preserve">
+    <value>wall post</value>
+  </data>
+  <data name="forwarded_msgs_gen" xml:space="preserve">
+    <value>Forwarded messages</value>
+  </data>
+  <data name="forwarded_msgs_nom" xml:space="preserve">
+    <value>Forwarded message</value>
+  </data>
+  <data name="forwarded_msgs_plu" xml:space="preserve">
+    <value>Forwarded messages</value>
+  </data>
+  <data name="reply_msg_link" xml:space="preserve">
+    <value>In reply to…</value>
+  </data>
+  <data name="pinned_message" xml:space="preserve">
+    <value>Pinned message</value>
+  </data>
+  <data name="msg_ctx_delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="msg_ctx_edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="msg_ctx_forward" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="msg_ctx_forward_here" xml:space="preserve">
+    <value>Forward here</value>
+  </data>
+  <data name="msg_ctx_pin" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="msg_ctx_reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="msg_ctx_repriv" xml:space="preserve">
+    <value>Reply privately</value>
+  </data>
+  <data name="msg_ctx_retry" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="msg_ctx_spam" xml:space="preserve">
+    <value>Spam</value>
+  </data>
+  <data name="msg_ctx_star" xml:space="preserve">
+    <value>Mark as important</value>
+  </data>
+  <data name="msg_ctx_unpin" xml:space="preserve">
+    <value>Unpin</value>
+  </data>
+  <data name="msg_ctx_unstar" xml:space="preserve">
+    <value>Unmark</value>
+  </data>
+  <data name="forwarded_msg_link_gen" xml:space="preserve">
+    <value>forwarded messages</value>
+  </data>
+  <data name="forwarded_msg_link_nom" xml:space="preserve">
+    <value>Forwarded message</value>
+  </data>
+  <data name="forwarded_msg_link_plu" xml:space="preserve">
+    <value>forwarded messages</value>
+  </data>
+  <data name="story_from_group" xml:space="preserve">
+    <value>Story from group</value>
+  </data>
+  <data name="story_from_user" xml:space="preserve">
+    <value>Story from</value>
+  </data>
+  <data name="story_restriction_deleted" xml:space="preserve">
+    <value>Story deleted</value>
+  </data>
+  <data name="story_restriction_expired" xml:space="preserve">
+    <value>The story could be viewed within 24 hours after publication</value>
+  </data>
+  <data name="story_restriction_private" xml:space="preserve">
+    <value>The author has hidden the story</value>
+  </data>
+  <data name="today" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>yesterday</value>
+  </data>
+  <data name="you" xml:space="preserve">
+    <value>You</value>
+  </data>
+  <data name="from" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="offline_f_last_month" xml:space="preserve">
+    <value>last seen this month</value>
+  </data>
+  <data name="offline_f_last_week" xml:space="preserve">
+    <value>last seen this week</value>
+  </data>
+  <data name="offline_f_long_ago" xml:space="preserve">
+    <value>last seen a long time ago</value>
+  </data>
+  <data name="offline_f_recently" xml:space="preserve">
+    <value>last seen recently</value>
+  </data>
+  <data name="offline_last_seen_f" xml:space="preserve">
+    <value>last seen {0}</value>
+  </data>
+  <data name="offline_last_seen_m" xml:space="preserve">
+    <value>last seen {0}</value>
+  </data>
+  <data name="offline_m_last_month" xml:space="preserve">
+    <value>last seen this month</value>
+  </data>
+  <data name="offline_m_last_week" xml:space="preserve">
+    <value>last seen this week</value>
+  </data>
+  <data name="offline_m_long_ago" xml:space="preserve">
+    <value>last seen a long time ago</value>
+  </data>
+  <data name="offline_m_recently" xml:space="preserve">
+    <value>last seen recently</value>
+  </data>
+  <data name="online" xml:space="preserve">
+    <value>online</value>
+  </data>
+  <data name="online_via" xml:space="preserve">
+    <value>online using {0}</value>
+  </data>
+  <data name="offline" xml:space="preserve">
+    <value>offline</value>
+  </data>
+  <data name="msg_action_screenshotFemale" xml:space="preserve">
+    <value>took a screenshot</value>
+  </data>
+  <data name="msg_action_screenshotMale" xml:space="preserve">
+    <value>took a screenshot</value>
+  </data>
+  <data name="followers_gen" xml:space="preserve">
+    <value>followers</value>
+  </data>
+  <data name="followers_nom" xml:space="preserve">
+    <value>follower</value>
+  </data>
+  <data name="followers_plu" xml:space="preserve">
+    <value>followers</value>
+  </data>
+  <data name="message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="usercard_friend" xml:space="preserve">
+    <value>You're friends</value>
+  </data>
+  <data name="usercard_friend_add" xml:space="preserve">
+    <value>Add to friends</value>
+  </data>
+  <data name="usercard_friend_remove" xml:space="preserve">
+    <value>Unfriend</value>
+  </data>
+  <data name="usercard_friend_req_accept" xml:space="preserve">
+    <value>Accept request</value>
+  </data>
+  <data name="usercard_friend_req_cancel" xml:space="preserve">
+    <value>Cancel request</value>
+  </data>
+  <data name="usercard_friend_req_sent" xml:space="preserve">
+    <value>Request sent</value>
+  </data>
+  <data name="user_blacklisted_by_me_f" xml:space="preserve">
+    <value>Blacklisted</value>
+  </data>
+  <data name="user_blacklisted_by_me_m" xml:space="preserve">
+    <value>Blacklisted</value>
+  </data>
+  <data name="user_blacklisted_f" xml:space="preserve">
+    <value>Added you to the blacklist</value>
+  </data>
+  <data name="user_blacklisted_m" xml:space="preserve">
+    <value>Added you to the blacklist</value>
+  </data>
+  <data name="user_blocked" xml:space="preserve">
+    <value>User blocked</value>
+  </data>
+  <data name="user_deleted" xml:space="preserve">
+    <value>User deleted</value>
+  </data>
+  <data name="user_private" xml:space="preserve">
+    <value>Private profile</value>
+  </data>
+  <data name="chatinfo_admin" xml:space="preserve">
+    <value>administrator</value>
+  </data>
+  <data name="chatinfo_invited_by_c" xml:space="preserve">
+    <value>invited by "{0}"</value>
+  </data>
+  <data name="chatinfo_invited_by_f" xml:space="preserve">
+    <value>invited by {0}</value>
+  </data>
+  <data name="chatinfo_invited_by_m" xml:space="preserve">
+    <value>invited by {0}</value>
+  </data>
+  <data name="chatinfo_owner" xml:space="preserve">
+    <value>started the chat</value>
+  </data>
+  <data name="chatinfo_subtitle_gen" xml:space="preserve">
+    <value>{0} members</value>
+  </data>
+  <data name="chatinfo_subtitle_nom" xml:space="preserve">
+    <value>{0} member</value>
+  </data>
+  <data name="chatinfo_subtitle_online_gen" xml:space="preserve">
+    <value>{0} members, {1} online</value>
+  </data>
+  <data name="chatinfo_subtitle_online_nom" xml:space="preserve">
+    <value>{0} member, {1} online</value>
+  </data>
+  <data name="chatinfo_subtitle_online_plu" xml:space="preserve">
+    <value>{0} members, {1} online</value>
+  </data>
+  <data name="chatinfo_subtitle_plu" xml:space="preserve">
+    <value>{0} members</value>
+  </data>
+  <data name="chatinfo_add_member" xml:space="preserve">
+    <value>Add member</value>
+  </data>
+  <data name="chatinfo_invite_link_chat" xml:space="preserve">
+    <value>Invitation link</value>
+  </data>
+  <data name="chatinfo_invite_link_channel" xml:space="preserve">
+    <value>Invitation link</value>
+  </data>
+  <data name="chatinfo_leave" xml:space="preserve">
+    <value>Leave chat</value>
+  </data>
+  <data name="chatinfo_unsubscribe" xml:space="preserve">
+    <value>Unsubscribe from channel</value>
+  </data>
+  <data name="chatinfo_leave_confirm" xml:space="preserve">
+    <value>Are you sure you want to leave the chat?</value>
+  </data>
+  <data name="chatinfo_unsubscribe_confirm" xml:space="preserve">
+    <value>If you unsubscribe, you will no longer receive new messages from this channel. You can re-subscribe at any time. Continue?</value>
+  </data>
+  <data name="chatifno_memctx_addadmin" xml:space="preserve">
+    <value>Appoint as administrator</value>
+  </data>
+  <data name="chatifno_memctx_kick" xml:space="preserve">
+    <value>Remove from chat</value>
+  </data>
+  <data name="chatifno_memctx_remadmin" xml:space="preserve">
+    <value>Dismiss administrator</value>
+  </data>
+  <data name="chatinfo_kick_confirm" xml:space="preserve">
+    <value>Are you sure you want to remove {0} from the chat?</value>
+  </data>
+  <data name="chat_kicked" xml:space="preserve">
+    <value>You were removed from the chat</value>
+  </data>
+  <data name="chat_left" xml:space="preserve">
+    <value>You left the chat</value>
+  </data>
+  <data name="msg_disappeared" xml:space="preserve">
+    <value>Message self-destructed</value>
+  </data>
+  <data name="msg_disappeared_desc" xml:space="preserve">
+    <value>This message self-destructed after a certain amount of time. You can only send these kinds of messages on VK Me.</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="err_api" xml:space="preserve">
+    <value>API error</value>
+  </data>
+  <data name="err_network" xml:space="preserve">
+    <value>Network error</value>
+  </data>
+  <data name="err_network_general" xml:space="preserve">
+    <value>Please check your internet connection and try again.</value>
+  </data>
+  <data name="err_network_no_connection" xml:space="preserve">
+    <value>No internet connection.</value>
+  </data>
+  <data name="err_network_shinaprovod" xml:space="preserve">
+    <value>A server error occurred. Please try again later.</value>
+  </data>
+  <data name="err_network_ssl" xml:space="preserve">
+    <value>Failed to perform SSL handshake</value>
+  </data>
+  <data name="err_network_ssl_hostname" xml:space="preserve">
+    <value>Hostname mismatch.</value>
+  </data>
+  <data name="err_network_ssl_certerror" xml:space="preserve">
+    <value>Invalid certificate.</value>
+  </data>
+  <data name="err_network_ssl_expired" xml:space="preserve">
+    <value>The certificate has expired.</value>
+  </data>
+  <data name="err_network_ssl_revoked" xml:space="preserve">
+    <value>The certificate has revoked.</value>
+  </data>
+  <data name="err_network_aborted" xml:space="preserve">
+    <value>Connection aborted.</value>
+  </data>
+  <data name="err_network_timeout" xml:space="preserve">
+    <value>Connection timed out.</value>
+  </data>
+  <data name="api_error_1" xml:space="preserve">
+    <value>Unknown error occurred</value>
+  </data>
+  <data name="api_error_15" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="api_error_18" xml:space="preserve">
+    <value>The user is deleted or blocked</value>
+  </data>
+  <data name="api_error_203" xml:space="preserve">
+    <value>You do not have access to this community</value>
+  </data>
+  <data name="api_error_901" xml:space="preserve">
+    <value>The user has denied messages from the community</value>
+  </data>
+  <data name="api_error_902" xml:space="preserve">
+    <value>The user has closed messages using privacy settings</value>
+  </data>
+  <data name="api_error_915" xml:space="preserve">
+    <value>Messages are disabled in the community</value>
+  </data>
+  <data name="api_error_916" xml:space="preserve">
+    <value>Messages are blocked in the community</value>
+  </data>
+  <data name="api_error_917" xml:space="preserve">
+    <value>No access to conversation</value>
+  </data>
+  <data name="retry" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="about_chat" xml:space="preserve">
+    <value>Chat info</value>
+  </data>
+  <data name="about_channel" xml:space="preserve">
+    <value>Channel info</value>
+  </data>
+  <data name="group" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="conv_ctx_search" xml:space="preserve">
+    <value>Search messages</value>
+  </data>
+  <data name="conv_ctx_attachments" xml:space="preserve">
+    <value>Show attachments</value>
+  </data>
+  <data name="conv_ctx_notifications_enable" xml:space="preserve">
+    <value>Enable notifications</value>
+  </data>
+  <data name="conv_ctx_notifications_disable" xml:space="preserve">
+    <value>Disable notifications</value>
+  </data>
+  <data name="conv_ctx_return_chat" xml:space="preserve">
+    <value>Return to chat</value>
+  </data>
+  <data name="conv_ctx_return_channel" xml:space="preserve">
+    <value>Join channel</value>
+  </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="msginput_edit" xml:space="preserve">
+    <value>Edit message</value>
+  </data>
+  <data name="msginput_placeholder" xml:space="preserve">
+    <value>Your message...</value>
+  </data>
+  <data name="drop_doc" xml:space="preserve">
+    <value>Drop files here to attach them to your message</value>
+  </data>
+  <data name="drop_photo" xml:space="preserve">
+    <value>Drop photos here to attach them to your message</value>
+  </data>
+  <data name="drop_photo_doc" xml:space="preserve">
+    <value>Drop photos here to attach them as files</value>
+  </data>
+  <data name="drop_video" xml:space="preserve">
+    <value>Drop videos here to attach them to your message</value>
+  </data>
+  <data name="drop_video_doc" xml:space="preserve">
+    <value>Drop videos here to attach them as files</value>
+  </data>
+  <data name="im_status_typing_s" xml:space="preserve">
+    <value>is typing</value>
+  </data>
+  <data name="im_status_typing_m" xml:space="preserve">
+    <value>are typing</value>
+  </data>
+  <data name="im_status_recording_s" xml:space="preserve">
+    <value>is recording audio</value>
+  </data>
+  <data name="im_status_recording_m" xml:space="preserve">
+    <value>are recording audio</value>
+  </data>
+    <data name="im_status_photo_single" xml:space="preserve">
+    <value>is sending a photo</value>
+  </data>
+  <data name="im_status_photo_m" xml:space="preserve">
+    <value>is sending a photo</value>
+  </data>
+  <data name="im_status_video_s" xml:space="preserve">
+    <value>is sending a video</value>
+  </data>
+  <data name="im_status_video_m" xml:space="preserve">
+    <value>is sending a video</value>
+  </data>
+  <data name="im_status_file_s" xml:space="preserve">
+    <value>is sending a file</value>
+  </data>
+  <data name="im_status_file_m" xml:space="preserve">
+    <value>is sending a file</value>
+  </data>
+  <data name="im_status_more" xml:space="preserve">
+    <value>and {0} more</value>
+  </data>
+  <data name="a_photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="a_video" xml:space="preserve">
+    <value>video</value>
+  </data>
+  <data name="a_doc" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="a_poll" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="a_geo" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="a_graffiti" xml:space="preserve">
+    <value>Graffiti</value>
+  </data>
+  <data name="atchpicker_doctype_all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="atchpicker_doctype_animations" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="atchpicker_doctype_archives" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="atchpicker_doctype_audio" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="atchpicker_doctype_books" xml:space="preserve">
+    <value>Books</value>
+  </data>
+  <data name="atchpicker_doctype_other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="atchpicker_doctype_pictures" xml:space="preserve">
+    <value>Pictures</value>
+  </data>
+  <data name="atchpicker_doctype_texts" xml:space="preserve">
+    <value>Texts</value>
+  </data>
+  <data name="atchpicker_doctype_video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="attach" xml:space="preserve">
+    <value>Attach</value>
+  </data>
+  <data name="unsupported_chat_link" xml:space="preserve">
+    <value>What is this chat?</value>
+  </data>
+  <data name="casper_chat" xml:space="preserve">
+    <value>Casper-chat</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="settings_general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="settings_interface" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="settings_notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="settings_privacy" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="settings_about" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="st_input" xml:space="preserve">
+    <value>Text input</value>
+  </data>
+  <data name="st_input_send" xml:space="preserve">
+    <value>send</value>
+  </data>
+  <data name="st_input_linebreak" xml:space="preserve">
+    <value>line break</value>
+  </data>
+  <data name="st_input_dont_parse_links" xml:space="preserve">
+    <value>Don't parse links</value>
+  </data>
+  <data name="st_input_disable_mentions" xml:space="preserve">
+    <value>Disable mentions</value>
+  </data>
+  <data name="st_input_sticker_suggest" xml:space="preserve">
+    <value>Suggest stickers</value>
+  </data>
+  <data name="appearance_conv_backgrounds" xml:space="preserve">
+    <value>Chat background</value>
+  </data>
+  <data name="appearance_theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="appearance_theme_auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="appearance_theme_sys" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="appearance_theme_light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="appearance_theme_dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="appearance_fontsize" xml:space="preserve">
+    <value>Font size</value>
+  </data>
+  <data name="appearance_bkgpicker_without_background" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="appearance_bkgpicker_file" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="appearance_bkgpicker_color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="about_version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="about_build_date" xml:space="preserve">
+    <value>Build date</value>
+  </data>
+  <data name="about_install_date" xml:space="preserve">
+    <value>Install date</value>
+  </data>
+  <data name="about_community" xml:space="preserve">
+    <value>Community in VK</value>
+  </data>
+  <data name="about_rate" xml:space="preserve">
+    <value>Rate app in Store</value>
+  </data>
+  <data name="about_feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="about_drago_v" xml:space="preserve">
+    <value>Donate</value>
+  </data>
+  <data name="community" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="public" xml:space="preserve">
+    <value>Public page</value>
+  </data>
+  <data name="event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="recent" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="graffitipicker_title" xml:space="preserve">
+    <value>Select graffiti</value>
+  </data>
+  <data name="graffitipicker_file" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="graffitipicker_draw" xml:space="preserve">
+    <value>Draw</value>
+  </data>
+  <data name="background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="empty_field" xml:space="preserve">
+    <value>This field cannot be empty</value>
+  </data>
+  <data name="polleditor" xml:space="preserve">
+    <value>Poll editor</value>
+  </data>
+  <data name="polleditor_create" xml:space="preserve">
+    <value>New poll</value>
+  </data>
+  <data name="polleditor_question" xml:space="preserve">
+    <value>Poll title</value>
+  </data>
+  <data name="polleditor_answers" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="polleditor_addoption" xml:space="preserve">
+    <value>Add option</value>
+  </data>
+  <data name="polleditor_parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="polleditor_anonymous" xml:space="preserve">
+    <value>Anonymous poll</value>
+  </data>
+  <data name="polleditor_multiple" xml:space="preserve">
+    <value>Multiple options</value>
+  </data>
+  <data name="polleditor_disable_unvote" xml:space="preserve">
+    <value>Can't retract votes</value>
+  </data>
+  <data name="polleditor_limited_time" xml:space="preserve">
+    <value>Limited voting time</value>
+  </data>
+  <data name="polleditor_empty_answers" xml:space="preserve">
+    <value>Answers cannot be empty</value>
+  </data>
+  <data name="polleditor_invalid_limittime" xml:space="preserve">
+    <value>Invalid poll end time</value>
+  </data>
+  <data name="wait" xml:space="preserve">
+    <value>Please wait</value>
+  </data>
+  <data name="access_denied" xml:space="preserve">
+    <value>Access denied!</value>
+  </data>
+  <data name="audiorec_nomic" xml:space="preserve">
+    <value>Microphone not available</value>
+  </data>
+  <data name="audiorec_recording" xml:space="preserve">
+    <value>Recording</value>
+  </data>
+  <data name="go_to_message" xml:space="preserve">
+    <value>Go to message</value>
+  </data>
+  <data name="attachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="conv_attaches_photo" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="conv_attaches_video" xml:space="preserve">
+    <value>Videos</value>
+  </data>
+  <data name="conv_attaches_audio" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="conv_attaches_docs" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="conv_attaches_links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="conv_attaches_graffities" xml:space="preserve">
+    <value>Graffiti</value>
+  </data>
+  <data name="conv_attaches_audiomessages" xml:space="preserve">
+    <value>Voice messages</value>
+  </data>
+  <data name="search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="intsharing_title_user" xml:space="preserve">
+    <value>Share attachment</value>
+  </data>
+  <data name="intsharing_title_group" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="intsharing_forward_title_user" xml:space="preserve">
+    <value>Forward messages</value>
+  </data>
+  <data name="intsharing_forward_title_group" xml:space="preserve">
+    <value>Forward</value>
+  </data>
+  <data name="intsharing_to_pm" xml:space="preserve">
+    <value>to private messages</value>
+  </data>
+  <data name="intsharing_to_group" xml:space="preserve">
+    <value>to community messages</value>
+  </data>
+  <data name="messagedelete_dialog_title_single" xml:space="preserve">
+    <value>Delete message</value>
+  </data>
+  <data name="messagedelete_dialog_title_multi" xml:space="preserve">
+    <value>Delete messages</value>
+  </data>
+  <data name="messagedelete_dialog_nom" xml:space="preserve">
+    <value>Are you sure you want to delete this message?</value>
+  </data>
+  <data name="messagedelete_dialog_gen" xml:space="preserve">
+    <value>Are you sure you want to delete {0} messages?</value>
+  </data>
+  <data name="messagedelete_dialog_plu" xml:space="preserve">
+    <value>Are you sure you want to delete {0} messages?</value>
+  </data>
+  <data name="messagedelete_dialog_for_all" xml:space="preserve">
+    <value>Delete for everyone</value>
+  </data>
+  <data name="messagespam_dialog_title" xml:space="preserve">
+    <value>Mark as spam</value>
+  </data>
+  <data name="messagespam_dialog_nom" xml:space="preserve">
+    <value>Are you sure you want to mark this message as spam and delete?</value>
+  </data>
+  <data name="messagespam_dialog_gen" xml:space="preserve">
+    <value>Are you sure you want to mark {0} messages as spam and delete?</value>
+  </data>
+  <data name="messagespam_dialog_plu" xml:space="preserve">
+    <value>Are you sure you want to mark {0} messages as spam and delete?</value>
+  </data>
+  <data name="photoviewer" xml:space="preserve">
+    <value>Photo viewer</value>
+  </data>
+  <data name="save_to_album" xml:space="preserve">
+    <value>Save to album</value>
+  </data>
+  <data name="save_to_docs" xml:space="preserve">
+    <value>Save to Files</value>
+  </data>
+  <data name="saved_to_album" xml:space="preserve">
+    <value>Photo saved to "Saved photos"</value>
+  </data>
+  <data name="saved_to_docs" xml:space="preserve">
+    <value>Saved to Files</value>
+  </data>
+  <data name="share" xml:space="preserve">
+    <value>Share</value>
+  </data>
+  <data name="download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="photoviewer_photo_downloaded" xml:space="preserve">
+    <value>This photo has been saved</value>
+  </data>
+  <data name="date_at" xml:space="preserve">
+    <value>at</value>
+  </data>
+  <data name="search_conv" xml:space="preserve">
+    <value>Conversations and friends</value>
+  </data>
+  <data name="search_messages" xml:space="preserve">
+    <value>Messages</value>
+  </data>
+  <data name="search_friends" xml:space="preserve">
+    <value>Find friends</value>
+  </data>
+  <data name="important" xml:space="preserve">
+    <value>Important</value>
+  </data>
+  <data name="convcreator" xml:space="preserve">
+    <value>New conversation</value>
+  </data>
+  <data name="convcreator_button" xml:space="preserve">
+    <value>Create conversation</value>
+  </data>
+  <data name="convcreator_name_placeholder" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="convcreator_select_friends" xml:space="preserve">
+    <value>Select members</value>
+  </data>
+  <data name="msg_action_inviteUserByCallFemale" xml:space="preserve">
+    <value>invited</value>
+  </data>
+  <data name="msg_action_inviteUserByCallMale" xml:space="preserve">
+    <value>invited</value>
+  </data>
+  <data name="msg_action_inviteUserByCall" xml:space="preserve">
+    <value>to the call</value>
+  </data>
+  <data name="msg_action_inviteUserByCallJoinLinkFemale" xml:space="preserve">
+    <value>joined the call via link</value>
+  </data>
+  <data name="msg_action_inviteUserByCallJoinLinkMale" xml:space="preserve">
+    <value>joined the call via link</value>
+  </data>
+  <data name="outgoing_call" xml:space="preserve">
+    <value>Outgoing call</value>
+  </data>
+  <data name="incoming_call" xml:space="preserve">
+    <value>Incoming call</value>
+  </data>
+  <data name="call_missed" xml:space="preserve">
+    <value>Missed</value>
+  </data>
+  <data name="call_canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="call_declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="play" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="chatlinkviewer_hint_chat" xml:space="preserve">
+    <value>You can invite any person to the group chat using the link below:</value>
+  </data>
+  <data name="chatlinkviewer_hint_channel" xml:space="preserve">
+    <value>You can invite any person to the channel using the link below:</value>
+  </data>
+  <data name="chatlinkviewer_new" xml:space="preserve">
+    <value>Revoke link</value>
+  </data>
+  <data name="visible_messages_count" xml:space="preserve">
+    <value>Show previous messages:</value>
+  </data>
+  <data name="invite" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="friends_count_nom" xml:space="preserve">
+    <value>{0} friend</value>
+  </data>
+  <data name="friends_count_gen" xml:space="preserve">
+    <value>{0} friends</value>
+  </data>
+  <data name="friends_count_plu" xml:space="preserve">
+    <value>{0} friends</value>
+  </data>
+  <data name="selected_in" xml:space="preserve">
+    <value>{0} of {1} selected</value>
+  </data>
+  <data name="msg_action_acceptedMessageRequestMale" xml:space="preserve">
+    <value>accepted your message request</value>
+  </data>
+  <data name="msg_action_acceptedMessageRequestFemale" xml:space="preserve">
+    <value>accepted your message request</value>
+  </data>
+  <data name="chatinfo_permissions" xml:space="preserve">
+    <value>Chat settings</value>
+  </data>
+  <data name="chatperm_invite" xml:space="preserve">
+    <value>Can invite members to the chat</value>
+  </data>
+  <data name="chatperm_change_info" xml:space="preserve">
+    <value>Can edit chat information</value>
+  </data>
+  <data name="chatperm_change_pin" xml:space="preserve">
+    <value>Can change a pinned message</value>
+  </data>
+  <data name="chatperm_use_mass_mentions" xml:space="preserve">
+    <value>Can use mass mentions</value>
+  </data>
+  <data name="chatperm_see_invite_link" xml:space="preserve">
+    <value>Can see the chat invite link</value>
+  </data>
+  <data name="chatperm_call" xml:space="preserve">
+    <value>Can start group calls</value>
+  </data>
+  <data name="chatperm_change_admins" xml:space="preserve">
+    <value>Can add administrators</value>
+  </data>
+  <data name="chatperm_opt_all" xml:space="preserve">
+    <value>All members</value>
+  </data>
+  <data name="chatperm_opt_owner_admins" xml:space="preserve">
+    <value>Creator and administrators</value>
+  </data>
+  <data name="chatperm_opt_owner" xml:space="preserve">
+    <value>Only creator</value>
+  </data>
+  <data name="chatpreview_member_1" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="chatpreview_member_2_gen" xml:space="preserve">
+    <value>more</value>
+  </data>
+  <data name="chatpreview_member_2_nom" xml:space="preserve">
+    <value>more</value>
+  </data>
+  <data name="chatpreview_member_2_plu" xml:space="preserve">
+    <value>more</value>
+  </data>
+  <data name="chatpreview_invalid_link" xml:space="preserve">
+    <value>Invite link invalid or incorrect</value>
+  </data>
+  <data name="chat_invitation" xml:space="preserve">
+    <value>Conversation invitation</value>
+  </data>
+  <data name="chat_join" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="chat_go" xml:space="preserve">
+    <value>Go to conversation</value>
+  </data>
+  <data name="channel_invitation" xml:space="preserve">
+    <value>Channel invitation</value>
+  </data>
+  <data name="channel_join" xml:space="preserve">
+    <value>Join channel</value>
+  </data>
+  <data name="channel_go" xml:space="preserve">
+    <value>Go to channel</value>
+  </data>
+  <data name="templates" xml:space="preserve">
+    <value>TEMPLATES</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="change" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="communities" xml:space="preserve">
+    <value>Communities</value>
+  </data>
+  <data name="audioplayer" xml:space="preserve">
+    <value>Audio player</value>
+  </data>
+  <data name="videoplayer" xml:space="preserve">
+    <value>Video player</value>
+  </data>
+  <data name="resolution" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="speed" xml:space="preserve">
+    <value>Speed</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Log Out</value>
+  </data>
+  <data name="logout_dialog" xml:space="preserve">
+    <value>Are you sure you want to log out?</value>
+  </data>
+  <data name="user_blacklist" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
+  <data name="user_blacklist_empty" xml:space="preserve">
+    <value>Blocked users cannot send you messages, view your profile and leave comments.</value>
+  </data>
+  <data name="user_blacklist_removed_Female" xml:space="preserve">
+    <value>{0} unblocked</value>
+  </data>
+  <data name="user_blacklist_removed_Male" xml:space="preserve">
+    <value>{0} unblocked</value>
+  </data>
+  <data name="conv_ctx_clear" xml:space="preserve">
+    <value>Clear history</value>
+  </data>
+  <data name="conv_ctx_clear_block" xml:space="preserve">
+    <value>Clear and block messages</value>
+  </data>
+  <data name="conv_ctx_clear_leave" xml:space="preserve">
+    <value>Leave and delete chat</value>
+  </data>
+  <data name="conv_ctx_pin_to_contactpanel" xml:space="preserve">
+    <value>Pin to the taskbar</value>
+  </data>
+    <data name="conv_ctx_unpin_from_contactpanel" xml:space="preserve">
+    <value>Unpin from the taskbar</value>
+  </data>
+  <data name="conv_ctx_mark_as_read" xml:space="preserve">
+    <value>Mark as read</value>
+  </data>
+  <data name="conv_ctx_mark_as_unread" xml:space="preserve">
+    <value>Mark as unread</value>
+  </data>
+  <data name="send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="sharetarget_selected" xml:space="preserve">
+    <value>Choose dialogs</value>
+  </data>
+  <data name="sharetarget_err_upload_nomsg_title" xml:space="preserve">
+    <value>There was an error uploading all files</value>
+  </data>
+  <data name="sharetarget_err_upload_nomsg_desc" xml:space="preserve">
+    <value>Try again later. Make sure that the size of each file does not exceed 2 GB.</value>
+  </data>
+  <data name="sharetarget_err_upload_title" xml:space="preserve">
+    <value>Not all files could be uploaded</value>
+  </data>
+  <data name="sharetarget_err_upload_desc_single" xml:space="preserve">
+    <value>Unable to upload file "{0}". You can send message without this file. Continue?</value>
+  </data>
+  <data name="sharetarget_err_upload_desc_multi" xml:space="preserve">
+    <value>Unable to upload these files:\n{0}\n\nYou can send message without these files. Continue?</value>
+  </data>
+  <data name="sharetarget_sent_but_not_all_title" xml:space="preserve">
+    <value>The message was sent, but not to everyone selected</value>
+  </data>
+  <data name="sharetarget_err_send" xml:space="preserve">
+    <value>Failed to send message to "{0}"</value>
+  </data>
+  <data name="sharetarget_err_send_user" xml:space="preserve">
+    <value>Failed to send message to {0}</value>
+  </data>
+  <data name="sharetarget_sent_but_not_all" xml:space="preserve">
+    <value>Failed to send message to these dialogs:\n{0}</value>
+  </data>
+  <data name="st_stickers" xml:space="preserve">
+    <value>Stickers</value>
+  </data>
+  <data name="st_stickers_suggest" xml:space="preserve">
+    <value>Suggest stickers</value>
+  </data>
+  <data name="st_stickers_suggest_descr" xml:space="preserve">
+    <value>Matching stickers will appear when you type certain words or emojis</value>
+  </data>
+  <data name="st_stickers_animated" xml:space="preserve">
+    <value>Animated stickers</value>
+  </data>
+  <data name="st_stickers_animated_descr" xml:space="preserve">
+    <value>Animated stickers will be played automatically</value>
+  </data>
+  <data name="poll_anonymous" xml:space="preserve">
+    <value>Anonymous poll</value>
+  </data>
+  <data name="poll_finished" xml:space="preserve">
+    <value>finished</value>
+  </data>
+  <data name="poll_disable_unvote" xml:space="preserve">
+    <value>can't retract votes</value>
+  </data>
+  <data name="poll_no_votes" xml:space="preserve">
+    <value>No one has voted</value>
+  </data>
+  <data name="poll_public" xml:space="preserve">
+    <value>Public poll</value>
+  </data>
+  <data name="poll_result_people_gen" xml:space="preserve">
+    <value>person voted</value>
+  </data>
+  <data name="poll_result_people_nom" xml:space="preserve">
+    <value>person voted</value>
+  </data>
+  <data name="poll_result_people_plu" xml:space="preserve">
+    <value>people voted</value>
+  </data>
+  <data name="poll_result_voted_gen" xml:space="preserve">
+    <value>​</value>
+  </data>
+  <data name="poll_result_voted_nom" xml:space="preserve">
+    <value>​</value>
+  </data>
+  <data name="poll_result_voted_plu" xml:space="preserve">
+    <value>​</value>
+  </data>
+  <data name="poll_vote.Content" xml:space="preserve">
+    <value>Vote</value>
+  </data>
+  <data name="poll_votes_gen" xml:space="preserve">
+    <value>votes</value>
+  </data>
+  <data name="poll_votes_nom" xml:space="preserve">
+    <value>vote</value>
+  </data>
+  <data name="poll_votes_plu" xml:space="preserve">
+    <value>votes</value>
+  </data>
+  <data name="poll_vote_first" xml:space="preserve">
+    <value>Be the first to vote!</value>
+  </data>
+  <data name="until" xml:space="preserve">
+    <value>until</value>
+  </data>
+  <data name="story_clst_place" xml:space="preserve">
+    <value>View location</value>
+  </data>
+  <data name="story_clst_hashtag" xml:space="preserve">
+    <value>Search hashtag</value>
+  </data>
+  <data name="story_clst_post" xml:space="preserve">
+    <value>Go to post</value>
+  </data>
+  <data name="story_clst_link" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="story_clst_market" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="views_nom" xml:space="preserve">
+    <value>{0} views</value>
+  </data>
+  <data name="views_gen" xml:space="preserve">
+    <value>{0} views</value>
+  </data>
+  <data name="views_plu" xml:space="preserve">
+    <value>{0} views</value>
+  </data>
+  <data name="delete_conversation_title" xml:space="preserve">
+    <value>Clear history</value>
+  </data>
+  <data name="delete_conversation_description" xml:space="preserve">
+    <value>Are you sure you want to clear the entire message history? This cannot be undone.</value>
+  </data>
+  <data name="leave_and_delete" xml:space="preserve">
+    <value>Leave and clear history</value>
+  </data>
+  <data name="leave_and_delete_confirm" xml:space="preserve">
+    <value>Are you sure you want to clear the entire message history and leave the chat? This cannot be undone.</value>
+  </data>
+  <data name="enter_password" xml:space="preserve">
+    <value>Enter your local password</value>
+  </data>
+  <data name="pass_modal_creation" xml:space="preserve">
+    <value>Local password</value>
+  </data>
+  <data name="pass_modal_change" xml:space="preserve">
+    <value>Change password</value>
+  </data>
+  <data name="pass_modal_delete" xml:space="preserve">
+    <value>Delete password</value>
+  </data>
+  <data name="pass_modal_info" xml:space="preserve">
+    <value>If you forget your local password, you'll need to log out of Laney and log in again.</value>
+  </data>
+  <data name="pass_old" xml:space="preserve">
+    <value>Your current password</value>
+  </data>
+  <data name="pass_new" xml:space="preserve">
+    <value>Enter new password</value>
+  </data>
+  <data name="pass_again" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="pass_modal_short" xml:space="preserve">
+    <value>Password must contain at least 4 characters.</value>
+  </data>
+  <data name="pass_modal_mismatch" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+  <data name="pass_modal_wrong" xml:space="preserve">
+    <value>Password is wrong.</value>
+  </data>
+  <data name="st_privacy_winhello" xml:space="preserve">
+    <value>Use Windows Hello</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="set" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+</root>

@@ -1,0 +1,51 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.GraffitiPicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:wct="using:Elorucov.Laney.Controls.WinComToolkit"
+    xmlns:vk="using:ELOR.VKAPILib.Objects"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource VKUIFullModalStyle}" Title="{x:Bind Converter={StaticResource loc}, ConverterParameter=graffitipicker_title}">
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <wct:AdaptiveGridView Grid.ColumnSpan="2" Margin="8" ItemHeight="90" DesiredWidth="120" StretchContentForSingleRow="False" IsItemClickEnabled="True" ItemsSource="{Binding Graffities}" ItemClick="PickGraffiti">
+            <wct:AdaptiveGridView.ItemTemplate>
+                <DataTemplate x:DataType="vk:Document">
+                    <Border>
+                        <Border.Background>
+                            <ImageBrush Stretch="Uniform">
+                                <ImageBrush.ImageSource>
+                                    <BitmapImage UriSource="{x:Bind Preview.Graffiti.Uri}" DecodePixelType="Logical" DecodePixelHeight="120"/>
+                                </ImageBrush.ImageSource>
+                            </ImageBrush>
+                        </Border.Background>
+                    </Border>
+                </DataTemplate>
+            </wct:AdaptiveGridView.ItemTemplate>
+        </wct:AdaptiveGridView>
+        <vkui:Placeholder Grid.ColumnSpan="2" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Grid.ColumnSpan="2" Width="44" Height="44" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+
+        <Button Grid.Column="0" Visibility="Collapsed" Margin="8" Grid.Row="1" Style="{StaticResource VKButtonSecondaryExtraLarge}" HorizontalAlignment="Stretch" Command="{Binding FileCommand}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=graffitipicker_file}"/>
+        <Button Grid.Column="1" Visibility="Collapsed" Margin="8" Grid.Row="1" Style="{StaticResource VKButtonSecondaryExtraLarge}" HorizontalAlignment="Stretch" Command="{Binding DrawCommand}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=graffitipicker_draw}"/>
+    </Grid>
+</elor:Modal>

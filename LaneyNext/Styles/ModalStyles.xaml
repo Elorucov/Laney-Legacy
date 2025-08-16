@@ -1,0 +1,141 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:contract8Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,8)">
+    <ControlTemplate x:Key="VKUIModalTemplate" TargetType="elor:Modal">
+        <Grid x:Name="LayoutRoot">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="HeightStates">
+                    <VisualState x:Name="Bottom">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Center">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Stretch">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="Layer" Background="#8C000000"/>
+            <Border x:Name="AnimationBorder">
+                <Grid x:Name="DialogWrapper">
+                    <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
+                                           Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
+                    <Border x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                        HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="Border" Grid.RowSpan="2" CornerRadius="18" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"/>
+                            <Grid x:Name="TitleBar" Height="52">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="TitleText" Padding="16,5,0,0" Style="{StaticResource ModalTitleBarTextStyle}" Text="{TemplateBinding Title}"/>
+                                <Button x:Name="CloseButton" Style="{StaticResource TransparentButtonStyle}" Grid.Column="1" Visibility="{TemplateBinding CloseButtonVisibility}" Width="48" Height="48" Margin="2">
+                                    <ContentPresenter Width="24" Height="24" Foreground="{ThemeResource VKModalCardHeaderCloseBrush}" ContentTemplate="{StaticResource Icon24Dismiss}"/>
+                                </Button>
+                                <Border Grid.ColumnSpan="2" Height="1" Margin="16,0" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="{ThemeResource VKUILineBrush}">
+                                    <Border.RenderTransform>
+                                        <CompositeTransform TranslateY="1"/>
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="VKUITabModalTemplate" TargetType="elor:Modal">
+        <Grid x:Name="LayoutRoot">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="HeightStates">
+                    <VisualState x:Name="Bottom">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Center">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Stretch">
+                        <VisualState.Setters>
+                            <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
+                            <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="Layer" Background="#8C000000"/>
+            <Border x:Name="AnimationBorder">
+                <Grid x:Name="DialogWrapper">
+                    <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
+                                           Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
+                    <Border x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                        HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Border x:Name="Border" Grid.RowSpan="2" CornerRadius="18" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                            <ContentPresenter Grid.RowSpan="2" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"/>
+                            <Grid x:Name="TitleBar" Height="52">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="TitleText" Padding="16,5,0,0" Visibility="Collapsed" Style="{StaticResource ModalTitleBarTextStyle}" Text="{TemplateBinding Title}"/>
+                                <Button x:Name="CloseButton" Style="{StaticResource TransparentButtonStyle}" Grid.Column="1" Visibility="{TemplateBinding CloseButtonVisibility}" Width="48" Height="48" Margin="2">
+                                    <ContentPresenter Width="24" Height="24" Foreground="{ThemeResource VKModalCardHeaderCloseBrush}" ContentTemplate="{StaticResource Icon24Dismiss}"/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="VKUIDefaultModalStyle" TargetType="elor:Modal">
+        <Setter Property="Background" Value="{ThemeResource VKModalCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource VKModalCardBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornersRadius" Value="18"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="CloseButtonVisibility" Value="Visible"/>
+        <Setter Property="Template" Value="{StaticResource VKUIModalTemplate}"/>
+    </Style>
+
+    <Style x:Key="VKUIFullModalStyle" BasedOn="{StaticResource VKUIDefaultModalStyle}" TargetType="elor:Modal">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FullSizeDesired" Value="True"/>
+        <Setter Property="MaxWidth" Value="540"/>
+    </Style>
+
+    <Style x:Key="VKUITabModalStyle" BasedOn="{StaticResource VKUIFullModalStyle}" TargetType="elor:Modal">
+        <Setter Property="Template" Value="{StaticResource VKUITabModalTemplate}"/>
+    </Style>
+</ResourceDictionary>

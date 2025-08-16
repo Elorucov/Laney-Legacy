@@ -1,0 +1,79 @@
+﻿<Application
+    x:Class="Elorucov.Laney.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney"
+    xmlns:conv="using:Elorucov.Laney.Converters"
+    xmlns:vkcv="using:VK.VKUI.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKPalette.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKPaletteMessages.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKScheme.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKSchemeMessages.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKTypography.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKIcons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///VK.VKUI/VKControlStyles.xaml"/>
+                <!-- Control styles -->
+                <ResourceDictionary Source="ms-appx:///Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Styles/CommonStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Styles/ListViewItemStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Styles/ModalStyles.xaml"/>
+
+                <!-- Templates -->
+                <ResourceDictionary Source="ms-appx:///Templates/CommonTemplates.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/UsersAndGroupsListItem.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/Icons.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/ConversationDataTemplate.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/UnreadCounterTemplate.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/ServiceMessageTemplate.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/BubbleMessageTemplates.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Templates/SettingsSectionTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <conv:LocalizationConverter x:Key="loc"/>
+            <conv:MessageToConvPreview x:Key="mtp"/>
+            <conv:UnreadMessagesCounterToTemplate x:Key="ctt"/>
+            <conv:NullToBool x:Key="ntv"/>
+            <conv:NullToBool2 x:Key="ntv2"/>
+            <conv:DateTimeToString x:Key="dts"/>
+            <conv:UserGroupToVisibility x:Key="ugv"/>
+            <conv:OnlineIconConverter x:Key="oic"/>
+            <conv:DocumentIconConverter x:Key="dic"/>
+            <conv:FileSizeConverter x:Key="fzc"/>
+            <conv:ValueToBool x:Key="vtb"/>
+            <conv:PlaceholderIconConverter x:Key="pic"/>
+            <vkcv:IconToDataTemplateConverter x:Key="vki"/>
+            <conv:ReverseBool x:Key="rbc"/>
+            <conv:BoolToOpacity x:Key="bto"/>
+            <conv:GeopointToString x:Key="geo"/>
+            <conv:VKPrivacyCategoryConverter x:Key="vpc"/>
+            <conv:StickerIdToUri x:Key="sid"/>
+            <conv:CounterConverter x:Key="ctr"/>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="ModernSplashScreenBrush" Color="#212121"/>
+                    <AcrylicBrush x:Key="VKBackgroundPageAcrylicBrush" BackgroundSource="HostBackdrop" FallbackColor="#19191A" TintColor="#19191A" TintOpacity="0.8"/>
+                    <SolidColorBrush x:Key="VKUILineBrush" Color="#27FFFFFF"/>
+                    <SolidColorBrush x:Key="MessageInputControlForegroundBrush" Color="#8F9498"/>
+                    <SolidColorBrush x:Key="LaneyLogoBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="VKUIFlyoutSeparatorBrush" Color="#464747"/>
+                    <AcrylicBrush x:Key="DragDropPanelBackgroundBrush" BackgroundSource="Backdrop" FallbackColor="{StaticResource VKGray900Color}" TintColor="{StaticResource VKGray900Color}" TintOpacity="0.8"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ModernSplashScreenBrush" Color="#FFFFFF"/>
+                    <AcrylicBrush x:Key="VKBackgroundPageAcrylicBrush" BackgroundSource="HostBackdrop" FallbackColor="#FFFFFF" TintColor="#FFFFFF" TintOpacity="0.8"/>
+                    <SolidColorBrush x:Key="VKUILineBrush" Color="#27000000"/>
+                    <SolidColorBrush x:Key="MessageInputControlForegroundBrush" Color="#3E89E1"/>
+                    <SolidColorBrush x:Key="LaneyLogoBrush" Color="#0070C0"/>
+                    <SolidColorBrush x:Key="VKUIFlyoutSeparatorBrush" Color="#D7D8D9"/>
+                    <AcrylicBrush x:Key="DragDropPanelBackgroundBrush" BackgroundSource="Backdrop" FallbackColor="{StaticResource VKWhiteColor}" TintColor="{StaticResource VKWhiteColor}" TintOpacity="0.8"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

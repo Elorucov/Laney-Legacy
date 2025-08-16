@@ -1,0 +1,122 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Views.ChatCreationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="FriendsGroups" x:Key="FriendsGroups" IsSourceGrouped="True" Source="{Binding Friends, Mode=TwoWay}"/>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource VKBackgroundContentBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <vkui:PageHeader Visibility="{Binding IsChatCreationMode, Converter={StaticResource ntv2}}" Padding="0" BorderBrush="Transparent">
+            <vkui:PageHeader.LeftButtons>
+                <vkui:PageHeaderButton Icon="Icon28ArrowLeftOutline" Click="GoBack"/>
+            </vkui:PageHeader.LeftButtons>
+            <TextBox x:Name="SearchBox" Style="{StaticResource VKSearchBar}" InputScope="Search" Margin="0,8" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=search_friends}" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="SearchBoxKeyDown"/>
+        </vkui:PageHeader>
+        <vkui:PageHeader Visibility="{Binding IsChatCreationMode}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=convcreator}" BorderBrush="Transparent">
+            <vkui:PageHeader.LeftButtons>
+                <vkui:PageHeaderButton Icon="Icon28ArrowLeftOutline" Click="GoBack"/>
+            </vkui:PageHeader.LeftButtons>
+            <vkui:PageHeader.RightButtons>
+                <!--<vkui:PageHeaderButton Icon="Icon28SettingsOutline" Command="{Binding ConvPermissionsEditorCommand}"/>-->
+                <vkui:PageHeaderButton Icon="Icon28DoneOutline" IsEnabled="{Binding IsChatCreateDoneButtonEnabled}" Command="{Binding ConversationCreateCommand}"/>
+            </vkui:PageHeader.RightButtons>
+        </vkui:PageHeader>
+        <StackPanel x:Name="PickedFriendsContainer" Grid.Row="1" Visibility="{Binding IsChatCreationMode}">
+            <TextBox Margin="16,0,16,16" Style="{StaticResource VKTextBox}" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=convcreator_name_placeholder}" Text="{Binding ChatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListView x:Name="SelectedFriendsView" Visibility="{Binding SelectedFriendsForChat.Count, Converter={StaticResource ntv}}" ItemsSource="{Binding SelectedFriendsForChat}" SelectionMode="None" Height="80" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="2,0,0,0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="76" Height="80">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <elor:Avatar IsHitTestVisible="False" Width="52" Height="52" Margin="12,8,12,0" ImageUri="{Binding Photo}" DisplayName="{Binding FullName}"/>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,3,0" Width="24" Height="24" Style="{StaticResource EllipseButtonStyle}" Background="{ThemeResource VKTabbarBackgroundBrush}" BorderBrush="{ThemeResource VKBackgroundContentBrush}" BorderThickness="2" Click="RemoveUserFromSelected">
+                                <vkui:VKIcon Id="Icon16Cancel" Margin="4" Foreground="{ThemeResource VKIconSecondaryAlphaBrush}"/>
+                            </Button>
+                            <TextBlock Grid.Row="1" Margin="0,2,0,0" FontSize="13" TextAlignment="Center" Foreground="{ThemeResource VKTextPrimaryBrush}" Text="{Binding FirstName}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Border Height="80" Visibility="{Binding SelectedFriendsForChat.Count, Converter={StaticResource ntv2}}">
+                <TextBlock VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=convcreator_select_friends}"/>
+            </Border>
+        </StackPanel>
+        <SemanticZoom Grid.Row="2" Visibility="{Binding IsFriendSearchMode, Converter={StaticResource ntv2}}">
+            <SemanticZoom.ZoomedInView>
+                <ListView x:Name="FriendsList" ItemsSource="{Binding Source={StaticResource FriendsGroups}}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemTemplate="{StaticResource DefaultUserItemTemplate}" IsItemClickEnabled="True" SelectionMode="{Binding FriendsListSelectionMode}" ItemClick="OnFriendClicked" SelectionChanged="FriendsList_SelectionChanged">
+                    <ListView.Header>
+                        <StackPanel Visibility="{Binding IsLoading, Converter={StaticResource ntv2}}">
+                            <Button Style="{StaticResource TransparentButtonStyle}" Padding="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Visibility="{Binding IsChatCreationMode, Converter={StaticResource ntv2}}" Click="SwitchToChatCreationMode">
+                                <Grid Margin="16,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Fill="{ThemeResource VKControlBackgroundBrush}" Width="44" Height="44"/>
+                                    <vkui:VKIcon Id="Icon28UsersOutline" Foreground="{ThemeResource VKAccentBrush}"/>
+                                    <StackPanel Grid.Column="1" Margin="12,-1,0,0" VerticalAlignment="Center">
+                                        <TextBlock Foreground="{ThemeResource VKAccentBrush}" FontSize="16" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=convcreator_button}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                        </StackPanel>
+                    </ListView.Header>
+                    <ListView.GroupStyle>
+                        <GroupStyle HidesIfEmpty="True" HeaderTemplate="{StaticResource FriendsGroupHeaderTemplate}"/>
+                    </ListView.GroupStyle>
+                </ListView>
+            </SemanticZoom.ZoomedInView>
+            <SemanticZoom.ZoomedOutView>
+                <GridView ItemsSource="{Binding Source={StaticResource FriendsGroups}, Path=CollectionGroups}" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="320">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="Transparent" Width="48" Height="48" Margin="4">
+                                <TextBlock Text="{Binding Group.SemanticZoomGlyph}"
+                               FontFamily="{Binding Group.SemanticZoomGlyphFontFamily}"
+                               Opacity="0.75" 
+                               FontSize="24"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </SemanticZoom.ZoomedOutView>
+        </SemanticZoom>
+        <ListView x:Name="FoundFriendsList" Grid.Row="2" Visibility="{Binding IsFriendSearchMode}" ItemsSource="{Binding FoundFriends}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemTemplate="{StaticResource DefaultUserItemTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="OnFriendClicked"/>
+        <vkui:Placeholder Grid.Row="2" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44" Foreground="{ThemeResource VKAccentBrush}" Visibility="{Binding IsLoading}"/>
+    </Grid>
+</Page>

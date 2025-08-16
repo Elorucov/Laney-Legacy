@@ -1,0 +1,24 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.ChatPreviewCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Margin="8"
+    Style="{StaticResource VKUITabModalStyle}" FullSizeDesired="False" MaxWidth="384" DropShadow="True"
+    Background="{ThemeResource VKModalCardBackgroundBrush}" BorderBrush="{ThemeResource VKModalCardBorderBrush}" BorderThickness="1">
+
+    <StackPanel Margin="16">
+        <Ellipse x:Name="ChatAvatar" HorizontalAlignment="Center" Width="72" Height="72" Margin="0,8,0,16"/>
+        <TextBlock x:Name="ChatTitle" Style="{StaticResource VKTitle1}" TextWrapping="Wrap" MaxLines="2" TextAlignment="Center" FontWeight="SemiBold"/>
+        <TextBlock x:Name="Subtitle" Style="{StaticResource VKSubhead}" Foreground="{ThemeResource VKTextSecondaryBrush}" TextAlignment="Center"/>
+        <StackPanel x:Name="MembersInfo" Visibility="Collapsed" Margin="12,20,12,8">
+            <elor:UserAvatars x:Name="MembersAvatars" HorizontalAlignment="Center" Height="36" MaxDisplayedAvatars="3"/>
+            <TextBlock x:Name="Members" TextAlignment="Center" FontSize="13" LineHeight="16" LineStackingStrategy="BlockLineHeight" Margin="0,8,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}"/>
+        </StackPanel>
+        <Button x:Name="MainButton" Style="{StaticResource VKButtonPrimaryExtraLarge}" Margin="0,32,0,0" HorizontalAlignment="Stretch" Click="MainButton_Click"/>
+    </StackPanel>
+</elor:Modal>

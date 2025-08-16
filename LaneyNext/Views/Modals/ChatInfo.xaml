@@ -1,0 +1,58 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.ChatInfo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" x:Name="ModalRoot"
+    Style="{StaticResource VKUIFullModalStyle}">
+
+    <Grid x:Name="Root" Background="Transparent">
+        <Grid x:Name="InfoGrid" Visibility="{Binding Chat, Converter={StaticResource ntv}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="Top" Height="80" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <elor:Avatar x:Name="Avatar" Width="80" Height="80" Margin="0,0,12,0" ImageUri="{Binding Chat.PhotoUri}" DisplayName="{Binding Chat.Name}"/>
+                <StackPanel x:Name="NameAndStatus" Grid.Column="1" VerticalAlignment="Center" Margin="0,-2,0,0">
+                    <TextBlock x:Name="Name" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource VKHeaderTextBrush}" TextWrapping="Wrap" MaxLines="2" Text="{Binding Chat.Name}"/>
+                    <TextBlock x:Name="Subtitle" Margin="0,2,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{Binding Subtitle}"/>
+                </StackPanel>
+            </Grid>
+            <ListView x:Name="Members" Grid.Row="1" SelectionMode="None" Margin="0" ItemsSource="{Binding Members}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemTemplate="{StaticResource DefaultEntityTemplate}" IsItemClickEnabled="True" ItemClick="ShowMemberInfo">
+                <ListView.Header>
+                    <StackPanel BorderBrush="{ThemeResource VKUILineBrush}" BorderThickness="0,0,0,1" Visibility="{Binding ChatControlButtonsVisible}" Margin="16,0,16,6">
+                        <vkui:CellButton Padding="0" Icon="Icon24AddOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_add_member}" Visibility="{Binding Chat.ACL.CanInvite}" Command="{Binding AddMemberCommand}" CommandParameter="{Binding ElementName=ModalRoot}"/>
+                        <StackPanel Visibility="{Binding Chat.ACL.CanSeeInviteLink}">
+                            <vkui:CellButton Padding="0" Icon="Icon24LinkCircle" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_invite_link_chat}" Visibility="{Binding Chat.IsChannel, Converter={StaticResource ntv2}}" Command="{Binding ShowChatLinkCommand}"/>
+                            <vkui:CellButton Padding="0" Icon="Icon24LinkCircle" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_invite_link_channel}" Visibility="{Binding Chat.IsChannel}" Command="{Binding ShowChatLinkCommand}"/>
+                        </StackPanel>
+                        <vkui:CellButton Padding="0" Icon="Icon24GearOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_permissions}" Visibility="{Binding Chat.Permissions, Converter={StaticResource ntv}}" Command="{Binding EditChatPermissionsCommand}" CommandParameter="{Binding ElementName=ModalRoot}"/>
+                        <vkui:CellButton Padding="0" Icon="Icon24Cancel" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_leave}" Visibility="{Binding Chat.IsChannel, Converter={StaticResource ntv2}}" IconBrush="{ThemeResource VKDestructiveBrush}" Command="{Binding LeaveCommand}"/>
+                        <vkui:CellButton Padding="0" Icon="Icon24Cancel" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatinfo_unsubscribe}" Visibility="{Binding Chat.IsChannel}" IconBrush="{ThemeResource VKDestructiveBrush}" Command="{Binding LeaveCommand}"/>
+                    </StackPanel>
+                </ListView.Header>
+                <ListView.Footer>
+                    <Border Height="6"/>
+                </ListView.Footer>
+            </ListView>
+            <Border Grid.Row="1" Height="1" Margin="16,0" VerticalAlignment="Top" Background="{ThemeResource VKUILineBrush}"/>
+        </Grid>
+        <vkui:Placeholder VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Width="44" Height="44" Margin="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+    </Grid>
+</elor:Modal>

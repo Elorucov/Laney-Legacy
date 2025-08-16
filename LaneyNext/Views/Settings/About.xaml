@@ -1,0 +1,24 @@
+﻿<local:SettingsPageBase
+    x:Class="Elorucov.Laney.Views.Settings.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <ContentPresenter ContentTemplate="{StaticResource LaneyLogo}" Margin="12"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_version}" Indicator="{Binding Version}"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_build_date}" Indicator="{Binding BuildDate, Converter={StaticResource dts}, ConverterParameter=a}"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_install_date}" Indicator="{Binding InstallDate, Converter={StaticResource dts}, ConverterParameter=a}"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_community}" Command="{Binding OpenLinkCommand}" CommandParameter="https://vk.com/elorlaney"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_rate}" Command="{Binding OpenLinkCommand}" CommandParameter="ms-windows-store://pdp/?productid=9MSPLCXVN1M5"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_feedback}" Command="{Binding OpenConversationCommand}" CommandParameter="-171015120"/>
+            <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=about_drago_v}" Command="{Binding OpenLinkCommand}" CommandParameter="https://vk.com/app6471849_-171015120"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{Binding AdditionalInfo}"/>
+        </StackPanel>
+    </ScrollViewer>
+</local:SettingsPageBase>

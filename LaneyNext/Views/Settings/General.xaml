@@ -1,0 +1,68 @@
+﻿<local:SettingsPageBase
+    x:Class="Elorucov.Laney.Views.Settings.General"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16,0">
+            <ComboBox Style="{StaticResource VKComboBox}" Margin="0,16" Header="{x:Bind Converter={StaticResource loc}, ConverterParameter=language}" ItemsSource="{Binding Languages}" SelectedItem="{Binding CurrentLanguage, Mode=TwoWay}"/>
+            <vkui:Group Header="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input}">
+                <StackPanel>
+                    <RadioButton x:Name="sm1" Style="{StaticResource VKRadioButton}" Tag="0" Margin="0,0,0,12" IsChecked="{Binding SendViaCtrlEnter, Mode=TwoWay}" GroupName="smethod">
+                        <RadioButton.Content>
+                            <TextBlock TextWrapping="Wrap">
+                                    <Run FontWeight="SemiBold" Text="Enter: "/><Run Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_linebreak}"/><Run Text=","/><LineBreak/>
+                                    <Run FontWeight="SemiBold" Text="Ctrl + Enter: "/><Run Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_send}"/>
+                            </TextBlock>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton x:Name="sm2" Style="{StaticResource VKRadioButton}" Tag="1" Margin="0,0,0,12" IsChecked="{Binding SendViaCtrlEnter, Mode=TwoWay, Converter={StaticResource rbc}}" GroupName="smethod">
+                        <RadioButton.Content>
+                            <TextBlock TextWrapping="Wrap">
+                                    <Run FontWeight="SemiBold" Text="Enter: "/><Run Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_send}"/><Run Text=","/><LineBreak/>
+                                    <Run FontWeight="SemiBold" Text="Shift + Enter: "/><Run Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_linebreak}"/>
+                            </TextBlock>
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <vkui:CellButton x:Name="AltToggle" Text="Ctrl + Enter" Visibility="Collapsed" x:DeferLoadStrategy="Lazy">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch IsOn="{Binding SendViaCtrlEnter, Mode=TwoWay}"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_dont_parse_links}">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch IsOn="{Binding DontParseLinks, Mode=TwoWay}"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_input_disable_mentions}">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch IsOn="{Binding DisableMentions, Mode=TwoWay}"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                </StackPanel>
+            </vkui:Group>
+            <vkui:Group Header="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_stickers}">
+                <StackPanel>
+                    <vkui:CellButton x:Name="StickerKeywordsToggle" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_stickers_suggest}">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch IsOn="{Binding SuggestStickers, Mode=TwoWay}"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <TextBlock Style="{StaticResource VKCaption1}" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_stickers_suggest_descr}"/>
+                    
+                    <vkui:CellButton x:Name="AnimatedStickersToggle" Margin="0,12,0,0" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_stickers_animated}">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch IsOn="{Binding AnimatedStickers, Mode=TwoWay}"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <TextBlock Style="{StaticResource VKCaption1}" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=st_stickers_animated_descr}"/>
+                </StackPanel>
+            </vkui:Group>
+        </StackPanel>
+    </ScrollViewer>
+</local:SettingsPageBase>

@@ -1,0 +1,87 @@
+﻿<elor:Modal x:Name="UserCardModal"
+    x:Class="Elorucov.Laney.Views.Modals.UserCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:wct="using:Elorucov.Laney.Controls.WinComToolkit"
+    Style="{StaticResource VKUIFullModalStyle}"
+    mc:Ignorable="d"
+    MaxWidth="540" Title="{x:Bind Converter={StaticResource loc}, ConverterParameter=profile}" SizeChanged="ChangeVisualState">
+    <Grid x:Name="Root" Background="Transparent">
+        <Grid x:Name="InfoGrid" Visibility="{Binding User, Converter={StaticResource ntv}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="Top" Height="80" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <elor:Avatar x:Name="Avatar" Width="80" Height="80" Margin="0,0,12,0" ImageUri="{Binding User.Photo}" DisplayName="{Binding User.FullName}"/>
+                <StackPanel x:Name="NameAndStatus" Grid.Column="1" VerticalAlignment="Center" Margin="0,-2,0,0">
+                    <RichTextBlock x:Name="Name" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource VKHeaderTextBrush}" TextWrapping="Wrap" MaxLines="2">
+                        <Paragraph>
+                            <Run Text="{Binding User.FullName}"/>
+                            <InlineUIContainer>
+                                <vkui:VKIcon Id="Icon16Verified" Width="20" Height="20" Visibility="{Binding User.Verified}" Foreground="{ThemeResource VKAccentBrush}">
+                                    <vkui:VKIcon.RenderTransform>
+                                        <CompositeTransform TranslateY="4"/>
+                                    </vkui:VKIcon.RenderTransform>
+                                </vkui:VKIcon>
+                            </InlineUIContainer>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <TextBlock x:Name="UserStatus" Margin="0,2,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{Binding ProfileStatus}"/>
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="ActionButtons" Grid.Row="1" Visibility="{Binding IsActionButtonsVisible}" Margin="16,0" BorderBrush="{ThemeResource VKUILineBrush}" BorderThickness="0,1,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <vkui:CellButton Grid.Column="0" HorizontalAlignment="Center" Foreground="{ThemeResource VKAccentBrush}" IconBrush="{ThemeResource VKAccentBrush}" Icon="Icon28MessageOutline" IsEnabled="{Binding User.CanWritePrivateMessage}" Command="{Binding SendMessageCommand}" CommandParameter="{Binding ElementName=UserCardModal}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=message}"/>
+                <vkui:CellButton x:Name="FriendButton" Tag="debug" Grid.Column="1" HorizontalAlignment="Center" Foreground="{ThemeResource VKAccentBrush}" IconBrush="{ThemeResource VKAccentBrush}" IconTemplate="{Binding FriendButtonIcon, Converter={StaticResource vki}}" IsEnabled="{Binding User.CanSendFriendRequest}" Command="{Binding FriendCommand}" CommandParameter="{Binding ElementName=FriendButton}" Text="{Binding FriendButtonString}"/>
+            </Grid>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="16,0,16,16" BorderBrush="{ThemeResource VKUILineBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Margin="-8,8,-8,0">
+                    <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20MessageOutline" Visibility="{Binding User.Status, Converter={StaticResource ntv}}" Text="{Binding User.Status}" Grid.ColumnSpan="2"/>
+                    <wct:UniformGrid x:Name="DetailedInfo" VerticalAlignment="Top" Orientation="Horizontal" Columns="2">
+                        <wct:UniformGrid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </wct:UniformGrid.RowDefinitions>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20UserOutline" Visibility="{Binding User.Domain, Converter={StaticResource ntv}}" Text="{Binding User.Domain}" IsHitTestVisible="True" Foreground="{ThemeResource VKAccentBrush}" IconBrush="{ThemeResource VKAccentBrush}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20GiftOutline" Visibility="{Binding Birthdate, Converter={StaticResource ntv}}" Text="{Binding Birthdate}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20HomeOutline" Visibility="{Binding User.LiveIn, Converter={StaticResource ntv}}" Text="{Binding User.LiveIn}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20WorkOutline" Visibility="{Binding Career, Converter={StaticResource ntv}}" Text="{Binding Career}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20EducationOutline" Visibility="{Binding User.CurrentEducation, Converter={StaticResource ntv}}" Text="{Binding User.CurrentEducation}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20PhoneOutline" Visibility="{Binding User.MobilePhone, Converter={StaticResource ntv}}" Text="{Binding User.MobilePhone}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20GlobeOutline" Visibility="{Binding User.Site, Converter={StaticResource ntv}}" Text="{Binding User.Site}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20FollowersOutline" Visibility="{Binding Followers, Converter={StaticResource ntv}}" Text="{Binding Followers}"/>
+                    </wct:UniformGrid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <vkui:Placeholder VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Width="44" Height="44" Margin="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+    </Grid>
+</elor:Modal>

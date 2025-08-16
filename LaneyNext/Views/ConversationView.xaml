@@ -1,0 +1,247 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Views.ConversationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:atchs="using:Elorucov.Laney.Controls.Attachments"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vm="using:Elorucov.Laney.ViewModels"
+    xmlns:obj="using:ELOR.VKAPILib.Objects"
+    mc:Ignorable="d"
+    Background="{ThemeResource VKBackgroundContentBrush}" SizeChanged="ConversationView_SizeChanged">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="Transparent" />
+        <CollectionViewSource x:Name="GroupedMessages" x:Key="GroupedMessages" IsSourceGrouped="True" Source="{Binding Messages.GroupedMessages}"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ctrls:ChatBackgroundPresenter Grid.RowSpan="3"/>
+        <Rectangle Fill="{ThemeResource VKBackgroundContentBrush}"/>
+        <TextBlock x:Name="WindowName" Visibility="Collapsed" FontSize="12" TextTrimming="CharacterEllipsis" Margin="12,8,138,0"/>
+        <StackPanel MinHeight="52">
+            <vkui:PageHeader x:Name="MainHeader" BorderBrush="Transparent" Padding="0" DetectNonSafeArea="False">
+                <vkui:PageHeader.LeftButtons>
+                    <vkui:PageHeaderButton x:Name="BackButton" Icon="Icon28ArrowLeftOutline" Click="GoBack"/>
+                </vkui:PageHeader.LeftButtons>
+                <vkui:PageHeader.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <StackPanel x:Name="ConversationInfoNarrow" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="16" Foreground="{ThemeResource VKHeaderTextAlternateBrush}" Text="{Binding Title}"/>
+                                    <vkui:VKIcon Id="Icon16Verified" Margin="4,1,0,0" Width="16" Height="16" Visibility="{Binding IsVerified}" Foreground="{ThemeResource VKAccentBrush}"/>
+                                </StackPanel>
+                                <TextBlock FontSize="12" Margin="0,-2,0,0" FontWeight="Normal" FontFamily="{StaticResource ContentControlThemeFontFamily}" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{Binding Subtitle}" Visibility="{Binding ActivityStatus, Converter={StaticResource ntv2}}"/>
+                                <TextBlock FontSize="12" Margin="0,-2,0,0" FontWeight="Normal" FontFamily="{StaticResource ContentControlThemeFontFamily}" Foreground="{ThemeResource VKImTextNameBrush}" Text="{Binding ActivityStatus}" Visibility="{Binding ActivityStatus, Converter={StaticResource ntv}}"/>
+                            </StackPanel>
+
+                            <Grid x:Name="ConversationInfoWide" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto" MinWidth="240"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Grid.Column="0" FontSize="16" Foreground="{ThemeResource VKHeaderTextAlternateBrush}" Text="{Binding Title}"/>
+                                    <vkui:VKIcon Id="Icon16Verified" Margin="4,1,0,0" Width="16" Height="16" Visibility="{Binding IsVerified}" Foreground="{ThemeResource VKAccentBrush}"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" FontSize="16" FontWeight="Normal" FontFamily="{StaticResource ContentControlThemeFontFamily}" Foreground="{ThemeResource VKTextSubheadBrush}" Margin="12,-2,0,0" Text="{Binding Subtitle}" Visibility="{Binding ActivityStatus, Converter={StaticResource ntv2}}"/>
+                                <TextBlock Grid.Column="1" FontSize="16" FontWeight="Normal" FontFamily="{StaticResource ContentControlThemeFontFamily}" Foreground="{ThemeResource VKImTextNameBrush}" Margin="12,-2,0,0" Text="{Binding ActivityStatus}" Visibility="{Binding ActivityStatus, Converter={StaticResource ntv}}"/>
+                            </Grid>
+                        </Grid>
+                        <Ellipse x:Name="ConversationAvatar" Grid.Column="2" Width="36" Height="36" VerticalAlignment="Center" Margin="8,0,0,0">
+                            <Ellipse.Fill>
+                                <ImageBrush>
+                                    <ImageBrush.ImageSource>
+                                        <BitmapImage DecodePixelHeight="36" DecodePixelWidth="36" DecodePixelType="Logical" UriSource="{Binding Avatar}"/>
+                                    </ImageBrush.ImageSource>
+                                </ImageBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <Button x:Name="HeaderButton" Grid.ColumnSpan="2" Style="{StaticResource TransparentButtonStyle}" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Command="{Binding ContextMenuCommand}" CommandParameter="{x:Bind ConversationAvatar}"/>
+                    </Grid>
+                </vkui:PageHeader.Content>
+            </vkui:PageHeader>
+            <vkui:PageHeader x:Name="MultiselectHeader" Visibility="Collapsed" BorderBrush="Transparent" Padding="0" DetectNonSafeArea="False">
+                <vkui:PageHeader.LeftButtons>
+                    <vkui:PageHeaderButton x:Name="MultiSelectExitBtn" Icon="Icon28ArrowLeftOutline" Click="GoBack"/>
+                </vkui:PageHeader.LeftButtons>
+            </vkui:PageHeader>
+            <Grid x:Name="PinnedMessageContainer" Visibility="{Binding PinnedMessage, Mode=OneWay, Converter={StaticResource ntv}}" Height="52">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <ContentPresenter Width="16" Height="16" Margin="18" ContentTemplate="{StaticResource Icon16Pin}" Foreground="{ThemeResource VKIconSecondaryBrush}"/>
+                <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" VerticalAlignment="Stretch" Padding="0" Tag="{Binding PinnedMessage}" Style="{StaticResource TransparentButtonStyle}" Command="{Binding GetToPinnedMessageCommand}">
+                    <atchs:CompactMessageControl Message="{Binding PinnedMessage}"/>
+                </Button>
+                <Button Grid.Column="2" Style="{StaticResource MessageInputVKUIButtonStyle}" Padding="12" ContentTemplate="{StaticResource Icon24Cancel}"/>
+                <Border Grid.ColumnSpan="3" Margin="16,0" VerticalAlignment="Top" Height="1" IsHitTestVisible="False" Background="{ThemeResource VKSeparatorCommonBrush}"/>
+            </Grid>
+        </StackPanel>
+
+        <ctrls:ChatListView x:Name="MessagesListView" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemContainerTransitions="{x:Null}" ShowsScrollingPlaceholders="False" ItemsSource="{Binding Source={StaticResource GroupedMessages}}" IsMultiSelectCheckBoxEnabled="False" ItemClick="MessagesListItemClick" Scrolling="MessagesListView_Scrolling">
+            <ctrls:ChatListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel AreStickyGroupHeadersEnabled="False" GroupPadding="0" VerticalAlignment="Bottom" ItemsUpdatingScrollMode="KeepLastItemInView" RightTapped="ShowContextMenuRight" Holding="ShowContextMenuHolding"/>
+                </ItemsPanelTemplate>
+            </ctrls:ChatListView.ItemsPanel>
+            <ctrls:ChatListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="MinHeight" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ctrls:ChatListView.ItemContainerStyle>
+            <ctrls:ChatListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:MessageViewModel">
+                    <Border/>
+                </DataTemplate>
+            </ctrls:ChatListView.ItemTemplate>
+            <ctrls:ChatListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <ContentControl HorizontalAlignment="Center" Template="{StaticResource ServiceMessageTemplate}">
+                                <TextBlock TextAlignment="Center" Text="{Binding Key, Converter={StaticResource dts}, ConverterParameter='d'}" />
+                            </ContentControl>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ctrls:ChatListView.GroupStyle>
+        </ctrls:ChatListView>
+
+        <vkui:Placeholder Grid.Row="1" VerticalAlignment="Center" Width="318" 
+                          Background="{ThemeResource VKBackgroundContentBrush}"
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}"
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+
+        <Border Grid.Row="1" VerticalAlignment="Top" Height="1" IsHitTestVisible="False" Background="{ThemeResource VKSeparatorCommonBrush}"/>
+        <vkui:Spinner Visibility="{Binding SpinnerVisibility}" Grid.Row="1" Height="44" Width="44" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}"/>
+
+        <ContentControl x:Name="FirstVisibleMessageDate" Grid.Row="1" Visibility="{Binding FirstVisibleMessage, Converter={StaticResource ntv}}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,8" Template="{StaticResource ServiceMessageTemplate}">
+            <TextBlock TextAlignment="Center" FontSize="12" Text="{Binding FirstVisibleMessage.SentDateTime, Converter={StaticResource dts}, ConverterParameter='d'}" />
+        </ContentControl>
+
+        <Grid Grid.Row="1" x:Name="GetToLastMsgButton" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="24">
+            <Button Grid.Row="1" Style="{StaticResource EllipseButtonStyle}" Background="{ThemeResource VKFloatButtonBackgroundBrush}" Foreground="{ThemeResource VKHeaderTintBrush}" BorderBrush="{ThemeResource VKFloatButtonBorderBrush}" Width="40" Height="40" Padding="8" ContentTemplate="{StaticResource Icon24Up}" Command="{Binding GetToLastMessageCommand}">
+                <Button.RenderTransform>
+                    <RotateTransform CenterX="20" CenterY="20" Angle="180"/>
+                </Button.RenderTransform>
+            </Button>
+            <ContentPresenter HorizontalAlignment="Right" VerticalAlignment="Top" IsHitTestVisible="False" Visibility="{Binding UnreadMessagesCount, Converter={StaticResource ntv}}" ContentTemplate="{Binding IsMuted, Converter={StaticResource ctt}}">
+                <ContentPresenter.RenderTransform>
+                    <CompositeTransform TranslateX="8" TranslateY="-8"/>
+                </ContentPresenter.RenderTransform>
+            </ContentPresenter>
+        </Grid>
+
+        <vkui:Snackbar x:Name="BotCBSnackbar" Grid.Row="1" VerticalAlignment="Top"/>
+
+        <Border x:Name="StickersSuggestionContainer" Grid.Row="1" Visibility="{Binding StickersSuggestions, Converter={StaticResource ntv}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" Background="{ThemeResource VKModalCardBackgroundBrush}" BorderBrush="{ThemeResource VKActionSheetSeparatorBrush}" BorderThickness="1" CornerRadius="8" MinHeight="80" MinWidth="16">
+            <Border.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinWidth" Value="72"/>
+                    <Setter Property="MinHeight" Value="72"/>
+                    <Setter Property="Width" Value="72"/>
+                    <Setter Property="Height" Value="72"/>
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Padding" Value="4"/>
+                </Style>
+            </Border.Resources>
+            <ListView x:Name="StickersSuggestionList" SelectionMode="None" ItemsSource="{Binding StickersSuggestions}" IsItemClickEnabled="True" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.IsHorizontalRailEnabled="True" ItemClick="StickersSuggestionList_ItemClick">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="obj:Sticker">
+                        <Image Width="64" Height="64" Stretch="Uniform">
+                            <Image.Source>
+                                <BitmapImage DecodePixelType="Logical" DecodePixelWidth="64" DecodePixelHeight="64" UriSource="{x:Bind StickerId, Converter={StaticResource sid}}"/>
+                            </Image.Source>
+                        </Image>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+
+        <ctrls:MentionsPicker x:Name="mentionsPicker" Grid.RowSpan="2" Visibility="Collapsed"/>
+
+        <Border x:Name="DebugMsgIDs" Grid.Row="1" Visibility="Collapsed" IsHitTestVisible="False" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#7f000000" Padding="4">
+            <TextBlock Foreground="White" FontSize="14" FontFamily="Consolas">
+                <Run Text="FV: "/><Run Text="{Binding FirstVisibleMessage.ConversationMessageId, FallbackValue='0'}"/>
+                <LineBreak/><Run Text="LV: "/><Run Text="{Binding LastVisibleMessage.ConversationMessageId, FallbackValue='0'}"/>
+                <LineBreak/><Run Text="LC: "/><Run Text="{Binding LastMessage.ConversationMessageId, FallbackValue='0'}"/>
+                <LineBreak/><Run Text="IR: "/><Run Text="{Binding InRead, FallbackValue='0'}"/>
+                <LineBreak/><Run Text="OR: "/><Run Text="{Binding OutRead, FallbackValue='0'}"/>
+                <LineBreak/><Run Text="Scroll: "/><Run x:Name="DebugScrollInfo" Text="0"/>
+            </TextBlock>
+        </Border>
+        
+        <Border x:Name="RestrictionInfo" Grid.Row="2" Background="{ThemeResource VKBackgroundContentBrush}" Height="52" Visibility="{Binding CanWrite.Allowed, Converter={StaticResource ntv2}}">
+            <TextBlock VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" MaxLines="2" FontSize="14" Foreground="{ThemeResource VKTextSecondaryBrush}" Margin="0,-2,0,0" Text="{Binding RestrictionReason}"/>
+        </Border>
+        <Grid x:Name="SpecialChatContainers" Grid.Row="2" Visibility="{Binding ChatSettings, Converter={StaticResource ntv}}">
+            <Grid x:Name="ChannelNotificationContainer" Background="{ThemeResource VKBackgroundContentBrush}" Height="52" Visibility="{Binding ChatSettings.IsGroupChannel}">
+                <Button Style="{StaticResource VKButtonSecondaryLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsMuted}" Command="{Binding NotificationToggleCommand}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <vkui:VKIcon Id="Icon24Volume"/>
+                            <TextBlock VerticalAlignment="Center" Margin="6,-2,4,0" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=conv_ctx_notifications_enable}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Style="{StaticResource VKButtonSecondaryLarge}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsMuted, Converter={StaticResource ntv2}}" Command="{Binding NotificationToggleCommand}">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <vkui:VKIcon Id="Icon24Mute"/>
+                            <TextBlock VerticalAlignment="Center" Margin="6,-2,4,0" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=conv_ctx_notifications_disable}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <Border x:Name="CasperChatInfoContainer" Background="{ThemeResource VKBackgroundContentBrush}" Grid.Row="2" Height="52" Visibility="{Binding ChatSettings.IsDisappearing}">
+                <HyperlinkButton HorizontalAlignment="Center" VerticalAlignment="Center" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=unsupported_chat_link}"/>
+            </Border>
+        </Grid>
+        <ctrls:MessageInputControl Grid.Row="2" Visibility="{Binding CanWrite.Allowed, TargetNullValue=Collapsed}" Background="{ThemeResource VKBackgroundContentBrush}"/>
+        <Border Grid.Row="1" VerticalAlignment="Bottom" Height="1" IsHitTestVisible="False" Background="{ThemeResource VKInputBorderBrush}"/>
+
+        <Grid x:Name="DropArea" Grid.RowSpan="3" Visibility="Collapsed" Background="{ThemeResource DragDropPanelBackgroundBrush}" Padding="8" AllowDrop="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="DropDoc" Visibility="Collapsed" AllowDrop="True" Grid.Row="0" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToDoc">
+                <vkui:Placeholder x:Name="DropDocPlaceholder" Icon="Icon56DocumentOutline"/>
+            </Grid>
+            <Grid x:Name="DropImg" Visibility="Collapsed" AllowDrop="True" Grid.Row="1" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToImg">
+                <vkui:Placeholder x:Name="DropImgPlaceholder" Icon="Icon56GalleryOutline" Content="{Binding Converter={StaticResource loc}, ConverterParameter=drop_photo}"/>
+            </Grid>
+            <Grid x:Name="DropVid" Visibility="Collapsed" AllowDrop="True" Grid.Row="1" Margin="8" Background="Transparent" BorderThickness="1" BorderBrush="{ThemeResource VKTextSecondaryBrush}" Drop="DropToVid">
+                <vkui:Placeholder x:Name="DropVidPlaceholder" Icon="Icon56VideoOutline" Content="{Binding Converter={StaticResource loc}, ConverterParameter=drop_video}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

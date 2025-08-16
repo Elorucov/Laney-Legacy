@@ -1,0 +1,27 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.ChatLinkViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{ThemeResource VKUIDefaultModalStyle}">
+    <elor:Modal.Resources>
+        <Style TargetType="vkui:CellButton">
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </elor:Modal.Resources>
+    <Grid>
+        <StackPanel x:Name="Content" Visibility="Collapsed">
+            <TextBox x:Name="Link" Style="{StaticResource VKTextBox}" TextWrapping="Wrap" IsReadOnly="True" IsSpellCheckEnabled="False" Margin="0,0,0,12"/>
+            <vkui:CellButton Icon="Icon28CopyOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=copy}" Click="CopyLink"/>
+            <vkui:CellButton x:Name="CreateButton" Icon="Icon28BlockOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=chatlinkviewer_new}" Click="CreateButton_Click"/>
+        </StackPanel>
+        <Border x:Name="Loader">
+            <vkui:Spinner HorizontalAlignment="Center" VerticalAlignment="Center" Width="44" Height="44" Foreground="{ThemeResource VKHeaderTintBrush}"/>
+        </Border>
+    </Grid>
+</elor:Modal>

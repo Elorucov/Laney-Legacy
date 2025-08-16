@@ -1,0 +1,99 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.PollEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:ctrlp="using:Elorucov.Laney.Controls.Primitives"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vmdl="using:Elorucov.Laney.ViewModels"
+    xmlns:vmdl2="using:Elorucov.Laney.ViewModels.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource VKUIFullModalStyle}">
+
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="8">
+                <TextBlock Margin="8,8,8,0" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_question}"/>
+                <TextBox x:Name="Question" Margin="8" Style="{StaticResource VKTextBox}" TextWrapping="Wrap" MaxLength="140" Text="{Binding Question, Mode=TwoWay}"/>
+                <TextBlock Margin="8,0,8,8" Foreground="{StaticResource SystemControlErrorTextForegroundBrush}" Visibility="{Binding InvalidQuestionInfoVisible, Converter={StaticResource ntv}}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=empty_field}"/>
+
+                <ListView x:Name="Answers" SelectionMode="None" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemsSource="{Binding Answers}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="vmdl:EditableTextViewModel">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Style="{StaticResource VKTextBox}" Text="{x:Bind Text, Mode=TwoWay}"/>
+                                <Button Grid.Column="1" Style="{StaticResource VKButtonTertiaryExtraLarge}" Padding="0" Width="44" Height="44" Command="{Binding DataContext.DeleteAnswerCommand, ElementName=Root}" CommandParameter="{x:Bind}">
+                                    <vkui:VKIcon Id="Icon24Cancel"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Header>
+                        <TextBlock Margin="8,8,8,0" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_answers}"/>
+                    </ListView.Header>
+                    <ListView.Footer>
+                        <Button x:Name="AddOptionButton" Style="{StaticResource VKButtonTertiaryLarge}" Height="36" Margin="8" Command="{Binding AddAnswerCommand}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <vkui:VKIcon Id="Icon24AddOutline" Margin="0,0,8,0"/>
+                                <TextBlock Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_addoption}"/>
+                            </StackPanel>
+                        </Button>
+                    </ListView.Footer>
+                </ListView>
+                <TextBlock Margin="8,0,8,8" Foreground="{StaticResource SystemControlErrorTextForegroundBrush}" Visibility="{Binding InvalidAnswersInfoVisible, Converter={StaticResource ntv}}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_empty_answers}"/>
+
+                <TextBlock Margin="8,8,8,0" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=background}"/>
+                <ListView x:Name="Backgrounds" Margin="-8,8" VerticalAlignment="Top" ItemsSource="{Binding PollBackgrounds}" SelectedItem="{Binding SelectedPollBackground, Mode=TwoWay}" ItemContainerStyle="{StaticResource ListViewItemStyleForPollBackgrounds}" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsHorizontalScrollChainingEnabled="True" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.IsHorizontalRailEnabled="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition FromHorizontalOffset="18" FromVerticalOffset="0" IsStaggeringEnabled="True"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel Margin="16,0,8,0" ItemsUpdatingScrollMode="KeepScrollOffset" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ctrlp:PollBackgroundPreview PollBackgroundColor="{Binding BackgroundColor}" PollBackground="{Binding Background}" RequestedTheme="{Binding Theme}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <TextBlock Margin="8,8,8,0" Foreground="{ThemeResource VKTextSubheadBrush}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_parameters}"/>
+                <CheckBox Margin="8" Style="{StaticResource VKCheckBox}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_anonymous}" IsChecked="{Binding IsAnonymous, Mode=TwoWay}"/>
+                <CheckBox Margin="8" Style="{StaticResource VKCheckBox}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_multiple}" IsChecked="{Binding IsMultipleSelectionEnabled, Mode=TwoWay}"/>
+                <CheckBox Margin="8" Style="{StaticResource VKCheckBox}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_disable_unvote}" IsChecked="{Binding UnvotingDisabled, Mode=TwoWay}"/>
+                <CheckBox Margin="8" Style="{StaticResource VKCheckBox}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_limited_time}" IsChecked="{Binding IsVotingTimeLimited, Mode=TwoWay}" x:Name="LimitedTimeCheckBox" IsEnabledChanged="LimitedTimeChecked"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <CalendarDatePicker x:Name="LimitDate" Margin="8" Visibility="{Binding IsChecked, ElementName=LimitedTimeCheckBox}" HorizontalAlignment="Stretch" Date="{Binding LimitDate, Mode=TwoWay}"/>
+                    <TimePicker x:Name="LimitTime" Grid.Column="1" Margin="8" Visibility="{Binding IsChecked, ElementName=LimitedTimeCheckBox}" HorizontalAlignment="Stretch" Time="{Binding LimitTime, Mode=TwoWay}"/>
+                </Grid>
+                <TextBlock Margin="8,0,8,8" Foreground="{StaticResource SystemControlErrorTextForegroundBrush}" Visibility="{Binding InvalidExpDateInfoVisible, Converter={StaticResource ntv}}" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=polleditor_invalid_limittime}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button Grid.Column="0" Margin="16" Grid.Row="1" Style="{StaticResource VKButtonPrimaryExtraLarge}" Padding="0" HorizontalAlignment="Stretch" Command="{Binding SaveCommand}">
+            <Grid Height="44">
+                <TextBlock Visibility="{Binding IsCreating, Converter={StaticResource ntv2}}" VerticalAlignment="Center" TextAlignment="Center" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=save}"/>
+                <vkui:Spinner Visibility="{Binding IsCreating, Converter={StaticResource ntv}}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24"/>
+            </Grid>
+        </Button>
+    </Grid>
+</elor:Modal>

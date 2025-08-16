@@ -1,0 +1,29 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.Attachments.CompactMessageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls.Attachments"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="36"
+    d:DesignWidth="360">
+
+    <Grid Height="36">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="ImageContainer" Visibility="Collapsed" Margin="0,0,10,0" Width="36" Height="36">
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill">
+                <Image.Source>
+                    <BitmapImage x:Name="Image" DecodePixelType="Logical" DecodePixelWidth="36" DecodePixelHeight="36"/>
+                </Image.Source>
+            </Image>
+        </Border>
+        <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="0,-2,0,0">
+            <TextBlock x:Name="Sender" FontSize="14" Foreground="{ThemeResource VKImTextNameBrush}" FontWeight="Medium" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+            <TextBlock x:Name="MessageText" FontSize="14" Foreground="{ThemeResource VKTextSubheadBrush}" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

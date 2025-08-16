@@ -1,0 +1,55 @@
+﻿<set:SettingsPageBase
+    x:Class="Elorucov.Laney.Views.Settings.DebugViews.SettingsEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Settings.DebugViews"
+    xmlns:set="using:Elorucov.Laney.Views.Settings"
+    xmlns:data="using:Elorucov.Laney.DataModels"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Local settings editor">
+    <set:SettingsPageBase.RightButtons>
+        <vkui:PageHeaderButton Icon="Icon28AddOutline" Click="Button_Click"/>
+    </set:SettingsPageBase.RightButtons>
+    
+    <set:SettingsPageBase.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="KeyValueTemplate" x:DataType="data:SimpleKeyValue">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Margin="16,0,6,0" Height="44" BorderBrush="{ThemeResource VKUIFlyoutSeparatorBrush}">
+                        <TextBlock VerticalAlignment="Top" FontSize="13" Margin="0,0,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}">
+                            <Run Foreground="{ThemeResource VKAccentBrush}" Text="{x:Bind Key, Mode=OneTime}"/><Run Text=" ("/><Run Text="{x:Bind AdditionalInfo, Mode=OneTime}"/><Run Text=")"/>
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Bottom" Margin="0,0,0,2" FontFamily="Consolas" Text="{x:Bind Value, Mode=OneTime}"/>
+                    </Grid>
+                    <Button Style="{StaticResource TransparentButtonStyle}" Grid.Column="1" Margin="6" VerticalAlignment="Center" Padding="8" Width="44" Height="44" ContentTemplate="{StaticResource Icon28DeleteOutline}" Foreground="{ThemeResource VKHeaderTintBrush}" Click="DeleteButton_Click"/>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </set:SettingsPageBase.Resources>
+
+    <Grid>
+        <ListView x:Name="SettingsList" Grid.ColumnSpan="2" ItemsSource="{x:Bind LocalSettings}" ItemTemplate="{StaticResource KeyValueTemplate}" VerticalAlignment="Top" SelectionMode="None" IsItemClickEnabled="True" ItemClick="SettingsList_ItemClick">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Header>
+                <Border Height="8"/>
+            </ListView.Header>
+            <ListView.Footer>
+                <Border Height="8"/>
+            </ListView.Footer>
+        </ListView>
+    </Grid>
+</set:SettingsPageBase>

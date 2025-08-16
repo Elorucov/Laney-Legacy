@@ -1,0 +1,94 @@
+﻿<elor:OverlayModal
+    x:Class="Elorucov.Laney.Views.StoryViewer"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <elor:OverlayModal.Resources>
+        <Storyboard x:Name="ControlsHideAnimation">
+            <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetName="StoryControls" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+        <Storyboard x:Name="ControlsShowAnimation">
+            <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetName="StoryControls" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+    </elor:OverlayModal.Resources>
+    
+    <Grid>
+        <Border x:Name="OverlayBackground" Background="#e6000000" Tapped="OverlayTapped"/>
+        <Border x:Name="DefaultFromAnimator" Width="9" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Border x:Name="Container">
+            <Grid x:Name="StoryCard" Background="#3f3f3f" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="12" Width="360" Height="640" PointerPressed="CardPointerPressed" PointerReleased="CardPointerReleased">
+                <Border x:Name="PhotoStory">
+                    <Border.Background>
+                        <ImageBrush x:Name="PhotoStoryBackground" AlignmentX="Center" AlignmentY="Center" Stretch="UniformToFill"/>
+                    </Border.Background>
+                </Border>
+                <MediaPlayerElement x:Name="VideoStory" Visibility="Collapsed"/>
+                <Viewbox Stretch="UniformToFill">
+                    <Canvas x:Name="ClickableStickersContainer" RequestedTheme="Light" Width="1080" Height="1920"/>
+                </Viewbox>
+                <Border x:Name="StoryLoadScreen" RequestedTheme="Dark">
+                    <Border.Background>
+                        <AcrylicBrush FallbackColor="#3f3f3f" TintColor="#3f3f3f" TintOpacity="0.6" BackgroundSource="Backdrop"/>
+                    </Border.Background>
+                    <vkui:Spinner Width="44" Height="44" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Grid x:Name="StoryControls" RequestedTheme="Dark">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Height="112" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#7f000000" Offset="0"/>
+                                <GradientStop Color="#00000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Grid x:Name="TopControls" Margin="8,20" Height="32" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <elor:Avatar x:Name="OwnerAva" Width="32" Height="32" Margin="0,0,8,0" IsHitTestVisible="False"/>
+                        <TextBlock x:Name="OwnerName" Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold" IsHitTestVisible="False"/>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Style="{StaticResource TransparentButtonStyle}" Width="32" Height="32" Padding="4" ContentTemplate="{StaticResource Icon16Cancel}" Click="Close"/>
+                        </StackPanel>
+                    </Grid>
+                    <Border Height="112" Grid.Row="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#7f000000" Offset="1"/>
+                                <GradientStop Color="#00000000" Offset="0"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <Grid x:Name="BottomControls" Margin="6" Grid.Row="2" VerticalAlignment="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="LinkButton" Visibility="Collapsed" Margin="6" Style="{StaticResource StoryLinkButtonStyle}" HorizontalAlignment="Stretch" Padding="16,9" Content="Link"/>
+                        <Button x:Name="LikeButton" Grid.Column="1" Visibility="Collapsed" Margin="6" Style="{StaticResource StoryButtonStyle}" HorizontalAlignment="Stretch" Padding="8">
+                            <vkui:VKIcon x:Name="LikeButtonIcon" Id="Icon24LikeOutline"/>
+                        </Button>
+                        <Button x:Name="ShareButton" Visibility="Collapsed" Grid.Column="2" Margin="6" Style="{StaticResource StoryButtonStyle}" HorizontalAlignment="Stretch" Padding="8">
+                            <vkui:VKIcon Id="Icon24ShareOutline"/>
+                        </Button>
+                    </Grid>
+                    <ProgressBar x:Name="StoryProgress" VerticalAlignment="Top" Margin="8" Foreground="White"/>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</elor:OverlayModal>

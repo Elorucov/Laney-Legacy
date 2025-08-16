@@ -1,0 +1,38 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.ImportantMessages"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource VKUIFullModalStyle}" Title="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_starred_msgs}">
+    <Grid>
+        <ListView x:Name="MessagesList" SelectionMode="None" IsItemClickEnabled="True" VerticalAlignment="Top" ItemsSource="{Binding Messages}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemClick="MessagesList_ItemClick">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel x:Name="isp" RightTapped="ShowContextMenuRight" Holding="ShowContextMenuHolding"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="0,8" Background="Transparent" DataContextChanged="RenderMessage"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Border MinHeight="8">
+                    <vkui:Spinner VerticalAlignment="Center" Width="24" Height="24" Margin="12" Visibility="{Binding IsLoading}" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}"/>
+                </Border>
+            </ListView.Footer>
+        </ListView>
+        <vkui:Placeholder Grid.ColumnSpan="2" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+    </Grid>
+</elor:Modal>

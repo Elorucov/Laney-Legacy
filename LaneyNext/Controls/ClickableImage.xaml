@@ -1,0 +1,46 @@
+﻿<UserControl
+    x:Class="Elorucov.Laney.Controls.ClickableImage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    IsTabStop="True" UseSystemFocusVisuals="True" KeyDown="RootKeyDown" KeyUp="RootKeyUp" PointerPressed="RootPointerPressed" PointerReleased="RootPointerReleased" SizeChanged="RootSizeChanged">
+
+    <UserControl.Resources>
+        <Storyboard x:Name="LoadAnimation">
+            <DoubleAnimation Storyboard.TargetName="PreviewImage" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Name="PressAnimation">
+            <DoubleAnimation Storyboard.TargetName="PressedLayer" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.1" Completed="SetReleaseAnimationTimer"/>
+        </Storyboard>
+        <Storyboard x:Name="ReleaseAnimation">
+            <DoubleAnimation Storyboard.TargetName="PressedLayer" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid CornerRadius="6" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}">
+        <Border x:Name="PreviewImage" Opacity="0">
+            <Border.Background>
+                <ImageBrush Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+                    <ImageBrush.ImageSource>
+                        <BitmapImage x:Name="bi" DecodePixelType="Logical" CreateOptions="IgnoreImageCache" ImageOpened="RunLoadAnimation"/>
+                    </ImageBrush.ImageSource>
+                </ImageBrush>
+            </Border.Background>
+        </Border>
+        <StackPanel x:Name="VideoDurationContainer" Visibility="Collapsed" CornerRadius="3" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#7f000000">
+            <Canvas Width="6" Height="9" Margin="6">
+                <Path Data="M 0, 0 L 6, 4.5 L 0, 9 Z" Fill="White"/>
+            </Canvas>
+            <TextBlock x:Name="VideoDuration" VerticalAlignment="Center" LineHeight="17" Foreground="White" Margin="-1,0,5,0" FontSize="12" Text="-:--"/>
+        </StackPanel>
+        <StackPanel x:Name="DocInfoContainer" Visibility="Collapsed" CornerRadius="3" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#7f000000">
+            <TextBlock x:Name="DocFormat" Foreground="White" Margin="5,2,5,3" FontSize="12"/>
+        </StackPanel>
+        <Border x:Name="PressedLayer" Background="#3F000000" Opacity="0"/>
+    </Grid>
+</UserControl>

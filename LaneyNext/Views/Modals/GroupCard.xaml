@@ -1,0 +1,68 @@
+﻿<elor:Modal x:Name="GroupCardModal"
+    x:Class="Elorucov.Laney.Views.Modals.GroupCard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:wct="using:Elorucov.Laney.Controls.WinComToolkit"
+    Style="{StaticResource VKUIFullModalStyle}"
+    mc:Ignorable="d"
+    MaxWidth="540" Title="{Binding Type}" SizeChanged="ChangeVisualState">
+    <Grid x:Name="Root" Background="Transparent">
+        <Grid x:Name="InfoGrid" Visibility="{Binding Group, Converter={StaticResource ntv}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="Top" Height="80" Margin="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <elor:Avatar x:Name="Avatar" Width="80" Height="80" Margin="0,0,12,0" ImageUri="{Binding Group.Photo}" DisplayName="{Binding Group.Name}"/>
+                <StackPanel x:Name="NameAndStatus" Grid.Column="1" VerticalAlignment="Center" Margin="0,-2,0,0">
+                    <RichTextBlock x:Name="Name" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource VKHeaderTextBrush}" TextWrapping="Wrap" MaxLines="2">
+                        <Paragraph>
+                            <Run Text="{Binding Group.Name}"/>
+                            <InlineUIContainer>
+                                <vkui:VKIcon Id="Icon16Verified" Width="20" Height="20" Visibility="{Binding Group.Verified}" Foreground="{ThemeResource VKAccentBrush}">
+                                    <vkui:VKIcon.RenderTransform>
+                                        <CompositeTransform TranslateY="4"/>
+                                    </vkui:VKIcon.RenderTransform>
+                                </vkui:VKIcon>
+                            </InlineUIContainer>
+                        </Paragraph>
+                    </RichTextBlock>
+                    <TextBlock x:Name="Activity" Margin="0,2,0,0" Foreground="{ThemeResource VKTextSecondaryBrush}" Text="{Binding Group.Activity}"/>
+                </StackPanel>
+                <Button Grid.Column="2" Visibility="{Binding Group.CanMessage}" Style="{StaticResource TransparentButtonStyle}" Foreground="{ThemeResource MessageInputControlForegroundBrush}" Width="36" Height="36" Padding="4" ContentTemplate="{StaticResource Icon28MessageOutline}" Command="{Binding MessageCommand}" CommandParameter="{Binding ElementName=GroupCardModal}"/>
+            </Grid>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="16,0,16,16" BorderBrush="{ThemeResource VKUILineBrush}" BorderThickness="0,1,0,0">
+                <StackPanel Margin="-8,8,-8,0">
+                    <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20MessageOutline" Visibility="{Binding Group.Status, Converter={StaticResource ntv}}" Text="{Binding Group.Status}" Grid.ColumnSpan="2"/>
+                    <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20ArticleOutline" Visibility="{Binding Group.Description, Converter={StaticResource ntv}}" Text="{Binding Group.Description}" Grid.ColumnSpan="2"/>
+                    <wct:UniformGrid x:Name="DetailedInfo" VerticalAlignment="Top" Orientation="Horizontal" Columns="2">
+                        <wct:UniformGrid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </wct:UniformGrid.RowDefinitions>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20MentionOutline" Visibility="{Binding Group.ScreenName, Converter={StaticResource ntv}}" Text="{Binding Group.ScreenName}" IsHitTestVisible="True" Foreground="{ThemeResource VKAccentBrush}" IconBrush="{ThemeResource VKAccentBrush}"/>
+                        <vkui:CellButton Style="{StaticResource InfoCardCellStyle}" Icon="Icon20GlobeOutline" Visibility="{Binding Group.Site, Converter={StaticResource ntv}}" Text="{Binding Group.Site}"/>
+                    </wct:UniformGrid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <vkui:Placeholder VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Width="44" Height="44" Margin="36" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+    </Grid>
+</elor:Modal>

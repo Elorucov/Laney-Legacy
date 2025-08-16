@@ -1,0 +1,68 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Laney.Views.Modals.SearchInConversation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vk="using:ELOR.VKAPILib.Objects"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Style="{StaticResource VKUITabModalStyle}">
+
+    <elor:Modal.Resources>
+        <CollectionViewSource x:Name="GroupedMessages" x:Key="GroupedMessages" IsSourceGrouped="True" Source="{Binding FoundMessages.GroupedMessages}"/>
+    </elor:Modal.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Margin="0,0,52,0" Height="52">
+            <TextBlock x:Name="TitleText" Padding="16,5,0,0" Style="{StaticResource ModalTitleBarTextStyle}"/>
+        </Border>
+        <Grid x:Name="SearchBarContainer" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Row="1" Style="{StaticResource VKSearchBar}" InputScope="Search" Margin="16,8,0,8" Height="36" BorderThickness="0" KeyDown="SearchBoxKeyDown" PlaceholderText="{x:Bind Converter={StaticResource loc}, ConverterParameter=search}" Text="{Binding Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Column="1" Style="{StaticResource TitleBarVKUIButtonStyle}" Width="52" Height="52" Padding="12">
+                <Button.Flyout>
+                    <DatePickerFlyout x:Name="DatePicker" Date="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DatePicked="OnDatePicked"/>
+                </Button.Flyout>
+                <vkui:VKIcon Id="Icon28CalendarOutline"/>
+            </Button>
+        </Grid>
+        <ListView x:Name="MessagesList" Grid.Row="2" SelectionMode="None" IsItemClickEnabled="True" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource GroupedMessages}}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemClick="MessagesList_ItemClick">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel x:Name="isp" RightTapped="ShowContextMenuRight" Holding="ShowContextMenuHolding"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="0,8" Background="Transparent" DataContextChanged="RenderMessage"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Border MinHeight="8">
+                    <vkui:Spinner VerticalAlignment="Center" Width="24" Height="24" Margin="12" Visibility="{Binding IsLoading}" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}"/>
+                </Border>
+            </ListView.Footer>
+            <ListView.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource FoundMessagesGroupHeaderTemplate}"/>
+            </ListView.GroupStyle>
+        </ListView>
+        <vkui:Placeholder Grid.Row="2" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+    </Grid>
+</elor:Modal>

@@ -1,0 +1,97 @@
+﻿<Page x:Name="Root"
+    x:Class="Elorucov.Laney.Views.SessionBaseView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctrls="using:Elorucov.Laney.Controls"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:vkuif="using:VK.VKUI.Popups"
+    mc:Ignorable="d"
+    Background="Transparent"
+    DataContext="{Binding SessionBase, Mode=OneWay}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <vkui:PageHeader x:Name="MainHeader" Padding="0" DetectNonSafeArea="False">
+            <vkui:PageHeader.RightButtons>
+                <vkui:PageHeaderButton Icon="Icon28WriteSquareOutline" Click="CreateChatButtonClick" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKUser}"/>
+                <vkui:PageHeaderButton Icon="Icon28SearchOutline" Click="SearchButtonClick"/>
+            </vkui:PageHeader.RightButtons>
+            <Grid x:Name="TitleBarContent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <elor:Avatar x:Name="MenuButton" Width="32" Height="32" Margin="0,0,10,0" DisplayName="{Binding DisplayName}" ImageUri="{Binding Avatar}" Click="ShowMenu">
+                    <FlyoutBase.AttachedFlyout>
+                        <vkuif:Flyout x:Name="SessionsFlyout" Placement="Bottom">
+                            <vkuif:Flyout.Content>
+                                <ListView x:Name="SessionsList" Margin="-12" ItemContainerStyle="{StaticResource VKUIListViewItemStyle}" ItemTemplate="{StaticResource DefaultEntityForMenuTemplate}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="SessionsList_ItemClick">
+                                    <ListView.Footer>
+                                        <StackPanel>
+                                            <Border x:Name="SessionFlyoutSeparator" Height="1" Margin="12,0" Background="{ThemeResource VKSeparatorAlphaBrush}"/>
+                                            <vkui:CellButton Icon="Icon28BlockOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=user_blacklist}" Click="ShowBlacklistModal" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKUser}"/>
+                                            <vkui:CellButton Icon="Icon28Users3Outline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=communities}" Click="OpenCommunityPicker"/>
+                                            <vkui:CellButton Icon="Icon28SettingsOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=settings}" Click="OpenSettingsWindow"/>
+                                            <vkui:CellButton Icon="Icon28DoorArrowRightOutline" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=logout}" IconBrush="{ThemeResource VKDestructiveBrush}" Click="TryLogout"/>
+                                        </StackPanel>
+                                    </ListView.Footer>
+                                </ListView>
+                            </vkuif:Flyout.Content>
+                        </vkuif:Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </elor:Avatar>
+                <Button Grid.Column="1" Style="{StaticResource TransparentButtonStyle}" VerticalAlignment="Stretch" Height="52" Padding="0,4,0,5">
+                    <Button.Flyout>
+                        <vkuif:MenuFlyout x:Name="ConvTypeFlyout">
+                            <vkuif:MenuFlyout.Items>
+                                <RadioButton GroupName="convstypes" x:Name="ctAll" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_all}" Checked="convstypes_Checked"/>
+                                <RadioButton GroupName="convstypes" x:Name="ctImp" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_starred}" Checked="convstypes_Checked" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKGroup}"/>
+                                <RadioButton GroupName="convstypes" x:Name="ctUns" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_unanswered}" Checked="convstypes_Checked" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKGroup}"/>
+                                <RadioButton GroupName="convstypes" x:Name="ctUnr" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_unread}" Checked="convstypes_Checked"/>
+                                <MenuFlyoutSeparator x:Name="ctUsr" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKUser}"/>
+                                <MenuFlyoutItem x:Name="ctImpUsr" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=sbv_header_tab_starred_msgs}" Click="ShowStarredMessagesModal" Visibility="{Binding SessionType, Converter={StaticResource vtb}, ConverterParameter=VKUser}"/>
+                            </vkuif:MenuFlyout.Items>
+                        </vkuif:MenuFlyout>
+                    </Button.Flyout>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="ConvListTypeText" Style="{StaticResource TitleBarTextStyle}" Text="{Binding SelectedItem.Content, ElementName=ConversationsTypes}"/>
+                            <ContentPresenter VerticalAlignment="Center" Margin="1,0,8,0" Width="24" Height="24" ContentTemplate="{StaticResource Icon24Dropdown}" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </vkui:PageHeader>
+        <ListView x:Name="ConvsList" Grid.Row="1" ItemsSource="{Binding Conversations, Mode=OneWay}" VerticalAlignment="Top" SelectedItem="{Binding SelectedConversation, Mode=OneWay}" ItemTemplate="{StaticResource ConversationDataTemplate}" ItemContainerStyle="{StaticResource ConvsListViewItemStyle}" IsItemClickEnabled="True" ItemClick="ConversationsListItemClick" LostFocus="ConversationsListItemLostFocus" RightTapped="OpenConvContextMenu">
+            <ListView.Header>
+                <StackPanel MinHeight="8">
+                    <ListView x:Name="PinnedConvs" Margin="0,8,0,16" Visibility="{Binding DataContext.PinnedConversations, ElementName=Root, Converter={StaticResource ntv}}" ItemsSource="{Binding DataContext.PinnedConversations, ElementName=Root, Mode=OneWay}" SelectedItem="{Binding SelectedConversation, Mode=OneWay}" ItemTemplate="{StaticResource ConversationDataTemplate}" ItemContainerStyle="{StaticResource ConvsListViewItemStyle}" IsItemClickEnabled="True" ItemClick="ConversationsListItemClick" LostFocus="ConversationsListItemLostFocus" RightTapped="OpenConvContextMenu"/>
+                </StackPanel>
+            </ListView.Header>
+            <ListView.Footer>
+                <Border MinHeight="8">
+                    <vkui:Spinner VerticalAlignment="Center" Width="24" Height="24" Margin="12" Visibility="{Binding IsLoading}" Foreground="{ThemeResource VKHeaderAlternateTabActiveIndicatorBrush}"/>
+                </Border>
+            </ListView.Footer>
+        </ListView>
+        <vkui:Placeholder Grid.Row="1" VerticalAlignment="Stretch" 
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}"
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <Border Grid.Row="1" Margin="16,0" VerticalAlignment="Top" Height="1" Background="{ThemeResource VKSeparatorAlphaBrush}"/>
+        <Grid x:Name="PlayersContainer" Grid.Row="2" Background="{ThemeResource VKTabbarBackgroundBrush}">
+            <ctrls:MiniAudioPlayerControl Height="36" BorderBrush="{ThemeResource VKSeparatorAlphaBrush}" BorderThickness="0,1,0,0" DataContext="{Binding MainAudioPlayerInstance}" Visibility="{Binding Converter={StaticResource ntv}, FallbackValue=Collapsed}" Click="MiniAudioPlayerControl_Click" CloseButtonClick="MiniAudioPlayerControl_CloseButtonClick"/>
+        </Grid>
+    </Grid>
+</Page>

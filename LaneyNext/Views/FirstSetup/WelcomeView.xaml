@@ -1,0 +1,30 @@
+﻿<Page
+    x:Class="Elorucov.Laney.Views.FirstSetup.WelcomeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.FirstSetup"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource VKBackgroundPageAcrylicBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel MaxWidth="384" MaxHeight="640" VerticalAlignment="Center">
+            <ContentPresenter ContentTemplate="{StaticResource LaneyLogo}"/>
+            <TextBlock Margin="24,15,24,0" Style="{StaticResource FullWindowTitleStyle}" HorizontalAlignment="Center" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=landing_title}"/>
+            <TextBlock TextWrapping="Wrap" Style="{StaticResource VKText}" TextAlignment="Center" Text="{x:Bind Converter={StaticResource loc}, ConverterParameter=landing_subtitle}"/>
+            <StackPanel x:Name="Form" Margin="24,28,24,0">
+                <Button x:Name="LogInButton" Style="{StaticResource VKButtonCommerceExtraLarge}" HorizontalAlignment="Stretch" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=login}" Click="LogIn"/>
+                <vkui:Spinner x:Name="Spinner" Visibility="Collapsed" Margin="10" Width="24" Height="24" Foreground="{ThemeResource VKHeaderTintBrush}"/>
+            </StackPanel>
+        </StackPanel>
+        <Border Grid.Row="1" Height="60">
+            <TextBlock x:Name="Version" Style="{StaticResource VKCaption1}" Foreground="{ThemeResource VKTextSecondaryBrush}" TextAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
+</Page>

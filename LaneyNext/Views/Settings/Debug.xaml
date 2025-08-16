@@ -1,0 +1,107 @@
+﻿<local:SettingsPageBase
+    x:Class="Elorucov.Laney.Views.Settings.Debug"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16,0">
+            <ComboBox x:Name="Sessions" Style="{StaticResource VKComboBox}" Margin="0,16" Visibility="Collapsed"/>
+
+            <vkui:Group Header="Tests">
+                <StackPanel>
+                    <vkui:CellButton x:Name="cb0" Text="Reset settings" Click="cb0_Click"/>
+                    <vkui:CellButton x:Name="cb2" Text="Export logs" Click="cb2_Click"/>
+                    <vkui:CellButton x:Name="cb1" Text="UserConsentVerifier (Windows Hello test)" Click="cb1_Click"/>
+                    <vkui:CellButton x:Name="cb3" Text="Crash test" Click="cb3_Click"/>
+                    <vkui:CellButton x:Name="cb4" Text="Show user/group card" Click="cb4_Click"/>
+                    <vkui:CellButton x:Name="cb5" Text="Show conversation" Click="cb5_Click"/>
+                    <vkui:CellButton x:Name="cb6" Text="Parse link" Click="cb6_Click"/>
+                    <vkui:CellButton x:Name="cb7" Text="API Console" Click="cb7_Click"/>
+                    <vkui:CellButton x:Name="cb8" Text="Local settings editor" Click="cb8_Click"/>
+                    <vkui:CellButton x:Name="cb9" Text="Text parser test" Click="cb9_Click"/>
+                    <vkui:CellButton x:Name="cb10" Text="Local pass verification test" Click="cb10_Click"/>
+                </StackPanel>
+            </vkui:Group>
+
+            <vkui:Group Header="Experimental settings" Description="Change the settings only if you know what you are doing or at the request of the developer.">
+                <StackPanel>
+                    <vkui:CellButton x:Name="ffp" Text="Fail fast on errors">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p00"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Show ids in message's context menu">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p01"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="FileUploader: use BackgroundUploader instead HttpClient">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p02"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Show messages list view debug infos">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p03"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Display RAM usage">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p04"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Keep logs after logout">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p05"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Display all privacy settings">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p06"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Use Yandex maps for map attachment">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p07"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Experimental color resources loading for MessageView">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p08"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="StoryViewer: slow down open/close animation">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p09"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="StoryViewer: system theme for clickable sticker flyout">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p10"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="StoryViewer: clickable stickers zone">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p11"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="LottieView debug">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p12"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                    <vkui:CellButton Text="Don't send activity (typing, etc...)">
+                        <vkui:CellButton.Indicator>
+                            <ToggleSwitch x:Name="p13"/>
+                        </vkui:CellButton.Indicator>
+                    </vkui:CellButton>
+                </StackPanel>
+            </vkui:Group>
+        </StackPanel>
+    </ScrollViewer>
+</local:SettingsPageBase>

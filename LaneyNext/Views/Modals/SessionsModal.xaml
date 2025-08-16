@@ -1,0 +1,39 @@
+﻿<elor:Modal x:Name="ModalRoot"
+    x:Class="Elorucov.Laney.Views.Modals.SessionsModal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Views.Modals"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:vkui="using:VK.VKUI.Controls"
+    mc:Ignorable="d"
+    Style="{StaticResource VKUIDefaultModalStyle}" Padding="0" Title="{x:Bind Converter={StaticResource loc}, ConverterParameter=communities}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="GroupsList" MinHeight="188" MaxHeight="278" ItemsSource="{Binding Groups}" ItemContainerStyle="{StaticResource CommonListViewItemStyle}" ItemTemplate="{StaticResource DefaultGroupItemTemplate}" SelectionMode="Multiple">
+            <ListView.Header>
+                <Border Height="8"/>
+            </ListView.Header>
+            <ListView.Footer>
+                <Border Height="8"/>
+            </ListView.Footer>
+        </ListView>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal" Margin="8,8,8,16" Height="36">
+            <Button Style="{StaticResource VKButtonPrimaryLarge}" Margin="8,0" Visibility="{Binding IsLoading, Converter={StaticResource ntv2}, ConverterLanguage=False}" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=ModalRoot}" Content="{x:Bind Converter={StaticResource loc}, ConverterParameter=save}"/>
+        </StackPanel>
+
+        <vkui:Placeholder VerticalAlignment="Stretch"  Grid.RowSpan="2"
+                          Visibility="{Binding Placeholder, Converter={StaticResource ntv}}"
+                          IconTemplate="{Binding Placeholder, Converter={StaticResource pic}}" 
+                          Header="{Binding Placeholder.Header}"
+                          Content="{Binding Placeholder.Content}"
+                          ActionButtonText="{Binding Placeholder.ActionButton}"
+                          ActionButtonCommand="{Binding Placeholder.ActionButtonCommand}"/>
+        <vkui:Spinner Width="44" Height="44" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{ThemeResource VKHeaderTintBrush}" Visibility="{Binding IsLoading}"/>
+    </Grid>
+</elor:Modal>

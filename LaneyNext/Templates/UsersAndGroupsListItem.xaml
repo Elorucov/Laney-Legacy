@@ -1,0 +1,101 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Laney.Templates" 
+    xmlns:core="using:Elorucov.Laney.Core"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls">
+    <DataTemplate x:Key="AvaOnlySessionTemplate">
+        <StackPanel MinWidth="80" MaxWidth="112">
+            <elor:Avatar Width="64" Height="64" Margin="8,4" HorizontalAlignment="Center" ImageUri="{Binding Avatar}" DisplayName="{Binding DisplayName}" IsHitTestVisible="False" IsTabStop="False"/>
+            <TextBlock TextAlignment="Center" Margin="0,4" FontSize="14" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding ShortDisplayName}"/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="ListSessionTemplate">
+        <Grid Margin="-6,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar Width="32" Height="32" Margin="0,0,12,0" ImageUri="{Binding Avatar}" DisplayName="{Binding DisplayName}" IsHitTestVisible="False" IsTabStop="False"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultEntityTemplate">
+        <Grid Margin="16,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar Width="48" Height="48" Margin="0,0,12,0" ImageUri="{Binding Image}" DisplayName="{Binding Title}" IsHitTestVisible="False" IsTabStop="False"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource VKTextPrimaryBrush}" FontSize="16" Text="{Binding Title}" Margin="0,1,0,0"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource VKTextSecondaryBrush}" FontSize="14" Text="{Binding Subtitle}" Margin="0,0,0,4"/>
+            <Button x:Name="ExtraButton" Grid.Column="2" Width="28" Height="28" VerticalAlignment="Center" Style="{StaticResource TransparentButtonStyle}" Padding="0" Foreground="{ThemeResource VKButtonSecondaryForegroundBrush}" ContentTemplate="{Binding ExtraButtonIcon}" Command="{Binding ExtraButtonCommand}" CommandParameter="{Binding ElementName=ExtraButton}" Visibility="{Binding ExtraButtonCommand, Converter={StaticResource ntv}}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultEntityWithoutSubtitleTemplate">
+        <Grid Margin="16,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar Width="48" Height="48" Margin="0,0,12,0" ImageUri="{Binding Image}" DisplayName="{Binding Title}" IsHitTestVisible="False" IsTabStop="False"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource VKTextPrimaryBrush}" FontSize="16" Text="{Binding Title}" Margin="0,-2,0,0"/>
+            <Button x:Name="ExtraButton" Grid.Column="2" Width="28" Height="28" VerticalAlignment="Center" Style="{StaticResource TransparentButtonStyle}" Padding="0" Foreground="{ThemeResource VKButtonSecondaryForegroundBrush}" ContentTemplate="{Binding ExtraButtonIcon}" Command="{Binding ExtraButtonCommand}" CommandParameter="{Binding ElementName=ExtraButton}" Visibility="{Binding ExtraButtonCommand, Converter={StaticResource ntv}}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultEntityForMenuTemplate">
+        <Grid Margin="8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar Width="32" Height="32" Margin="0,8,8,8" ImageUri="{Binding Image}" DisplayName="{Binding Title}" IsHitTestVisible="False" IsTabStop="False"/>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{ThemeResource VKTextPrimaryBrush}" FontSize="16" Text="{Binding Title}" Margin="0,-2,0,0"/>
+            <Button x:Name="ExtraButton" Grid.Column="2" Width="28" Height="28" VerticalAlignment="Center" Style="{StaticResource TransparentButtonStyle}" Padding="0" Foreground="{ThemeResource VKButtonSecondaryForegroundBrush}" ContentTemplate="{Binding ExtraButtonIcon}" Command="{Binding ExtraButtonCommand}" CommandParameter="{Binding ElementName=ExtraButton}" Visibility="{Binding ExtraButtonCommand, Converter={StaticResource ntv}}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultUserItemTemplate">
+        <Grid Margin="16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar IsHitTestVisible="False" Width="44" Height="44" ImageUri="{Binding Photo}" DisplayName="{Binding FullName}"/>
+            <ContentControl ContentTemplate="{Binding OnlineInfo, Converter={StaticResource oic}}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <StackPanel Grid.Column="1" Margin="12,-1,0,0" VerticalAlignment="Center">
+                <TextBlock FontSize="16" Text="{Binding FullName}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="AvaOnlyUserItemTemplate">
+        <Grid Width="76" Height="80">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <elor:Avatar IsHitTestVisible="False" Width="52" Height="52" Margin="12,8,12,0" ImageUri="{Binding Photo}" DisplayName="{Binding FullName}"/>
+            <TextBlock Grid.Row="1" Margin="0,2,0,0" FontSize="13" Text="{Binding FirstName}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultGroupItemTemplate">
+        <Grid Margin="16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <elor:Avatar IsHitTestVisible="False" Width="44" Height="44" ImageUri="{Binding Photo}" DisplayName="{Binding Name}"/>
+            <StackPanel Grid.Column="1" Margin="12,-1,0,0" VerticalAlignment="Center">
+                <TextBlock FontSize="16" Text="{Binding Name}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>
