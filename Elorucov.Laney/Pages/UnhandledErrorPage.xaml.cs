@@ -93,10 +93,6 @@ namespace Elorucov.Laney.Pages {
             })();
         }
 
-        private void LinkClicked(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) {
-            new System.Action(async () => { await Launcher.LaunchUriAsync(new Uri("https://vk.me/elorlaney")); })();
-        }
-
         private void SaveLogs(object sender, RoutedEventArgs e) {
             new System.Action(async () => {
                 logsBtn.IsEnabled = false;

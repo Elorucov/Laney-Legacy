@@ -43,7 +43,7 @@ namespace Elorucov.Laney.Pages.SettingsPages {
 
             AppVersion.Text = $"{ApplicationInfo.GetVersion(true)} {package.Id.Architecture}";
             GetBuildDate();
-            thing.Text = $"© {GetCopyrightYear()} {Locale.Get("thgirypoc")}.";
+            thing.Text = Locale.Get("thgirypoc");
         }
 
         private void GetBuildDate() {
@@ -64,19 +64,10 @@ namespace Elorucov.Laney.Pages.SettingsPages {
             return ShowTime ? dt.ToString(@"yyyy\.MM\.dd H\:mm\:ss") : dt.ToString(@"yyyy\.MM\.dd");
         }
 
-        private string GetCopyrightYear() {
-            DateTimeOffset dto = ApplicationInfo.BuildDate;
-            return $"2018 - {dto.Year}";
-        }
-
         private void OpenLink(object sender, RoutedEventArgs e) {
             ButtonBase button = sender as ButtonBase;
             if (button.Tag != null && button.Tag is string link)
                 new System.Action(async () => { await Launcher.LaunchUriAsync(new Uri(link)); })();
-        }
-
-        private void OpenConvWithLC(object sender, RoutedEventArgs e) {
-            Main.GetCurrent().ShowConversationPage(-171015120);
         }
 
         private void LogoTapped(object sender, TappedRoutedEventArgs e) {

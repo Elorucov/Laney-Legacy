@@ -15,7 +15,7 @@
             <TextBlock TextAlignment="Center" TextWrapping="Wrap" FontSize="15" Margin="0,6,0,0">
                 <Run x:Uid="globerror_report"/>
                 <LineBreak/>
-                <Run x:Uid="globerror_logs"/> <Hyperlink Click="LinkClicked"><Run x:Uid="community_link"/></Hyperlink>
+                <Run x:Uid="globerror_logs"/>
             </TextBlock>
             <Button x:Name="logsBtn" Margin="0,12,0,12" HorizontalAlignment="Stretch" FontWeight="SemiBold" FontSize="16" Padding="8,5,8,7" x:Uid="globerror_savelogs" Click="SaveLogs"/>
             <HyperlinkButton HorizontalAlignment="Center" Content="Show error info" Click="ShowErrorInfo"/>

@@ -90,24 +90,14 @@
                         <wuix:SettingsCard.Description>
                             <ctrls:WrapPanel>
                                 <HyperlinkButton Tag="https://vk.com/club171015120" Click="OpenLink" x:Uid="about2_open_group"/>
-                                <TextBlock Margin="6,0" FontWeight="SemiBold" Text="·"/>
-                                <HyperlinkButton Click="OpenConvWithLC" x:Uid="about2_write_us"/>
                             </ctrls:WrapPanel>
                         </wuix:SettingsCard.Description>
                     </wuix:SettingsCard>
-                    <wuix:SettingsCard x:Uid="about2_review" IsClickEnabled="True" Tag="ms-windows-store://pdp/?productid=9msplcxvn1m5" Click="OpenLink">
+                    <wuix:SettingsCard Header="Source code" IsClickEnabled="True" Tag="https://github.com/Elorucov/Laney-Legacy" Click="OpenLink">
                         <wuix:SettingsCard.HeaderIcon>
-                            <ctrls:FixedFontIcon Glyph=""/>
+                            <ctrls:FixedFontIcon Glyph=""/>
                         </wuix:SettingsCard.HeaderIcon>
                     </wuix:SettingsCard>
-                    <!--<wuix:SettingsCard x:Uid="about2_tanody">
-                    <wuix:SettingsCard.HeaderIcon>
-                        <ctrls:FixedFontIcon Glyph=""/>
-                    </wuix:SettingsCard.HeaderIcon>
-                    <wuix:SettingsCard.ActionContent>
-                        <Button FontFamily="{StaticResource SymbolThemeFontFamily}" FontSize="16" Content="" Tag="https://vk.com/app6471849_-171015120" Click="OpenLink"/>
-                    </wuix:SettingsCard.ActionContent>
-                </wuix:SettingsCard>-->
                     <wuix:SettingsCard x:Uid="about2_vk">
                         <wuix:SettingsCard.HeaderIcon>
                             <PathIcon Width="16" Height="16" Data="M 8.812701,13.030856 C 3.4076701,13.030856 0.1284948,9.253041 0,2.969 H 2.7374845 C 2.8227625,7.585082 4.905402,9.536258 6.501773,9.938567 V 2.969 H 9.125278 V 6.955144 C 10.665072,6.783103 12.276948,4.9686701 12.818639,2.969 h 2.582103 C 14.987546,5.4278866 13.232825,7.234402 11.993072,7.981948 13.233814,8.58599 15.230186,10.16966 16,13.030856 H 13.161897 C 12.562639,11.118278 11.094598,9.644629 9.126103,9.443557 v 3.587299 z"/>
@@ -152,7 +142,6 @@
             <HyperlinkButton x:Name="BackButton" x:Uid="backButton" Width="36" Height="36" Padding="0" Click="BackButton_Click">
                 <ctrls:FixedFontIcon FontSize="20" Glyph=""/>
             </HyperlinkButton>
-            <!--<TextBlock Grid.Column="1" Margin="0,2,0,0" Style="{StaticResource TitleTextBlockStyle}" x:Uid="settings_about_app"/>-->
         </Grid>
     </Grid>
 </Page>
