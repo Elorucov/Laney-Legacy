@@ -63,8 +63,13 @@ namespace Elorucov.Laney {
 
             MainLayout.LeftPaneIsCompactChanged += (a, b) => LeftPaneCompactModeChanged?.Invoke(this, b);
 
-            API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.VkApiDomain);
-            API.WebToken = AppParameters.WebToken;
+            // В последней версии меняем access token с laney на vkm.
+            if (!string.IsNullOrEmpty(AppParameters.WebToken)) {
+                AppParameters.AccessToken = AppParameters.WebToken;
+                AppParameters.WebToken = null;
+            }
+
+            API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.VkApiDomain);
             API.ExchangeToken = AppParameters.ExchangeToken;
             API.WebTokenRefreshed = async (isSuccess, token, expiresIn) => await APIHelper.SaveRefreshedTokenAsync(isSuccess, token, expiresIn);
             API.InvalidSessionErrorReceived += API_InvalidSessionErrorReceived;
@@ -72,12 +77,6 @@ namespace Elorucov.Laney {
             new System.Action(async () => { await SetUpUIAsync(); })();
             Loaded += async (a, b) => {
                 Log.Info($"{GetType()} > Loaded: starting.");
-
-                if (App.IsUpdateIsReadyToApply) {
-                    UpdateAvailabilityButton.Visibility = Visibility.Visible;
-                } else {
-                    // App.MSStoreUpdater.Downloaded += (j, k) => UpdateAvailabilityButton.Visibility = Visibility.Visible;
-                }
 
                 // Audio player
                 AudioPlayerViewModel.InstancesChanged += (c, d) => {
@@ -93,7 +92,7 @@ namespace Elorucov.Laney {
 
                 RightFrame.DataContext = new ConversationViewModel();
                 // ShowInformation(Locale.Get("msgview_info_empty"));
-                ShowInformation(string.Empty);
+                ShowInformation(String.Empty);
 
                 RightFrame.Content = cv;
 
@@ -181,10 +180,8 @@ namespace Elorucov.Laney {
                 MenuFlyoutItem d2 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Crash app" };
                 MenuFlyoutItem d3 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Reset users'n'groups cache" };
                 MenuFlyoutItem d6 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Copy device_id for push" };
-                MenuFlyoutItem d10 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Copy ChannelUri for push" };
                 MenuFlyoutItem d7 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "GC.Collect()" };
                 MenuFlyoutItem d8 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Copy access token" };
-                MenuFlyoutItem d9 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Copy offclient access token" };
                 MenuFlyoutItem d11 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Cached images info" };
                 MenuFlyoutItem d12 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Clear cached images" };
                 MenuFlyoutItem d13 = new MenuFlyoutItem { Icon = new FixedFontIcon { Glyph = "" }, Text = "Stickers keywords info" };
@@ -209,13 +206,6 @@ namespace Elorucov.Laney {
                     Clipboard.SetContent(dp);
                     Tips.Show("Copied.");
                 };
-                d10.Click += async (a, b) => {
-                    DataPackage dp = new DataPackage();
-                    dp.RequestedOperation = DataPackageOperation.Copy;
-                    dp.SetText(await VKNotificationHelper.GetChannelUri());
-                    Clipboard.SetContent(dp);
-                    Tips.Show("Copied.");
-                };
                 d7.Click += (a, b) => {
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
@@ -225,13 +215,6 @@ namespace Elorucov.Laney {
                     DataPackage dp = new DataPackage();
                     dp.RequestedOperation = DataPackageOperation.Copy;
                     dp.SetText(AppParameters.AccessToken);
-                    Clipboard.SetContent(dp);
-                    Tips.Show("Copied. Don't share this token with anyone!!!");
-                };
-                d9.Click += (a, b) => {
-                    DataPackage dp = new DataPackage();
-                    dp.RequestedOperation = DataPackageOperation.Copy;
-                    dp.SetText(AppParameters.WebToken);
                     Clipboard.SetContent(dp);
                     Tips.Show("Copied. Don't share this token with anyone!!!");
                 };
@@ -256,10 +239,8 @@ namespace Elorucov.Laney {
                 mfdi.Items.Add(d2);
                 mfdi.Items.Add(d3);
                 mfdi.Items.Add(d6);
-                mfdi.Items.Add(d10);
                 mfdi.Items.Add(d7);
                 mfdi.Items.Add(d8);
-                mfdi.Items.Add(d9);
                 mfdi.Items.Add(d11);
                 mfdi.Items.Add(d12);
                 mfdi.Items.Add(d13);
@@ -328,7 +309,7 @@ namespace Elorucov.Laney {
             var result = await cdlg.ShowAsync();
             if (result == ContentDialogResult.Primary) {
                 int p = 0;
-                if (int.TryParse(tb.Text, out p)) ShowConversationPage(p);
+                if (Int32.TryParse(tb.Text, out p)) ShowConversationPage(p);
             }
         }
 
@@ -364,7 +345,9 @@ namespace Elorucov.Laney {
         private void TryDoStartupTasks(object sender) {
             if (IsInternetAvailable) {
                 NetworkInformation.NetworkStatusChanged -= TryDoStartupTasks;
-                StartupTasks();
+                new System.Action(async () => {
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => StartupTasks());
+                })();
             }
         }
 
@@ -381,24 +364,18 @@ namespace Elorucov.Laney {
                 AppParameters.Notifications = 1;
                 tp = 1;
             }
-            string argument = string.Empty;
-            string method = string.Empty;
+            string argument = String.Empty;
+            string method = String.Empty;
             try {
                 if (args is ToastNotificationActivatedEventArgs t) {
                     method = nameof(ToastNotificationActivatedEventArgs);
                     argument = t.Argument;
                     Log.Info($"{GetType()} > {method}: {argument}");
                     var q = QueryString.Parse(argument);
-                    int peer = q.Contains("peerId") ? int.Parse(q["peerId"]) : -1;
-                    int msgId = q.Contains("cmid") ? int.Parse(q["cmid"]) : -1;
-                    await Task.Delay(350); // Delay
+                    int peer = q.Contains("peerId") ? Int32.Parse(q["peerId"]) : -1;
+                    int msgId = q.Contains("cmid") ? Int32.Parse(q["cmid"]) : -1;
+                    await Task.Delay(200); // Delay
                     if (peer != 0 || msgId != 0) {
-                        if (AppParameters.WebTokenSupport) {
-                            while (string.IsNullOrEmpty(API.WebToken)) {
-                                Log.Warn($"{GetType()} > Web token is null! Waiting 500 ms...");
-                                await Task.Delay(500);
-                            }
-                        }
                         ShowConversationPage(peer, msgId);
                     } else {
                         string info = "The notification doesn't contains peerId or cmid that required to open conversation.\n";
@@ -447,6 +424,7 @@ namespace Elorucov.Laney {
                 Log.Info($"{GetType().Name} > StartupTasks: executing...");
                 object st = await Execute.Startup();
                 if (st is StartupInfo inf) {
+                    AppParameters.ExchangeToken = inf.ExchangeToken;
                     AppParameters.ChatThemesListSource = inf.ChatThemesListSource;
                     AppSession.MessagesTranslationLanguagePairs = inf.MessagesTranslationLanguagePairs;
                     AppSession.PushSettings = inf.PushSettings;
@@ -464,8 +442,8 @@ namespace Elorucov.Laney {
                     // Иначе, не будем обновлять файл сессий и не будем "поддержать" мультиаккаунт до того момента,
                     // когда юзер не выйдет из аккаунта.
                     try {
-                        var session = new VKSession(AppParameters.UserID, AppParameters.AccessToken, AppParameters.WebToken, AppParameters.WebTokenExpires, AppParameters.ExchangeToken, current.FirstName, current.Photo?.AbsoluteUri);
-                        if (!string.IsNullOrEmpty(AppParameters.Passcode)) session.LocalPasscode = AppParameters.Passcode;
+                        var session = new VKSession(AppParameters.UserID, AppParameters.AccessToken, AppParameters.AccessTokenExpires, AppParameters.ExchangeToken, current.FirstName, current.Photo?.AbsoluteUri);
+                        if (!String.IsNullOrEmpty(AppParameters.Passcode)) session.LocalPasscode = AppParameters.Passcode;
                         await VKSessionManager.AddOrUpdateSessionAsync(session);
                     } catch (Exception ex) {
                         Functions.ShowHandledErrorTip(ex);
@@ -547,9 +525,9 @@ namespace Elorucov.Laney {
 
         private void ShowTooltips(List<SpecialEvent> events) {
             List<int> ids = new List<int>();
-            if (!string.IsNullOrEmpty(AppParameters.SpecialEventTooltips)) {
+            if (!String.IsNullOrEmpty(AppParameters.SpecialEventTooltips)) {
                 var ew = AppParameters.SpecialEventTooltips.Split(',');
-                ew.ToList().ForEach(i => ids.Add(int.Parse(i)));
+                ew.ToList().ForEach(i => ids.Add(Int32.Parse(i)));
             }
 
             var newEvents = events.Where(e => !ids.Contains(e.Id)).ToList();
@@ -682,8 +660,8 @@ namespace Elorucov.Laney {
         }
 
         private void ShowInformation(string i, bool showTip = false) {
-            InfoText.Text = string.IsNullOrEmpty(i) ? "" : i;
-            InfoContainer.Visibility = string.IsNullOrEmpty(i) ? Visibility.Collapsed : Visibility.Visible;
+            InfoText.Text = String.IsNullOrEmpty(i) ? "" : i;
+            InfoContainer.Visibility = String.IsNullOrEmpty(i) ? Visibility.Collapsed : Visibility.Visible;
             if (showTip && !MainLayout.IsWideMode) {
                 Tips.Show(i);
             }
@@ -702,7 +680,7 @@ namespace Elorucov.Laney {
                 AppSession.CurrentConversationVM = null;
                 RightFrame.DataContext = new ConversationViewModel();
                 // ShowInformation(Locale.Get("msgview_info_empty"));
-                ShowInformation(string.Empty);
+                ShowInformation(String.Empty);
             }
         }
 
@@ -737,7 +715,7 @@ namespace Elorucov.Laney {
                 AppSession.CurrentConversationVM.MessageFormViewModel.SetRef(vkRef, vkRefSource);
 
                 if (_forwardingMessages.Key != 0 && _forwardingMessages.Value != null && _forwardingMessages.Value.Count > 0) {
-                    if (!string.IsNullOrEmpty(con.RestrictionReason)) {
+                    if (!String.IsNullOrEmpty(con.RestrictionReason)) {
                         Tips.Show(con.RestrictionReason);
                         return;
                     }
@@ -745,7 +723,7 @@ namespace Elorucov.Laney {
                 }
 
                 if (_forwardingAttachments != null && _forwardingAttachments.Count > 0) {
-                    if (!string.IsNullOrEmpty(con.RestrictionReason)) {
+                    if (!String.IsNullOrEmpty(con.RestrictionReason)) {
                         Tips.Show(con.RestrictionReason);
                         return;
                     }
@@ -783,7 +761,7 @@ namespace Elorucov.Laney {
                 AppSession.CurrentConversationVM.MessageFormViewModel.SetRef(vkRef, vkRefSource);
 
                 if (_forwardingMessages.Key != 0 && _forwardingMessages.Value != null && _forwardingMessages.Value.Count > 0) {
-                    if (!string.IsNullOrEmpty(AppSession.CurrentConversationVM.RestrictionReason)) {
+                    if (!String.IsNullOrEmpty(AppSession.CurrentConversationVM.RestrictionReason)) {
                         Tips.Show(AppSession.CurrentConversationVM.RestrictionReason);
                         return;
                     }
@@ -791,7 +769,7 @@ namespace Elorucov.Laney {
                 }
 
                 if (_forwardingAttachments != null && _forwardingAttachments.Count > 0) {
-                    if (!string.IsNullOrEmpty(AppSession.CurrentConversationVM.RestrictionReason)) {
+                    if (!String.IsNullOrEmpty(AppSession.CurrentConversationVM.RestrictionReason)) {
                         Tips.Show(AppSession.CurrentConversationVM.RestrictionReason);
                         return;
                     }
@@ -809,7 +787,7 @@ namespace Elorucov.Laney {
             } else {
                 RightFrame.DataContext = new ConversationViewModel();
                 // ShowInformation(Locale.Get("msgview_info_empty"));
-                ShowInformation(string.Empty);
+                ShowInformation(String.Empty);
                 MainLayout.IsRightPaneShowing = false;
             }
             ToggleContentLayerVisibility(true);
@@ -968,7 +946,7 @@ namespace Elorucov.Laney {
                     if (_forwardingAttachments != null || _forwardingMessages.Key != 0) return;
                     SwitchToLeftFrame();
                     // ShowInformation(Locale.Get("msgview_info_empty"));
-                    ShowInformation(string.Empty);
+                    ShowInformation(String.Empty);
                     AppSession.ChatNavigationHistory.Clear();
                 } else if (ctrl && args.VirtualKey == VirtualKey.Q) {
                     await ApplicationView.GetForCurrentView().TryConsolidateAsync();
@@ -1034,15 +1012,6 @@ namespace Elorucov.Laney {
                     modal.Show();
                 }
             })();
-        }
-
-        private void UpdateAvailabilityButton_Click(object sender, RoutedEventArgs e) {
-            //new System.Action(async () => {
-            //    var result = await App.MSStoreUpdater.TryApplyUpdatesAsync();
-            //    if (!result.HasValue || !result.Value) {
-            //        await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9MSPLCXVN1M5"));
-            //    }
-            //})();
         }
 
         private void PaneResizerButton_Click(object sender, RoutedEventArgs e) {

@@ -234,7 +234,7 @@ namespace Elorucov.Laney.ViewModel {
             AudiosPlaceholder = null;
             IsAudiosLoading = true;
 
-            object resp = await VkAPI.Methods.Audios.Get(albumId, Audios.Count, VkAPI.API.WebToken);
+            object resp = await VkAPI.Methods.Audios.Get(albumId, Audios.Count);
             if (resp is VKList<Audio> audios) {
                 noMoreAudios = audios.Items.Count == 0;
                 foreach (Audio a in audios.Items) {

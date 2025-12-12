@@ -33,8 +33,7 @@ namespace Elorucov.Laney.PreviewDebug {
             AppParameters.DebugMenuUsed = true;
             uid.Text = $"Current session (user): {AppParameters.UserName}. ID: {AppParameters.UserID}";
             Log.Verbose($"{GetType().Name} > loading...");
-            if (!API.Initialized) API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.VkApiDomain);
-            API.WebToken = AppParameters.WebToken;
+            if (!API.Initialized) API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.VkApiDomain);
             API.ExchangeToken = AppParameters.ExchangeToken;
             API.WebTokenRefreshed = async (isSuccess, token, expiresIn) => await APIHelper.SaveRefreshedTokenAsync(isSuccess, token, expiresIn);
 

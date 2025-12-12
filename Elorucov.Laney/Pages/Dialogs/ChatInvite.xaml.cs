@@ -41,7 +41,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
                     DecodePixelType = DecodePixelType.Logical,
                     DecodePixelHeight = 80
                 };
-                await cphoto.SetUriSourceAsync(preview.Photo != null ? preview.Photo.Photo200 : new Uri("https://vk.com/images/icons/im_multichat_200.png"));
+                await cphoto.SetUriSourceAsync(preview.Photo != null ? preview.Photo.Photo200 : new Uri("https://vk.ru/images/icons/im_multichat_200.png"));
 
                 ChatPhoto.Fill = new ImageBrush {
                     ImageSource = cphoto

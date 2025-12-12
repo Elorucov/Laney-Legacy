@@ -188,6 +188,17 @@ namespace Elorucov.VkAPI.Methods {
             return VKResponseHelper.ParseResponse<bool>(res);
         }
 
+        public static async Task<object> EditChat(long id, bool? disableForwarding, bool? disableServiceMessages) {
+            Dictionary<string, string> req = new Dictionary<string, string> {
+                { "chat_id", id.ToString() }
+            };
+            if (disableForwarding.HasValue) req.Add("disable_forwarding", disableForwarding.Value ? "1" : "0");
+            if (disableServiceMessages.HasValue) req.Add("disable_service_messages", disableServiceMessages.Value ? "1" : "0");
+
+            var res = await API.SendRequestAsync("messages.editChat", req);
+            return VKResponseHelper.ParseResponse<bool>(res);
+        }
+
         public static async Task<object> MarkAsRead(long peerId, int startMessageId, bool markConvAsRead = false) {
             Dictionary<string, string> req = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() },
@@ -319,7 +330,6 @@ namespace Elorucov.VkAPI.Methods {
             if (!String.IsNullOrEmpty(message)) req.Add("message", message);
             if (!String.IsNullOrEmpty(attachment)) req.Add("attachment", attachment);
             if (!String.IsNullOrEmpty(forward)) req.Add("forward", forward);
-            req.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("messages.send", req);
             return VKResponseHelper.ParseResponse<List<MessageSendMultiResponse>>(res);
@@ -507,8 +517,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> PinConversation(long peerId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "peer_id", peerId.ToString() },
-                { "access_token", API.WebToken }
+                { "peer_id", peerId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.pinConversation", req);
@@ -517,8 +526,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> UnpinConversation(long peerId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "peer_id", peerId.ToString() },
-                { "access_token", API.WebToken }
+                { "peer_id", peerId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.unpinConversation", req);
@@ -527,8 +535,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> ArchiveConversation(long peerId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "peer_id", peerId.ToString() },
-                { "access_token", API.WebToken }
+                { "peer_id", peerId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.archiveConversation", req);
@@ -537,8 +544,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> UnarchiveConversation(long peerId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "peer_id", peerId.ToString() },
-                { "access_token", API.WebToken }
+                { "peer_id", peerId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.unarchiveConversation", req);
@@ -549,8 +555,7 @@ namespace Elorucov.VkAPI.Methods {
             Dictionary<string, string> req = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() },
                 { "cmids", cmid.ToString() },
-                { "language", lang },
-                { "access_token", API.WebToken }
+                { "language", lang }
             };
 
             var res = await API.SendRequestAsync("messages.translate", req);
@@ -558,9 +563,7 @@ namespace Elorucov.VkAPI.Methods {
         }
 
         public static async Task<object> GetFolders() {
-            Dictionary<string, string> req = new Dictionary<string, string> {
-                { "access_token", API.WebToken }
-            };
+            Dictionary<string, string> req = new Dictionary<string, string>();
 
             var res = await API.SendRequestAsync("messages.getFolders", req);
             return VKResponseHelper.ParseResponse<VKList<Folder>>(res);
@@ -569,8 +572,7 @@ namespace Elorucov.VkAPI.Methods {
         public static async Task<object> CreateFolder(string name, List<long> peerIds) {
             Dictionary<string, string> req = new Dictionary<string, string> {
                 { "name", name },
-                { "included_peer_ids", String.Join(',', peerIds) },
-                { "access_token", API.WebToken }
+                { "included_peer_ids", String.Join(',', peerIds) }
             };
 
             var res = await API.SendRequestAsync("messages.createFolder", req);
@@ -584,7 +586,6 @@ namespace Elorucov.VkAPI.Methods {
             if (!String.IsNullOrEmpty(name)) req.Add("name", name);
             if (add != null && add.Count > 0) req.Add("add_included_peer_ids", String.Join(',', add));
             if (remove != null && remove.Count > 0) req.Add("remove_included_peer_ids", String.Join(',', remove));
-            req.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("messages.updateFolder", req);
             return VKResponseHelper.ParseResponse<bool>(res);
@@ -592,8 +593,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> DeleteFolder(int folderId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "folder_id", folderId.ToString() },
-                { "access_token", API.WebToken }
+                { "folder_id", folderId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.deleteFolder", req);
@@ -602,8 +602,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> ReorderFolders(List<int> folderIds) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "folder_ids", String.Join(',', folderIds) },
-                { "access_token", API.WebToken }
+                { "folder_ids", String.Join(',', folderIds) }
             };
 
             var res = await API.SendRequestAsync("messages.reorderFolders", req);
@@ -686,8 +685,7 @@ namespace Elorucov.VkAPI.Methods {
                 { "count", count.ToString() },
                 { "offset", offset.ToString() },
                 { "fields", API.Fields },
-                { "extended", "1" },
-                { "access_token", API.WebToken }
+                { "extended", "1" }
             };
 
             var res = await API.SendRequestAsync("messages.getImportantMessages", p);
@@ -696,8 +694,7 @@ namespace Elorucov.VkAPI.Methods {
 
         public static async Task<object> GetSharedConversations(long peerId) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "peer_id", peerId.ToString() },
-                { "access_token", API.WebToken }
+                { "peer_id", peerId.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.getSharedConversations", req);
@@ -705,9 +702,7 @@ namespace Elorucov.VkAPI.Methods {
         }
 
         public static async Task<object> GetVideoMessageShapes() {
-            Dictionary<string, string> req = new Dictionary<string, string> {
-                { "access_token", API.WebToken }
-            };
+            Dictionary<string, string> req = new Dictionary<string, string>();
 
             var res = await API.SendRequestAsync("messages.getVideoMessageShapes", req);
             return VKResponseHelper.ParseResponse<VideoMessageShapesResponse>(res);
@@ -760,8 +755,7 @@ namespace Elorucov.VkAPI.Methods {
         public static async Task<object> MuteChatMentions(long peerId, string mentionStatus) {
             Dictionary<string, string> req = new Dictionary<string, string> {
                 { "peer_id", peerId.ToString() },
-                { "mention_status", mentionStatus.ToString() },
-                { "access_token", API.WebToken }
+                { "mention_status", mentionStatus.ToString() }
             };
 
             var res = await API.SendRequestAsync("messages.muteChatMentions", req);

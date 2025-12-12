@@ -2,8 +2,8 @@
 
 namespace Elorucov.Laney.Services.Common {
     public class AppParameters {
-        public static int ApplicationID { get => 6614620; }        // App ID from https://vk.com/editapp?id={ApplicationID}&section=options
-        public static string ApplicationSecret { get => "***"; }   // Secure key from https://vk.com/editapp?id={ApplicationID}&section=options
+        public static int ApplicationID { get => 51453752; }
+        public static string ApplicationSecret { get => "4UyuCUsdK8pVCNoeQuGi"; }
         public static int Scope { get => 471126; }
 
         //
@@ -14,9 +14,6 @@ namespace Elorucov.Laney.Services.Common {
         const string et = "et";
         const string wat = "wat";
         const string watexp = "watexp";
-        const string vkmwebid = "vkm_web_id";
-        const string cid = "cid";
-        const string cs = "cs";
         const string name = "name";
         const string avatar = "avatar";
         const string atf = "atf";
@@ -30,6 +27,7 @@ namespace Elorucov.Laney.Services.Common {
         const string pushLog = "pushlog";
         const string alternativeUpload = "file_uploader_provider";
         const string uisTheme = "uis_theme";
+        const string uisAccent = "uis_accent";
         const string uisMsgFontSize = "uis_msg_font_size";
         const string showAppId = "show_app_id";
         const string msgAdvInfo = "msg_adv_info";
@@ -68,6 +66,7 @@ namespace Elorucov.Laney.Services.Common {
         const string contactPanelWin11 = "my_people_win11";
         const string ths = "ths";
         const string ctlsrc = "ctlsrc";
+        const string crEndpoint = "cr_endpoint";
         const string altEmojiFont = "alt_emoji_font";
         const string lpDebugStatus = "lp_debug_status";
         const string statSent = "stat_sent";
@@ -89,6 +88,7 @@ namespace Elorucov.Laney.Services.Common {
         const string fdbg = "fdbg";
         const string nomica = "nomica";
         const string messageRichEditBoxImpl = "mreb_impl";
+        const string modernPhotoLayout = "modern_photo_layout";
         #endregion
 
         private static ApplicationDataContainer adc = ApplicationData.Current.LocalSettings;
@@ -109,6 +109,11 @@ namespace Elorucov.Laney.Services.Common {
             set { adc.Values[at] = value; }
         }
 
+        public static long AccessTokenExpires {
+            get { return adc.Values[watexp] != null && adc.Values[watexp] is long ? (long)adc.Values[watexp] : 0; }
+            set { adc.Values[watexp] = value; }
+        }
+
         public static string WebToken {
             get { return adc.Values[wat] != null ? adc.Values[wat].ToString() : null; }
             set { adc.Values[wat] = value; }
@@ -117,16 +122,6 @@ namespace Elorucov.Laney.Services.Common {
         public static string ExchangeToken {
             get { return adc.Values[et] != null ? adc.Values[et].ToString() : null; }
             set { adc.Values[et] = value; }
-        }
-
-        public static long WebTokenExpires {
-            get { return adc.Values[watexp] != null && adc.Values[watexp] is long ? (long)adc.Values[watexp] : 0; }
-            set { adc.Values[watexp] = value; }
-        }
-
-        public static bool UseWebVKMID {
-            get { return adc.Values[vkmwebid] != null ? (bool)adc.Values[vkmwebid] : false; }
-            set { adc.Values[vkmwebid] = value; }
         }
 
         public static string UserName {
@@ -448,6 +443,11 @@ namespace Elorucov.Laney.Services.Common {
             set { adc.Values[ctlsrc] = value; }
         }
 
+        public static string CrashReportEndpoint {
+            get { return adc.Values[crEndpoint] != null && adc.Values[crEndpoint] is string s ? s : "https://realm.elor.top/lcrs"; }
+            set { adc.Values[crEndpoint] = value; }
+        }
+
         public static bool LongPollDebugInfoInStatus {
             get { return adc.Values[lpDebugStatus] != null ? (bool)adc.Values[lpDebugStatus] : false; }
             set { adc.Values[lpDebugStatus] = value; }
@@ -493,6 +493,11 @@ namespace Elorucov.Laney.Services.Common {
             set { adc.Values[messageRichEditBoxImpl] = value; }
         }
 
+        public static bool ModernPhotoLayout {
+            get { return adc.Values[modernPhotoLayout] != null ? (bool)adc.Values[modernPhotoLayout] : true; }
+            set { adc.Values[modernPhotoLayout] = value; }
+        }
+
         // Hints
 
         public static bool HintMessageSendFlyout {
@@ -520,16 +525,6 @@ namespace Elorucov.Laney.Services.Common {
         public static bool ContactsPanelInteracted {
             get { return adc.Values[contactsPanelInteracted] != null ? (bool)adc.Values[contactsPanelInteracted] : false; }
             set { adc.Values[contactsPanelInteracted] = value; }
-        }
-
-        public static int VKMApplicationID {
-            get { return adc.Values[cid] != null && adc.Values[cid] is int i ? i : 51453752; }
-            set { adc.Values[cid] = value; }
-        }
-
-        public static string VKMSecret {
-            get { return adc.Values[cs] != null && adc.Values[cs] is string s ? s : "4UyuCUsdK8pVCNoeQuGi"; }
-            set { adc.Values[cs] = value; }
         }
 
         // Misc

@@ -62,7 +62,7 @@ namespace Elorucov.Laney.Pages.Dialogs.Dev {
                 Dictionary<string, string> parameters = new Dictionary<string, string> {
                     { "peer_id", convoId.ToString() },
                     { "conversation_message_ids", cmid.ToString() },
-                    { "access_token", wtcb.IsChecked.Value ? AppParameters.WebToken : AppParameters.AccessToken }
+                    { "access_token", AppParameters.AccessToken }
                 };
 
                 resp = await VkAPI.API.SendRequestAsync("messages.getByConversationMessageId", parameters, apiVersion);
@@ -70,7 +70,7 @@ namespace Elorucov.Laney.Pages.Dialogs.Dev {
                 Title = "Conversation JSON";
                 Dictionary<string, string> parameters = new Dictionary<string, string> {
                     { "peer_ids", convoId.ToString() },
-                    { "access_token", wtcb.IsChecked.Value ? AppParameters.WebToken : AppParameters.AccessToken }
+                    { "access_token", AppParameters.AccessToken }
                 };
 
                 resp = await VkAPI.API.SendRequestAsync("messages.getConversationsById", parameters, apiVersion);

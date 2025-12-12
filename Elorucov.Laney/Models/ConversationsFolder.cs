@@ -182,14 +182,14 @@ namespace Elorucov.Laney.Models {
 
             IsLoading = true;
             Placeholder = null;
-            Log.Info($"{GetType().Name} > Starting load conversations for folder {_id}. Have wt: {!string.IsNullOrEmpty(VkAPI.API.WebToken)}");
+            Log.Info($"{GetType().Name} > Starting load conversations for folder {_id}.");
             int count = AppParameters.ConversationsLoadCount < 0 ? 200 : AppParameters.ConversationsLoadCount;
 
             int folderId = _id <= 0 ? 0 : _id;
             string filter = null;
             if (_id == ARCHIVE) filter = "archive";
 
-            object response = await Messages.GetConversations(count, Conversations.Count, filter, folderId, VkAPI.API.WebToken);
+            object response = await Messages.GetConversations(count, Conversations.Count, filter, folderId);
             if (response is ConversationsResponse resp) {
                 AppSession.AddUsersToCache(resp.Profiles);
                 AppSession.AddGroupsToCache(resp.Groups);
@@ -219,13 +219,13 @@ namespace Elorucov.Laney.Models {
 
         private void SetNameAndEmoji() {
             string icon = "";
-            string emoji = string.Empty;
+            string emoji = String.Empty;
             string name = Name;
 
             string[] split = Name.Trim().Split(" ");
             if (split.Length > 0) {
                 if (Functions.CheckEmoji(split[0], 1)) {
-                    icon = string.Empty;
+                    icon = String.Empty;
                     emoji = split[0];
                     if (split.Length == 1) {
                         name = split[0];
@@ -255,7 +255,7 @@ namespace Elorucov.Laney.Models {
                         Conversations.Add(conv);
                         Conversations.SortDescending(c => GetSortId(c));
                     } else {
-                        var response = await Messages.GetConversationById(message.PeerId, VkAPI.API.WebToken);
+                        var response = await Messages.GetConversationById(message.PeerId);
                         if (response is VKList<Conversation> scr) {
                             var apiconv = scr.Items[0];
                             if (apiconv.IsArchived) return;

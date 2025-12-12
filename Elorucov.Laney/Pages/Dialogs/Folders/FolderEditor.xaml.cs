@@ -66,7 +66,7 @@ namespace Elorucov.Laney.Pages.Dialogs.Folders {
             Loader.IsActive = true;
             AddButton.IsEnabled = false;
 
-            object response = await Messages.GetConversations(200, 0, null, currentFolder.Id, API.WebToken);
+            object response = await Messages.GetConversations(200, 0, null, currentFolder.Id);
             Loader.IsActive = false;
             if (response is ConversationsResponse cr) {
                 AppSession.AddUsersToCache(cr.Profiles);

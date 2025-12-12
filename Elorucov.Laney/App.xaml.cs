@@ -93,8 +93,6 @@ namespace Elorucov.Laney {
         public bool MainAppWindowDisplayed { get; private set; } = false;
         public static Timer OnlineTimer { get; set; }
         public static bool IsDefaultTheme { get; private set; } = true;
-        // public static MicrosoftStoreUpdater MSStoreUpdater { get; private set; } = new MicrosoftStoreUpdater();
-        public static bool IsUpdateIsReadyToApply { get; private set; }
 
         private void ChangeTheme() {
             switch (AppParameters.Theme) {
@@ -263,7 +261,7 @@ namespace Elorucov.Laney {
                         await Main.GetCurrent()?.ParseArgs(args);
                         return;
                     }
-                    if (a.Uri.Host != "vk.com") Exit();
+                    if (a.Uri.Host != "vk.com" || a.Uri.Host != "vk.ru") Exit();
                     var match = VKLinks._writeReg.Match(a.Uri.AbsolutePath);
                     if (match.Success) {
                         long id = 0;

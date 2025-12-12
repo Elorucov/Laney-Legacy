@@ -35,11 +35,11 @@ namespace Elorucov.Laney.Pages.Dialogs {
             new System.Action(async () => {
                 try {
                     if (string.IsNullOrEmpty(_anonymToken)) {
-                        var response = await DirectAuth.GetAnonymTokenAsync(AppParameters.VKMApplicationID, AppParameters.VKMSecret);
+                        var response = await DirectAuth.GetAnonymTokenAsync(AppParameters.ApplicationID, AppParameters.ApplicationSecret);
                         _anonymToken = response.Token;
                     }
 
-                    var resp2 = await Auth.GetAuthCode(_anonymToken, Locale.Get("lang"), $"Laney v{ApplicationInfo.GetVersion(true)}", AppParameters.VKMApplicationID);
+                    var resp2 = await Auth.GetAuthCode(_anonymToken, Locale.Get("lang"), $"Laney v{ApplicationInfo.GetVersion(true)}", AppParameters.ApplicationID);
                     if (resp2 is GetAuthCodeResponse authCode) {
                         _authHash = authCode.AuthHash;
 
@@ -88,7 +88,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
             bool loop = true;
             while (loop) {
                 try {
-                    var response = await Auth.CheckAuthCode(_anonymToken, Locale.Get("lang"), AppParameters.VKMApplicationID, _authHash);
+                    var response = await Auth.CheckAuthCode(_anonymToken, Locale.Get("lang"), AppParameters.ApplicationID, _authHash);
                     if (response is CheckAuthCodeResponse checkResult) {
                         switch (checkResult.Status) {
                             case 0:

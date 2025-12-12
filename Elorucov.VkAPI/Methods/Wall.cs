@@ -64,9 +64,8 @@ namespace Elorucov.VkAPI.Methods {
             return VKResponseHelper.ParseResponse<WallPostResponse>(res);
         }
 
-        public static async Task<object> GetPostPreview(string accessToken, long ownerId, bool friendsOnly, bool bestFriendsOnly, bool fromGroup, string message, string attachments, bool signed, bool checkSign, long publishDate, double glong, double glat, int? donutPaidDuration) {
+        public static async Task<object> GetPostPreview(long ownerId, bool friendsOnly, bool bestFriendsOnly, bool fromGroup, string message, string attachments, bool signed, bool checkSign, long publishDate, double glong, double glat, int? donutPaidDuration) {
             Dictionary<string, string> p = new Dictionary<string, string> {
-                { "access_token", accessToken },
                 { "owner_id", $"{ownerId}" },
                 { "extended", "1" },
                 { "fields", API.Fields },

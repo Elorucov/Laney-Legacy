@@ -89,12 +89,12 @@ namespace Elorucov.Laney.Models {
                     IsDonut = c.ChatSettings != null ? c.ChatSettings.IsDonut : false;
                     MembersCount = c.ChatSettings != null ? c.ChatSettings.MembersCount : 0;
                     Title = c.ChatSettings != null ? c.ChatSettings.Title : "Untitled chat";
-                    Photo = new Uri(c.ChatSettings?.Photo?.Medium != null ? c.ChatSettings.Photo.Medium : "https://vk.com/images/icons/im_multichat_200.png");
+                    Photo = new Uri(c.ChatSettings?.Photo?.Medium != null ? c.ChatSettings.Photo.Medium : "https://vk.ru/images/icons/im_multichat_200.png");
                     if (c.ChatSettings?.PinnedMessage != null) PinnedMessage = new LMessage(c.ChatSettings.PinnedMessage);
                 } else if (c.Peer.Type == PeerType.User) {
                     if (c.Peer.Id == AppParameters.UserID) {
                         Title = Locale.Get("favorites_myself");
-                        Photo = new Uri("https://vk.com/images/icons/im_favorites_200.png");
+                        Photo = new Uri("https://vk.ru/images/icons/im_favorites_200.png");
                     } else {
                         var u = AppSession.GetCachedUser(c.Peer.Id);
                         Title = u != null ? $"{u.FirstName} {u.LastName}" : "Untitled user";
@@ -116,7 +116,7 @@ namespace Elorucov.Laney.Models {
                 } else if (c.Peer.Type == PeerType.Contact) {
                     var t = AppSession.GetCachedContact(c.Peer.LocalId);
                     Title = t != null ? t.Name : "Untitled contact";
-                    Photo = t != null && t.Photo != null ? t.Photo : new Uri("https://vk.com/images/camera_200.png");
+                    Photo = t != null && t.Photo != null ? t.Photo : new Uri("https://vk.ru/images/camera_200.png");
                 }
 
                 IsMuted = c.PushSettings != null && c.PushSettings.DisabledForever ? true : false;

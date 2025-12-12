@@ -271,12 +271,12 @@ namespace Elorucov.Laney.Pages {
                         case "hashtag":
                             PauseStory();
                             ShowDefaultFlyout(border, CheckTooltipText(sticker.TooltipText, Locale.Get("story_clst_hashtag")), '', async () =>
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://vk.com/feed?section=search&q={WebUtility.UrlEncode(sticker.Hashtag)}")));
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://vk.ru/feed?section=search&q={WebUtility.UrlEncode(sticker.Hashtag)}")));
                             break;
                         case "place":
                             PauseStory();
                             ShowDefaultFlyout(border, CheckTooltipText(sticker.TooltipText, Locale.Get("story_clst_place")), '', async () =>
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://m.vk.com/place{sticker.PlaceId}"))); break;
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://m.vk.ru/place{sticker.PlaceId}"))); break;
                         case "sticker":
                             PauseStory();
                             await ShowStickerPackInfoAsync(sticker.StickerPackId);
@@ -300,7 +300,7 @@ namespace Elorucov.Laney.Pages {
                         case "market_item":
                             PauseStory();
                             ShowDefaultFlyout(border, CheckTooltipText(sticker.TooltipText, Locale.Get("story_clst_market")), '', async () =>
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://vk.com/product{sticker.MarketItem.OwnerId}_{sticker.MarketItem.Id}")));
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://vk.ru/product{sticker.MarketItem.OwnerId}_{sticker.MarketItem.Id}")));
                             break;
                         case "owner":
                             PauseStory();

@@ -51,7 +51,7 @@ namespace Elorucov.Laney.ViewModel {
             new System.Action(async () => {
                 Items.CollectionChanged -= Items_CollectionChanged; // Required, because searchbox is temporary disappear and focus losing from that searchbox.
                 Items.Clear();
-                if (!string.IsNullOrWhiteSpace(SearchQuery) && _searchAction != null) {
+                if (!String.IsNullOrWhiteSpace(SearchQuery) && _searchAction != null) {
                     var items = await _searchAction(SearchQuery);
                     if (items != null) {
                         foreach (var member in items) Items.Add(member);
@@ -129,6 +129,8 @@ namespace Elorucov.Laney.ViewModel {
         private Flyout _chatEditFlyout;
 
         public ChatPermissions ChatPermissions { get; private set; }
+        public ChatACL ChatACL { get; private set; }
+        public bool ServiceMessagesDisabled { get; private set; }
 
         public event EventHandler CloseWindowRequested;
 
@@ -205,29 +207,29 @@ namespace Elorucov.Laney.ViewModel {
                 Information.Add(new TwoStringTuple("", Locale.Get("userprivate")));
 
             // Status
-            if (!string.IsNullOrEmpty(user.Status))
+            if (!String.IsNullOrEmpty(user.Status))
                 Information.Add(new TwoStringTuple("", user.Status.Trim()));
 
             // Birthday
-            if (!string.IsNullOrEmpty(user.BirthDate))
+            if (!String.IsNullOrEmpty(user.BirthDate))
                 Information.Add(new TwoStringTuple("", APIHelper.GetNormalizedBirthDate(user.BirthDate)));
 
             // Live in
-            if (!string.IsNullOrWhiteSpace(user.LiveIn))
+            if (!String.IsNullOrWhiteSpace(user.LiveIn))
                 Information.Add(new TwoStringTuple("", user.LiveIn.Trim()));
 
             // Work
             if (user.CurrentCareer != null) {
                 var c = user.CurrentCareer;
                 string h = c.Company.Trim();
-                Information.Add(new TwoStringTuple("", string.IsNullOrWhiteSpace(c.Position) ? h : $"{h} — {c.Position.Trim()}"));
+                Information.Add(new TwoStringTuple("", String.IsNullOrWhiteSpace(c.Position) ? h : $"{h} — {c.Position.Trim()}"));
             }
 
             // Education
-            if (!string.IsNullOrWhiteSpace(user.CurrentEducation)) Information.Add(new TwoStringTuple("", user.CurrentEducation.Trim()));
+            if (!String.IsNullOrWhiteSpace(user.CurrentEducation)) Information.Add(new TwoStringTuple("", user.CurrentEducation.Trim()));
 
             // Site
-            if (!string.IsNullOrWhiteSpace(user.Site)) Information.Add(new TwoStringTuple("", user.Site.Trim()));
+            if (!String.IsNullOrWhiteSpace(user.Site)) Information.Add(new TwoStringTuple("", user.Site.Trim()));
 
             // Friends & Followers
             if (user.FriendsCount > 0) Information.Add(new TwoStringTuple("", $"{Locale.Get("friends")}: {user.FriendsCount}"));
@@ -293,7 +295,7 @@ namespace Elorucov.Laney.ViewModel {
             }
 
             // Open in browser
-            UICommand openExternalCmd = new UICommand('', Locale.Get("open_browser_btn/Content"), false, async (a) => await Launcher.LaunchUriAsync(new Uri($"https://vk.com/id{user.Id}")));
+            UICommand openExternalCmd = new UICommand('', Locale.Get("open_browser_btn/Content"), false, async (a) => await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/id{user.Id}")));
             commands.Add(openExternalCmd);
 
             // Shared chats
@@ -447,21 +449,21 @@ namespace Elorucov.Laney.ViewModel {
             Information.Add(new TwoStringTuple("", group.Id.ToString()));
 
             // Domain
-            Information.Add(new TwoStringTuple("", !string.IsNullOrEmpty(group.ScreenName) ? group.ScreenName : $"club{group.Id}"));
+            Information.Add(new TwoStringTuple("", !String.IsNullOrEmpty(group.ScreenName) ? group.ScreenName : $"club{group.Id}"));
 
             // Status
-            if (!string.IsNullOrEmpty(group.Status))
+            if (!String.IsNullOrEmpty(group.Status))
                 Information.Add(new TwoStringTuple("", group.Status.Trim()));
 
             // City
             string cc = null;
             if (group.City != null) cc = group.City.Title.Trim();
-            if (group.Country != null) cc += !string.IsNullOrEmpty(cc) ? $", {group.Country.Title.Trim()}" : group.Country.Title.Trim();
-            if (!string.IsNullOrEmpty(cc))
+            if (group.Country != null) cc += !String.IsNullOrEmpty(cc) ? $", {group.Country.Title.Trim()}" : group.Country.Title.Trim();
+            if (!String.IsNullOrEmpty(cc))
                 Information.Add(new TwoStringTuple("", cc));
 
             // Site
-            if (!string.IsNullOrWhiteSpace(group.Site))
+            if (!String.IsNullOrWhiteSpace(group.Site))
                 Information.Add(new TwoStringTuple("", group.Site.Trim()));
 
             // Members
@@ -495,7 +497,7 @@ namespace Elorucov.Laney.ViewModel {
             commands.Add(_notificationToggleCommand);
 
             // Open in browser
-            UICommand openExternalCmd = new UICommand('', Locale.Get("open_browser_btn/Content"), false, async (a) => await Launcher.LaunchUriAsync(new Uri($"https://vk.com/club{group.Id}")));
+            UICommand openExternalCmd = new UICommand('', Locale.Get("open_browser_btn/Content"), false, async (a) => await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/club{group.Id}")));
             commands.Add(openExternalCmd);
 
             // Allow/deny messages from group
@@ -558,6 +560,9 @@ namespace Elorucov.Laney.ViewModel {
                 Header = chat.Name;
                 Description = chat.Description;
                 ChatPermissions = chat.Permissions;
+                ChatACL = chat.ACL;
+                ServiceMessagesDisabled = chat.DisableServiceMessages;
+
                 if (chat.PhotoUri != null) Avatar = chat.PhotoUri;
 
                 UpdateChatSubhead(chat);
@@ -735,6 +740,32 @@ namespace Elorucov.Laney.ViewModel {
                     }
                 };
                 mf.Items.Add(dwmfi);
+            }
+
+            if (chat.OwnerId == AppParameters.UserID && member.MemberId != AppParameters.UserID && chat.OwnerId != member.MemberId) {
+                var makeOwner = new MenuFlyoutItem {
+                    Text = Locale.Get("chatinfo_memctx_owner")
+                };
+                makeOwner.Click += async (c, d) => {
+                    ContentDialog dlg = new ContentDialog {
+                        Title = Locale.Get("chat_ownership_transfer_title"),
+                        Content = Locale.Get("chat_ownership_transfer_desc"),
+                        PrimaryButtonText = Locale.Get("yes"),
+                        SecondaryButtonText = Locale.Get("no"),
+                        DefaultButton = ContentDialogButton.Secondary,
+                    };
+                    var result = await dlg.ShowAsync();
+
+                    if (result == ContentDialogResult.Primary) {
+                        object r = await Messages.SetMemberRole(chat.PeerId, member.MemberId, "owner");
+                        if (r is bool b) {
+                            await SetupAsync();
+                        } else {
+                            Functions.ShowHandledErrorTip(r);
+                        }
+                    }
+                };
+                mf.Items.Add(makeOwner);
             }
 
             if (member.MemberId != AppParameters.UserID && canChangeAdmin) {

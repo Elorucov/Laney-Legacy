@@ -26,8 +26,8 @@ namespace Elorucov.Laney.Models.AvatarCreator {
                 if (scale == ResolutionScale.Scale100Percent) size = 64;
             }
 
-            Uri stickerUrl = new Uri($"https://vk.com/sticker/1-{Sticker.StickerId}-{size}");
-            Uri stickerWithBackgroundUrl = new Uri($"https://vk.com/sticker/1-{Sticker.StickerId}-{size}b");
+            Uri stickerUrl = new Uri($"https://vk.ru/sticker/1-{Sticker.StickerId}-{size}");
+            Uri stickerWithBackgroundUrl = new Uri($"https://vk.ru/sticker/1-{Sticker.StickerId}-{size}b");
             int controlSize = mode == RenderMode.InCanvas ? 224 : 64;
 
             if (Sticker.Vmoji != null) {

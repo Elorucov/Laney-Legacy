@@ -33,11 +33,6 @@ namespace Elorucov.Laney.Pages {
             Loaded += async (a, b) => {
                 SetUpStatusBar();
                 await GetAnonymToken();
-                await GetOauthHash();
-
-                if (AppParameters.UserID > 0 && !string.IsNullOrEmpty(AppParameters.WebToken)) {
-                    await SecondPhaseAuth();
-                }
             };
             AuthBtn.Click += async (a, b) => await DoAuth();
             GoToFlow(DirectAuth2Flow.Login);
@@ -156,38 +151,18 @@ namespace Elorucov.Laney.Pages {
                     CaptchaFlow.Visibility = Visibility.Visible;
                     CaptchaCode.Focus(FocusState.Programmatic);
                     currentFlowPanel = CaptchaFlow;
-                    FlowTitle.Text = string.Empty;
+                    FlowTitle.Text = String.Empty;
                     break;
                 case DirectAuth2Flow.SecondPhase:
                     FindName(nameof(SecondPhaseAuthFlow));
                     SecondPhaseAuthFlow.Visibility = Visibility.Visible;
                     currentFlowPanel = SecondPhaseAuthFlow;
-                    FlowTitle.Text = string.Empty;
+                    FlowTitle.Text = String.Empty;
                     BackButton.IsEnabled = false;
                     AuthBtn.Visibility = Visibility.Collapsed;
                     break;
             }
         }
-
-        #region oauth hash
-
-        string oauthHash = string.Empty;
-        Uri fullUri = null;
-        private async Task GetOauthHash() {
-            try {
-                ScreenSpinner<Tuple<Uri, string>> ssp = new ScreenSpinner<Tuple<Uri, string>>();
-                var data = await ssp.ShowAsync(APIHelper.GetOauthHashAsync());
-                fullUri = data.Item1;
-                oauthHash = data.Item2;
-                if (string.IsNullOrEmpty(oauthHash)) throw new ArgumentNullException("Oauth hash is empty!");
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: failed to fetch a return_auth_hash! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        #endregion
 
         #region Anonym token from VKM
 
@@ -196,7 +171,7 @@ namespace Elorucov.Laney.Pages {
         private async Task GetAnonymToken() {
             try {
                 ScreenSpinner<AnonymToken> ssp = new ScreenSpinner<AnonymToken>();
-                var resp = await ssp.ShowAsync(DirectAuth.GetAnonymTokenAsync(AppParameters.VKMApplicationID, AppParameters.VKMSecret));
+                var resp = await ssp.ShowAsync(DirectAuth.GetAnonymTokenAsync(AppParameters.ApplicationID, AppParameters.ApplicationSecret));
                 anonymToken = resp.Token;
                 Log.Info($"{nameof(DirectAuthPage)}: successfully get an anonym token.");
             } catch (Exception ex) {
@@ -209,8 +184,8 @@ namespace Elorucov.Laney.Pages {
         #endregion
 
         private void ShowError(string err) {
-            Error.Visibility = string.IsNullOrEmpty(err) ? Visibility.Collapsed : Visibility.Visible;
-            if (!string.IsNullOrEmpty(err)) Error.Text = err;
+            Error.Visibility = String.IsNullOrEmpty(err) ? Visibility.Collapsed : Visibility.Visible;
+            if (!String.IsNullOrEmpty(err)) Error.Text = err;
         }
 
         private async Task DoAuth() {
@@ -231,7 +206,7 @@ namespace Elorucov.Laney.Pages {
         }
 
         private async Task CheckLogin() {
-            if (string.IsNullOrEmpty(UserName.Text)) return;
+            if (String.IsNullOrEmpty(UserName.Text)) return;
             AuthBtn.IsEnabled = false;
             ShowError(null);
 
@@ -264,18 +239,16 @@ namespace Elorucov.Laney.Pages {
             }
         }
 
-
-
         private async Task ValidatePhone(string anonymToken, string sid, string phone) {
             AuthBtn.IsEnabled = false;
 
             ScreenSpinner<object> ssp = new ScreenSpinner<object>();
-            var pvresponse = await ssp.ShowAsync(Auth.ValidatePhone(anonymToken, Locale.Get("lang"), Functions.GetDeviceId(), sid, string.Empty));
+            var pvresponse = await ssp.ShowAsync(Auth.ValidatePhone(anonymToken, Locale.Get("lang"), Functions.GetDeviceId(), sid, String.Empty));
             if (pvresponse is ValidatePhoneResponse pvresp) {
                 GoToFlow(DirectAuth2Flow.PhoneValidation);
                 PVCode.MaxLength = pvresp.CodeLength;
                 PVCode.Tag = pvresp.SID;
-                PVCode.Text = string.Empty;
+                PVCode.Text = String.Empty;
 
                 switch (pvresp.ValidationType) {
                     case "sms":
@@ -319,7 +292,7 @@ namespace Elorucov.Laney.Pages {
         }
 
         private async Task ValidatePhoneConfirm() {
-            if (string.IsNullOrEmpty(PVCode.Text)) return;
+            if (String.IsNullOrEmpty(PVCode.Text)) return;
             AuthBtn.IsEnabled = false;
             ShowError(null);
 
@@ -341,7 +314,7 @@ namespace Elorucov.Laney.Pages {
                     GoToFlow(DirectAuth2Flow.PhoneValidationFinal);
                     isPhoneConfirmation = true;
 
-                    if (!string.IsNullOrEmpty(resp.Profile.Photo)) await ProfileAvatar.SetUriSourceAsync(new Uri(resp.Profile.Photo));
+                    if (!String.IsNullOrEmpty(resp.Profile.Photo)) await ProfileAvatar.SetUriSourceAsync(new Uri(resp.Profile.Photo));
                     ProfileName.Text = $"{resp.Profile.FirstName} {resp.Profile.LastName}";
                     ProfileAvatar.DisplayName = ProfileName.Text;
                     ProfilePhone.Text = resp.Profile.Phone;
@@ -354,11 +327,11 @@ namespace Elorucov.Laney.Pages {
         }
 
         private async Task DoAuthDirect() {
-            if (string.IsNullOrEmpty(UserName.Text)) return;
+            if (String.IsNullOrEmpty(UserName.Text)) return;
             if (isPhoneConfirmation) {
-                if (string.IsNullOrEmpty(Password2.Password) || Password2.Password.Length < 6) return;
+                if (String.IsNullOrEmpty(Password2.Password) || Password2.Password.Length < 6) return;
             } else {
-                if (string.IsNullOrEmpty(Password.Password) || Password.Password.Length < 6) return;
+                if (String.IsNullOrEmpty(Password.Password) || Password.Password.Length < 6) return;
             }
 
             AuthBtn.IsEnabled = false;
@@ -381,16 +354,15 @@ namespace Elorucov.Laney.Pages {
 
                 ScreenSpinner<DirectAuthResponse> ssp = new ScreenSpinner<DirectAuthResponse>();
                 var response = !isPhoneConfirmation
-                    ? await ssp.ShowAsync(DirectAuth.AuthAsync(Locale.Get("lang"), AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.Scope, UserName.Text, Password.Password,
+                    ? await ssp.ShowAsync(DirectAuth.AuthAsync(Locale.Get("lang"), AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.Scope, UserName.Text, Password.Password,
                     code, captchaSid, captchaKey))
-                    : await ssp.ShowAsync(DirectAuth.AuthByPhoneConfirmationSIDAsync(Locale.Get("lang"), AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.Scope, UserName.Text, Password2.Password,
+                    : await ssp.ShowAsync(DirectAuth.AuthByPhoneConfirmationSIDAsync(Locale.Get("lang"), AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.Scope, UserName.Text, Password2.Password,
                     sid, captchaSid, captchaKey));
 
                 if (response.UserId.IsUser()) {
                     AppParameters.UserID = response.UserId;
-                    AppParameters.WebToken = response.AccessToken;
-                    await SecondPhaseAuth();
-                } else if (!string.IsNullOrEmpty(response.Error)) {
+                    AppParameters.AccessToken = response.AccessToken;
+                } else if (!String.IsNullOrEmpty(response.Error)) {
                     await HandleError(response);
                 } else {
                     ShowError(Locale.Get("global_error"));
@@ -403,124 +375,10 @@ namespace Elorucov.Laney.Pages {
             AuthBtn.IsEnabled = true;
         }
 
-        private async Task SecondPhaseAuth() {
-            GoToFlow(DirectAuth2Flow.SecondPhase);
-
-            try {
-                SPStatus.Text = $"{Locale.Get("wait")}... 1/6";
-                var resp = await DirectAuth.GetAnonymTokenAsync(AppParameters.ApplicationID, AppParameters.ApplicationSecret);
-                await Final2(resp.Token);
-                Log.Info($"{nameof(DirectAuthPage)}: successfully get an anonym token.");
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: failed to get an anonym token! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        private async Task Final2(string anonToken) {
-            try {
-                SPStatus.Text = $"{Locale.Get("wait")}... 2/6";
-                var resp = await Auth.GetAuthCode(anonToken, Locale.Get("lang"), $"Laney v{ApplicationInfo.GetVersion(true)}", AppParameters.ApplicationID);
-                if (resp is GetAuthCodeResponse response) {
-                    await Final3(anonToken, response);
-                }
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: failed to get an auth code! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        private async Task Final3(string anonToken, GetAuthCodeResponse gacResponse) {
-            try {
-                SPStatus.Text = $"{Locale.Get("wait")}... 3/6";
-                var resp = await Auth.ProcessAuthCodeInfo(AppParameters.WebToken, Locale.Get("lang"), gacResponse.AuthCode);
-                if (resp is ProcessAuthCodeResponse response && response.AuthInfo.AuthId == gacResponse.AuthId) {
-                    await Final4(anonToken, gacResponse);
-                } else {
-                    // TODO!
-                    Log.Error($"{nameof(DirectAuthPage)}: processAuthCode returns an incorrect response!");
-                    await new MessageDialog("Try again", Locale.Get("global_error")).ShowAsync();
-                    Frame.GoBack();
-                }
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: processAuthCode failed! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        private async Task Final4(string anonToken, GetAuthCodeResponse gacResponse) {
-            try {
-                SPStatus.Text = $"{Locale.Get("wait")}... 4/6";
-                var resp = await Auth.ProcessAuthCodeAllow(AppParameters.WebToken, Locale.Get("lang"), gacResponse.AuthCode);
-                if (resp is ProcessAuthCodeResponse response && response.Status == 1) {
-                    await Final5(anonToken, gacResponse);
-                } else {
-                    // TODO!
-                    Log.Error($"{nameof(DirectAuthPage)}: processAuthCode returns an incorrect response!");
-                    await new MessageDialog("Try again", Locale.Get("global_error")).ShowAsync();
-                    Frame.GoBack();
-                }
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: processAuthCode failed! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        private async Task Final5(string anonToken, GetAuthCodeResponse gacResponse) {
-            try {
-                SPStatus.Text = $"{Locale.Get("wait")}... 5/6";
-                var resp = await Auth.CheckAuthCode(anonToken, Locale.Get("lang"), AppParameters.ApplicationID, gacResponse.AuthHash, true);
-                if (resp is CheckAuthCodeResponse response) {
-                    if (response.Status == 2) {
-                        await Final6(response.SuperAppToken);
-                    } else {
-                        // TODO!
-                        Log.Error($"{nameof(DirectAuthPage)}: checkAuthCode returns status {response.Status}!");
-                        await new MessageDialog($"checkAuthCode returns status {response.Status}.", Locale.Get("global_error")).ShowAsync();
-                        Frame.GoBack();
-                    }
-                }
-            } catch (Exception ex) {
-                Log.Error($"{nameof(DirectAuthPage)}: failed to get an auth code! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}");
-                Functions.ShowHandledErrorDialog(ex);
-                Frame.GoBack();
-            }
-        }
-
-        private async Task Final6(string saToken) {
-            SPStatus.Text = $"{Locale.Get("wait")}... 6/6";
-
-            byte retries = 3;
-            while (retries != 0) {
-                try {
-                    var resp = await APIHelper.DoConnectCodeAuthAsync(saToken, AppParameters.ApplicationID, AppParameters.Scope, oauthHash);
-                    if (resp is OauthResponse oauth) {
-                        AppParameters.AccessToken = oauth.AccessToken;
-                        Frame.Navigate(typeof(Main));
-                        break;
-                    } else {
-                        Functions.ShowHandledErrorDialog(resp);
-                        AppParameters.UserID = 0;
-                        AppParameters.WebToken = null;
-                        Frame.GoBack();
-                        break;
-                    }
-                } catch (Exception ex) {
-                    Log.Error($"{nameof(DirectAuthPage)}: failed in final phase! 0x{ex.HResult.ToString("x8")}: {ex.Message.Trim()}. Retrying...");
-                    retries--;
-                    await Task.Delay(2000);
-                }
-            }
-        }
-
         private async Task HandleError(DirectAuthResponse err) {
             switch (err.Error) {
                 case "invalid_client":
-                    ShowError(!string.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Locale.Get("global_error")}: {err.ErrorType}");
+                    ShowError(!String.IsNullOrEmpty(err.ErrorDescription) ? err.ErrorDescription : $"{Locale.Get("global_error")}: {err.ErrorType}");
                     break;
                 case "invalid_request":
                     ShowError(err.ErrorType == "wrong_otp" ? Locale.Get("wrong_otp_code") : $"{Locale.Get("global_error")}: {err.ErrorType}");
@@ -529,7 +387,7 @@ namespace Elorucov.Laney.Pages {
                     if (err.BanInfo != null) {
                         ShowError($"{err.BanInfo.MemberName}. {err.BanInfo.Message}");
                     } else {
-                        if (!string.IsNullOrEmpty(err.ValidationType)) {
+                        if (!String.IsNullOrEmpty(err.ValidationType)) {
                             GoToFlow(DirectAuth2Flow.TwoFactor);
                             TwoFACode.Focus(FocusState.Keyboard);
                             if (err.ValidationType == "2fa_app") {

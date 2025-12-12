@@ -51,7 +51,7 @@ namespace Elorucov.Laney.ViewModel {
         }
 
         private async Task GetFoldersAndAllConvsAsync() {
-            Log.Info($"{GetType().Name} > Starting load conversations. Have wt: {!string.IsNullOrEmpty(VkAPI.API.WebToken)}");
+            Log.Info($"{GetType().Name} > Starting load conversations.");
             int count = AppParameters.ConversationsLoadCount < 0 ? 40 : AppParameters.ConversationsLoadCount;
 
             ConversationsResponse convs = null;

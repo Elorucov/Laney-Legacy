@@ -89,7 +89,7 @@
                         </wuix:SettingsCard.HeaderIcon>
                         <wuix:SettingsCard.Description>
                             <ctrls:WrapPanel>
-                                <HyperlinkButton Tag="https://vk.com/club171015120" Click="OpenLink" x:Uid="about2_open_group"/>
+                                <HyperlinkButton Tag="https://vk.ru/club171015120" Click="OpenLink" x:Uid="about2_open_group"/>
                             </ctrls:WrapPanel>
                         </wuix:SettingsCard.Description>
                     </wuix:SettingsCard>
@@ -104,9 +104,9 @@
                         </wuix:SettingsCard.HeaderIcon>
                         <wuix:SettingsCard.Description>
                             <ctrls:WrapPanel>
-                                <HyperlinkButton Tag="https://vk.com/privacy" Click="OpenLink" x:Uid="about2_privacy"/>
+                                <HyperlinkButton Tag="https://vk.ru/privacy" Click="OpenLink" x:Uid="about2_privacy"/>
                                 <TextBlock Margin="6,0" FontWeight="SemiBold" Text="·"/>
-                                <HyperlinkButton Tag="https://vk.com/terms" Click="OpenLink" x:Uid="about2_terms"/>
+                                <HyperlinkButton Tag="https://vk.ru/terms" Click="OpenLink" x:Uid="about2_terms"/>
                             </ctrls:WrapPanel>
                         </wuix:SettingsCard.Description>
                     </wuix:SettingsCard>

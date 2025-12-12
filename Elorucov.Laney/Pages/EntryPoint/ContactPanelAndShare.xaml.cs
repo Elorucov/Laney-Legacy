@@ -37,8 +37,7 @@ namespace Elorucov.Laney.Pages.EntryPoint {
             base.OnNavigatedTo(e);
 
             if (e.Parameter is ContactPanelActivatedEventArgs) {
-                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.VkApiDomain);
-                API.WebToken = AppParameters.WebToken;
+                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.VkApiDomain);
                 API.ExchangeToken = AppParameters.ExchangeToken;
                 API.WebTokenRefreshed = async (isSuccess, token, expiresIn) => await APIHelper.SaveRefreshedTokenAsync(isSuccess, token, expiresIn);
 
@@ -59,10 +58,8 @@ namespace Elorucov.Laney.Pages.EntryPoint {
                 ContactStore store = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AppContactsReadWrite);
                 contact = await store.GetContactAsync(contact.Id);
 
-                API.WebToken = AppParameters.WebToken;
-
                 long id = 0;
-                bool p = long.TryParse(await ContactsPanel.GetRemoteIdForContactAsync(contact), out id);
+                bool p = Int64.TryParse(await ContactsPanel.GetRemoteIdForContactAsync(contact), out id);
                 Log.Info($"{GetType().Name} > GetRemoteIdForContactAsync: {id}.");
                 if (p && id.IsUser()) {
                     Log.Info($"{GetType().Name} > User id: {id}.");

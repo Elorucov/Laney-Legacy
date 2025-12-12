@@ -281,7 +281,7 @@ namespace Elorucov.Laney.Controls {
 
         private void OpenDonutPage(object sender, RoutedEventArgs e) {
             new System.Action(async () => {
-                await Launcher.LaunchUriAsync(new Uri($"https://vk.com/club{Post.OwnerOrToId}?act=donut_payment&source=wall_placeholder"));
+                await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/club{Post.OwnerOrToId}?act=donut_payment&source=wall_placeholder"));
             })();
         }
 
@@ -298,7 +298,7 @@ namespace Elorucov.Laney.Controls {
         }
 
         private void OpenPostInBrowser(object sender, RoutedEventArgs e) {
-            new System.Action(async () => { await Launcher.LaunchUriAsync(new Uri($"https://vk.com/wall{Post.OwnerOrToId}_{Post.Id}")); })();
+            new System.Action(async () => { await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/wall{Post.OwnerOrToId}_{Post.Id}")); })();
         }
 
         private void LikeButtonClicked(object sender, RoutedEventArgs e) {

@@ -51,8 +51,7 @@ namespace Elorucov.Laney.Pages.EntryPoint {
                 Operation.ReportStarted();
                 Operation.ReportDataRetrieved();
 
-                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.VkApiDomain);
-                API.WebToken = AppParameters.WebToken;
+                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.VkApiDomain);
                 API.ExchangeToken = AppParameters.ExchangeToken;
                 API.WebTokenRefreshed = async (isSuccess, token, expiresIn) => await APIHelper.SaveRefreshedTokenAsync(isSuccess, token, expiresIn);
 
@@ -104,7 +103,7 @@ namespace Elorucov.Laney.Pages.EntryPoint {
             try {
                 contact = await store.GetContactAsync(contact.Id);
                 int id = 0;
-                bool p = int.TryParse(await ContactsPanel.GetRemoteIdForContactAsync(contact), out id);
+                bool p = Int32.TryParse(await ContactsPanel.GetRemoteIdForContactAsync(contact), out id);
                 if (p) {
                     Log.Info($"{GetType().Name} > User id: {id}.");
                     var mfvm = new ViewModel.Controls.MessageFormViewModel(id);
@@ -134,7 +133,7 @@ namespace Elorucov.Laney.Pages.EntryPoint {
             if (ViewModel.SelectedPeers.Count >= 10) return;
             var q = ViewModel.SelectedPeers.Where(p => p.Id == conv.Id);
             if (q.Count() == 0) {
-                Entity entity = new Entity(conv.Id, conv.Title, string.Empty, conv.Photo);
+                Entity entity = new Entity(conv.Id, conv.Title, String.Empty, conv.Photo);
                 entity.ExtraButtonCommand = new RelayCommand(c => {
                     if (!ViewModel.IsSending) ViewModel.SelectedPeers.Remove(entity);
                 });

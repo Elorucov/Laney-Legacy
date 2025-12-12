@@ -32,24 +32,24 @@ using Windows.Web.Http.Filters;
 namespace Elorucov.Laney.Services {
     public class APIHelper {
         public static List<Uri> PlaceholderAvatars { get; private set; } = new List<Uri> {
-            new Uri("https://vk.com/images/camera_50.png"),
-            new Uri("https://vk.com/images/community_50.png"),
-            new Uri("https://vk.com/images/icons/im_multichat_50.png"),
-            new Uri("https://vk.com/images/camera_100.png"),
-            new Uri("https://vk.com/images/community_100.png"),
-            new Uri("https://vk.com/images/icons/im_multichat_100.png"),
-            new Uri("https://vk.com/images/camera_200.png"),
-            new Uri("https://vk.com/images/community_200.png"),
-            new Uri("https://vk.com/images/icons/im_multichat_200.png"),
+            new Uri("https://vk.ru/images/camera_50.png"),
+            new Uri("https://vk.ru/images/community_50.png"),
+            new Uri("https://vk.ru/images/icons/im_multichat_50.png"),
+            new Uri("https://vk.ru/images/camera_100.png"),
+            new Uri("https://vk.ru/images/community_100.png"),
+            new Uri("https://vk.ru/images/icons/im_multichat_100.png"),
+            new Uri("https://vk.ru/images/camera_200.png"),
+            new Uri("https://vk.ru/images/community_200.png"),
+            new Uri("https://vk.ru/images/icons/im_multichat_200.png"),
         };
 
         public static string GetOAuthUrl(int appId) {
-            return $"https://oauth.vk.com/authorize?client_id={appId}&display=mobile&redirect_uri=https://oauth.vk.com/blank.html&scope={AppParameters.Scope}&response_type=token&revoke=1&v={API.Version}";
+            return $"https://oauth.vk.ru/authorize?client_id={appId}&display=mobile&redirect_uri=https://oauth.vk.ru/blank.html&scope={AppParameters.Scope}&response_type=token&revoke=1&v={API.Version}";
         }
 
         public static async Task ShowAPIErrorDialogAsync(VKError resp, System.Action retryAction = null) {
             Logger.Log.Error($"API Error {resp.error_code} (dialog): {resp.error_msg}");
-            MessageDialog dlg = new MessageDialog(!string.IsNullOrEmpty(resp.error_text) ? resp.error_text : resp.error_msg, $"{Locale.Get("api_error")} ({resp.error_code})");
+            MessageDialog dlg = new MessageDialog(!String.IsNullOrEmpty(resp.error_text) ? resp.error_text : resp.error_msg, $"{Locale.Get("api_error")} ({resp.error_code})");
             if (retryAction != null) dlg.Commands.Add(new Windows.UI.Popups.UICommand(Locale.Get("retry"), (a) => retryAction?.Invoke()));
             dlg.Commands.Add(new Windows.UI.Popups.UICommand(Locale.Get("close")));
             dlg.DefaultCommandIndex = 0;
@@ -58,9 +58,9 @@ namespace Elorucov.Laney.Services {
         }
 
         public static void ShowAPIErrorTip(VKError resp, string additionalInfo = null) {
-            string extra = !string.IsNullOrEmpty(additionalInfo) ? $"\n{additionalInfo}" : string.Empty;
+            string extra = !String.IsNullOrEmpty(additionalInfo) ? $"\n{additionalInfo}" : String.Empty;
             Logger.Log.Error($"API Error {resp.error_code} (tip): {resp.error_msg}{extra}");
-            string msg = !string.IsNullOrEmpty(resp.error_text) ? resp.error_text : resp.error_msg;
+            string msg = !String.IsNullOrEmpty(resp.error_text) ? resp.error_text : resp.error_msg;
             Tips.Show($"{Locale.Get("api_error")} ({resp.error_code})", msg + extra);
         }
 
@@ -71,7 +71,7 @@ namespace Elorucov.Laney.Services {
         }
 
         public static string GetNormalizedTime(DateTime dt, bool showTime = false) {
-            if (dt.Year < 2006) return string.Empty;
+            if (dt.Year < 2006) return String.Empty;
 
             dt = dt.ToLocalTime();
             DateTime dn = DateTime.Now;
@@ -117,7 +117,7 @@ namespace Elorucov.Laney.Services {
 
         public static string GetNormalizedBirthDate(string bdate) {
             string[] a = bdate.Split('.');
-            DateTime dt = a.Length == 3 ? new DateTime(int.Parse(a[2]), int.Parse(a[1]), int.Parse(a[0])) : new DateTime(1604, int.Parse(a[1]), int.Parse(a[0]));
+            DateTime dt = a.Length == 3 ? new DateTime(Int32.Parse(a[2]), Int32.Parse(a[1]), Int32.Parse(a[0])) : new DateTime(1604, Int32.Parse(a[1]), Int32.Parse(a[0]));
             return a.Length == 3 ? $"{dt.ToString("M")} {dt.Year}" : dt.ToString("M");
         }
 
@@ -134,7 +134,7 @@ namespace Elorucov.Laney.Services {
                     ActionUserName = "...";
                     ActionUserSex = Sex.Male;
                 } else {
-                    string ln = fullLastName ? $" {u.LastName}" : string.Empty;
+                    string ln = fullLastName ? $" {u.LastName}" : String.Empty;
                     ActionUserName = $"{u.FirstName}{ln}";
                     ActionUserSex = u.Sex;
                 }
@@ -154,8 +154,8 @@ namespace Elorucov.Laney.Services {
                     MemberName = "...";
                     MemberNameGen = "...";
                 } else {
-                    string ln = fullLastName ? $" {u.LastName}" : string.Empty;
-                    string lng = fullLastName ? $" {u.LastNameAcc}" : string.Empty;
+                    string ln = fullLastName ? $" {u.LastName}" : String.Empty;
+                    string lng = fullLastName ? $" {u.LastNameAcc}" : String.Empty;
                     MemberName = $"{u.FirstName}{ln}";
                     MemberNameGen = $"{u.FirstNameAcc}{lng}";
                 }
@@ -179,6 +179,7 @@ namespace Elorucov.Laney.Services {
             string invitedlink = Locale.Get($"ActionInvitedByLink{ActionUserSex}");
             string left = Locale.Get($"ActionLeft{ActionUserSex}");
             string kick = Locale.Get($"ActionKick{ActionUserSex}");
+            string changedowner = Locale.Get($"ActionOwnerChanged{ActionUserSex}");
             string photoupd = Locale.Get($"ActionPhotoUpdate{ActionUserSex}");
             string photorem = Locale.Get($"ActionPhotoRemove{ActionUserSex}");
             string pin = Locale.Get($"ActionPin{ActionUserSex}");
@@ -187,11 +188,11 @@ namespace Elorucov.Laney.Services {
             string screenshot = Locale.Get($"ActionScreenshot{ActionUserSex}");
             string inviteuserbycall = Locale.Get($"ActionInviteUserByCall{ActionUserSex}");
             string inviteuserbycalljoinlink = Locale.Get($"ActionInviteUserByCallJoinLink{ActionUserSex}");
-            string inviteuserbycallsuffix = !string.IsNullOrWhiteSpace(Locale.Get($"ActionInviteUserByCall")) ? $" {Locale.Get($"ActionInviteUserByCall")}" : string.Empty;
+            string inviteuserbycallsuffix = !String.IsNullOrWhiteSpace(Locale.Get($"ActionInviteUserByCall")) ? $" {Locale.Get($"ActionInviteUserByCall")}" : String.Empty;
             string acceptedmessagerequest = Locale.Get($"ActionAcceptedMessageRequest{ActionUserSex}");
-            string styleupdate = string.IsNullOrEmpty(msg.Style) ? Locale.Get($"ActionStyleReset{ActionUserSex}") : $"{Locale.Get($"ActionStyleUpdate{ActionUserSex}")} «{ChatThemeService.GetLocalizedStyleName(msg.Style)}»";
+            string styleupdate = String.IsNullOrEmpty(msg.Style) ? Locale.Get($"ActionStyleReset{ActionUserSex}") : $"{Locale.Get($"ActionStyleUpdate{ActionUserSex}")} «{ChatThemeService.GetLocalizedStyleName(msg.Style)}»";
 
-            string normalizedTitle = string.Empty;
+            string normalizedTitle = String.Empty;
             switch (msg.Type) {
                 case "chat_create": normalizedTitle = Locale.Get("lang") == "en" ? $"\"{msg.Text}\"" : $"«{msg.Text}»"; break;
                 case "chat_title_update": normalizedTitle = Locale.Get("lang") == "en" ? $"\"{msg.OldText}\" → \"{msg.Text}\"" : $"«{msg.OldText}» → «{msg.Text}»"; break;
@@ -203,6 +204,7 @@ namespace Elorucov.Laney.Services {
                 case "chat_invite_user": str = msg.FromId == msg.MemberId ? $"{MemberName} {returned}" : $"{ActionUserName} {invited} {MemberNameGen}"; break;
                 case "chat_invite_user_by_link": str = $"{ActionUserName} {invitedlink}"; break;
                 case "chat_kick_user": str = msg.FromId == msg.MemberId ? $"{MemberName} {left}" : $"{ActionUserName} {kick} {MemberNameGen}"; break;
+                case "chat_owner_changed": str = $"{ActionUserName} {changedowner} {MemberNameGen}"; break;
                 case "chat_photo_remove": str = $"{ActionUserName} {photorem}"; break;
                 case "chat_photo_update": str = $"{ActionUserName} {photoupd}"; break;
                 case "chat_pin_message": str = $"{MemberName} {pin}"; break;
@@ -291,6 +293,7 @@ namespace Elorucov.Laney.Services {
             string invitedlink = Locale.Get($"ActionInvitedByLink{ActionUserSex}");
             string left = Locale.Get($"ActionLeft{ActionUserSex}");
             string kick = Locale.Get($"ActionKick{ActionUserSex}");
+            string changedowner = Locale.Get($"ActionOwnerChanged{ActionUserSex}");
             string photoupd = Locale.Get($"ActionPhotoUpdate{ActionUserSex}");
             string photorem = Locale.Get($"ActionPhotoRemove{ActionUserSex}");
             string pin = Locale.Get($"ActionPin{ActionUserSex}");
@@ -300,14 +303,14 @@ namespace Elorucov.Laney.Services {
             string inviteuserbycall = Locale.Get($"ActionInviteUserByCall{ActionUserSex}");
             string inviteuserbycalljoinlink = Locale.Get($"ActionInviteUserByCallJoinLink{ActionUserSex}");
             string acceptedmessagerequest = Locale.Get($"ActionAcceptedMessageRequest{ActionUserSex}");
-            string styleupdate = string.IsNullOrEmpty(msg.Style) ? $"{Locale.Get($"ActionStyleReset{ActionUserSex}")}." : $"{Locale.Get($"ActionStyleUpdate{ActionUserSex}")} «{ChatThemeService.GetLocalizedStyleName(msg.Style)}».";
+            string styleupdate = String.IsNullOrEmpty(msg.Style) ? $"{Locale.Get($"ActionStyleReset{ActionUserSex}")}." : $"{Locale.Get($"ActionStyleUpdate{ActionUserSex}")} «{ChatThemeService.GetLocalizedStyleName(msg.Style)}».";
 
             var pinstrarr = pin.Split(' ').ToList();
             string pinstrend = pinstrarr.Last();
             pinstrarr.Remove(pinstrarr.Last());
             string pinstr = String.Join(" ", pinstrarr);
 
-            string normalizedTitle = string.Empty;
+            string normalizedTitle = String.Empty;
             switch (msg.Type) {
                 case "chat_create": normalizedTitle = Locale.Get("lang") == "en" ? $"\"{msg.Text}\"" : $"«{msg.Text}»"; break;
                 case "chat_title_update": normalizedTitle = Locale.Get("lang") == "en" ? $"\"{msg.OldText}\" → \"{msg.Text}\"" : $"«{msg.OldText}» → «{msg.Text}»"; break;
@@ -319,6 +322,7 @@ namespace Elorucov.Laney.Services {
                 case "chat_invite_user": serviceTextBlock = msg.FromId == msg.MemberId ? ActionMessageHelper.GenerateTextBlock(MemberName, MemberId, returned) : ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, invited, MemberNameGen, MemberId, isNonUserFrom, isNonUser); break;
                 case "chat_invite_user_by_link": serviceTextBlock = ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, invitedlink); break;
                 case "chat_kick_user": serviceTextBlock = msg.FromId == msg.MemberId ? ActionMessageHelper.GenerateTextBlock(MemberName, MemberId, left) : ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, kick, MemberNameGen, MemberId, isNonUserFrom, isNonUser); break;
+                case "chat_owner_changed": serviceTextBlock = ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, changedowner, MemberNameGen, MemberId, isNonUserFrom, isNonUser); break;
                 case "chat_photo_remove": serviceTextBlock = ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, photorem, null, 0, isNonUserFrom); break;
                 case "chat_photo_update": serviceTextBlock = ActionMessageHelper.GenerateTextBlock(ActionUserName, ActionUserId, photoupd, null, 0, isNonUserFrom); break;
                 case "chat_pin_message": serviceTextBlock = ActionMessageHelper.GenerateTextBlockForPinnedMessage(MemberName, MemberId, pinstr, msg, pinstrend, isNonUserFrom); break;
@@ -451,37 +455,75 @@ namespace Elorucov.Laney.Services {
         public static async Task Logout(VKSession switchToSession = null) {
             Logger.Log.Info($"Logging out.");
 
-            await TitleAndStatusBar.SetTitleText();
-            LNetExtensions.ClearImagesCache();
-            AppParameters.AccessToken = null;
-            AppParameters.WebToken = null;
-            AppParameters.UserID = 0;
-            AppParameters.Passcode = null;
-            AppParameters.WindowsHelloInsteadPasscode = false;
-            if (App.OnlineTimer != null) {
-                App.OnlineTimer.Dispose();
-                App.OnlineTimer = null;
+            string phase = string.Empty;
+            try {
+                phase = "TitleAndStatusBar.SetTitleText";
+                await TitleAndStatusBar.SetTitleText();
+
+                phase = "LNetExtensions.ClearImagesCache";
+                LNetExtensions.ClearImagesCache();
+
+                if (App.OnlineTimer != null) {
+                    phase = "OnlineTimer.Dispose";
+                    App.OnlineTimer.Dispose();
+                    App.OnlineTimer = null;
+                }
+                phase = "API uninitialization";
+                API.Uninitialize();
+
+                phase = "ClearWebViewCookies";
+                ClearWebViewCookies();
+
+                phase = "Audio player main instance";
+                AudioPlayerViewModel.CloseMainInstance();
+
+                phase = "Audio player voicemsg instance";
+                AudioPlayerViewModel.CloseVoiceMessageInstance();
+
+                phase = "My people data";
+                await MyPeople.ContactsPanel.ClearAsync();
+
+                phase = "Push notifications (channel disconnect)";
+                await VKNotificationHelper.DisconnectAsync();
+
+                phase = "Push notifications (bkgnd task unregistration)";
+                VKNotificationHelper.UnregisterBackgroundTask();
+
+                phase = "Stopping longpoll";
+                LongPoll.LongPoll.Stop();
+
+                phase = "Stopping queue";
+                LongPoll.VKQueue.Stop();
+
+                phase = "Purging toast notifications";
+                ToastNotificationManager.GetDefault()?.History.Clear();
+
+                phase = "Clearing badge";
+                BadgeUpdateManager.CreateBadgeUpdaterForApplication()?.Clear();
+
+                phase = "COnvos in search page";
+                SearchViewModel.ClearImportantConversations();
+
+                foreach (var t in BackgroundTaskRegistration.AllTasks) {
+                    phase = $"Task unregistration ({t.Value.TaskId}: {t.Value.Name})";
+                    t.Value.Unregister(true);
+                }
+
+                phase = "Clearing AppSession";
+                AppSession.Clear();
+
+                phase = "Clearing credentials";
+                AppParameters.AccessToken = null;
+                AppParameters.WebToken = null;
+                AppParameters.UserID = 0;
+                AppParameters.Passcode = null;
+                AppParameters.WindowsHelloInsteadPasscode = false;
+            } catch (Exception ex) {
+
+                string msg = $"Something went wrong while clearing data! Please take screenshot of this message and sent to developer.\n\nPhase: {phase}\n0x{ex.HResult.ToString("x8")}: {ex.Message}";
+                await new MessageDialog(msg, "Error, restart required").ShowAsync();
             }
-            API.Uninitialize();
 
-            ClearWebViewCookies();
-
-            AudioPlayerViewModel.CloseMainInstance();
-            AudioPlayerViewModel.CloseVoiceMessageInstance();
-            await MyPeople.ContactsPanel.ClearAsync();
-            await VKNotificationHelper.DisconnectAsync();
-            VKNotificationHelper.UnregisterBackgroundTask();
-            LongPoll.LongPoll.Stop();
-            LongPoll.VKQueue.Stop();
-            ToastNotificationManager.GetDefault()?.History.Clear();
-            BadgeUpdateManager.CreateBadgeUpdaterForApplication()?.Clear();
-            SearchViewModel.ClearImportantConversations();
-
-            foreach (var t in BackgroundTaskRegistration.AllTasks) {
-                t.Value.Unregister(true);
-            }
-
-            AppSession.Clear();
             GC.Collect();
 
             Frame frm = Window.Current.Content as Frame;
@@ -490,9 +532,9 @@ namespace Elorucov.Laney.Services {
 
         public static void ClearWebViewCookies() {
             HttpBaseProtocolFilter f = new HttpBaseProtocolFilter();
-            HttpCookieCollection cv = f.CookieManager.GetCookies(new Uri("https://vk.com"));
-            HttpCookieCollection cl = f.CookieManager.GetCookies(new Uri("https://login.vk.com"));
-            HttpCookieCollection co = f.CookieManager.GetCookies(new Uri("https://oauth.vk.com"));
+            HttpCookieCollection cv = f.CookieManager.GetCookies(new Uri("https://vk.ru"));
+            HttpCookieCollection cl = f.CookieManager.GetCookies(new Uri("https://login.vk.ru"));
+            HttpCookieCollection co = f.CookieManager.GetCookies(new Uri("https://oauth.vk.ru"));
             cv.Concat(cl).Concat(co);
 
             foreach (HttpCookie hc in cv) {
@@ -518,7 +560,7 @@ namespace Elorucov.Laney.Services {
                     ssize = s;
                     if (s >= size) break;
                 }
-                uri = new Uri($"https://vk.com/sticker/1-{st.StickerId}-{ssize}{theme}");
+                uri = new Uri($"https://vk.ru/sticker/1-{st.StickerId}-{ssize}{theme}");
             } else {
                 var imgs = sticker.Images;
                 if (imgs == null || imgs.Count == 0) return null;
@@ -543,7 +585,7 @@ namespace Elorucov.Laney.Services {
         }
 
         public static async Task<object> DoConnectCodeAuthAsync(string superAppToken, int appId, int oauthScope, string returnAuthHash) {
-            var hr = await LNet.PostAsync(new Uri($"https://login.vk.com"), new Dictionary<string, string> {
+            var hr = await LNet.PostAsync(new Uri($"https://login.vk.ru"), new Dictionary<string, string> {
                 { "act", "connect_code_auth" },
                 { "token", superAppToken },
                 { "app_id", appId.ToString() },
@@ -555,14 +597,14 @@ namespace Elorucov.Laney.Services {
                 { "version", "1" },
                 { "to", "aHR0cHM6Ly9vYXV0aC52ay5jb20vYmxhbmsuaHRtbA==" }
             }, new Dictionary<string, string> {
-                { "Origin", $"https://id.vk.com" }
+                { "Origin", $"https://id.vk.ru" }
             });
             var result = await hr.Content.ReadAsStringAsync();
 
             JObject response = JObject.Parse(result);
             string type = response["type"].Value<string>();
             if (type == "okay") {
-                var cookies = LNet.Cookies.GetCookies(new Uri("https://login.vk.com")).Cast<Cookie>();
+                var cookies = LNet.Cookies.GetCookies(new Uri("https://login.vk.ru")).Cast<Cookie>();
                 // var cookies = hr.Headers.Where(h => h.Key == "Set-Cookie").Select(h => h.Value).FirstOrDefault();
                 return await DoConnectAuthAsync(cookies, appId, oauthScope, returnAuthHash);
             } else if (type == "error") {
@@ -584,7 +626,7 @@ namespace Elorucov.Laney.Services {
             //}
 
             string cookiestr = String.Join("\n", cookies);
-            var hr = await LNet.PostAsync(new Uri($"https://login.vk.com"), new Dictionary<string, string> {
+            var hr = await LNet.PostAsync(new Uri($"https://login.vk.ru"), new Dictionary<string, string> {
                 { "act", "connect_internal" },
                 { "app_id", appId.ToString() },
                 { "uuid", "" },
@@ -593,7 +635,7 @@ namespace Elorucov.Laney.Services {
                 { "oauth_version", "1" },
                 { "version", "1" }
             }, new Dictionary<string, string> {
-                { "Origin", $"https://id.vk.com" }
+                { "Origin", $"https://id.vk.ru" }
             });
             var result = await hr.Content.ReadAsStringAsync();
 
@@ -623,12 +665,12 @@ namespace Elorucov.Laney.Services {
         public static async Task SaveRefreshedTokenAsync(bool isSuccess, string token, long expiresIn) {
             Logger.Log.Info($"Refresh token result: {isSuccess}");
             if (isSuccess) {
-                AppParameters.WebToken = token;
-                AppParameters.WebTokenExpires = DateTimeOffset.Now.ToUnixTimeSeconds() + expiresIn;
+                AppParameters.AccessToken = token;
+                AppParameters.AccessTokenExpires = DateTimeOffset.Now.ToUnixTimeSeconds() + expiresIn;
                 try {
                     await Task.Delay(3000); // required
-                    var session = new VKSession(AppParameters.UserID, AppParameters.AccessToken, token, AppParameters.WebTokenExpires, AppParameters.ExchangeToken, AppParameters.UserName, AppParameters.UserAvatar);
-                    if (!string.IsNullOrEmpty(AppParameters.Passcode)) session.LocalPasscode = AppParameters.Passcode;
+                    var session = new VKSession(AppParameters.UserID, token, AppParameters.AccessTokenExpires, AppParameters.ExchangeToken, AppParameters.UserName, AppParameters.UserAvatar);
+                    if (!String.IsNullOrEmpty(AppParameters.Passcode)) session.LocalPasscode = AppParameters.Passcode;
                     await VKSessionManager.AddOrUpdateSessionAsync(session);
                 } catch (Exception ex) {
                     Functions.ShowHandledErrorTip(ex);

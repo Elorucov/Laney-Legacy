@@ -303,7 +303,7 @@ namespace Elorucov.Laney.ViewModel.Controls {
                 await new MessageDialog(test, "wall.post").ShowAsync();
 
                 ScreenSpinner<object> sspp = new ScreenSpinner<object>();
-                var responsePreview = await sspp.ShowAsync(Wall.GetPostPreview(VkAPI.API.WebToken, WallOwnerId, friendsOnly, bestFriendsOnly, fromGroup, message, attachments, signed, checkSign, publishDate, glong, glat, donutPaidDuration));
+                var responsePreview = await sspp.ShowAsync(Wall.GetPostPreview(WallOwnerId, friendsOnly, bestFriendsOnly, fromGroup, message, attachments, signed, checkSign, publishDate, glong, glat, donutPaidDuration));
                 if (responsePreview is WallPostPreviewResponse preview) {
                     WallPostModal modal = new WallPostModal(preview.Post);
                     modal.Show();

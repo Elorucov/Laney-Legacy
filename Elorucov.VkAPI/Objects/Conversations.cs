@@ -159,6 +159,18 @@ namespace Elorucov.VkAPI.Objects {
 
         [JsonProperty("can_send_reactions")]
         public bool CanSendReactions { get; set; }
+
+        [JsonProperty("can_disable_forward_messages")]
+        public bool CanDisableForwardMessages { get; set; }
+
+        [JsonProperty("can_forward_messages")]
+        public bool CanForwardMessages { get; set; }
+
+        [JsonProperty("can_disable_service_messages")]
+        public bool CanDisableServiceMessages { get; set; }
+
+        [JsonProperty("can_change_owner")]
+        public bool CanChangeOwner { get; set; }
     }
 
     public class ChatPermissions {

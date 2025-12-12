@@ -94,7 +94,7 @@ namespace Elorucov.Laney.ViewModel {
             if (IsLoading) return;
             IsLoading = true;
 
-            object response = await Messages.GetConversations(100, 0, null, 0, API.WebToken);
+            object response = await Messages.GetConversations(100, 0, null, 0);
             if (response is ConversationsResponse cr) {
                 AppSession.AddUsersToCache(cr.Profiles);
                 AppSession.AddGroupsToCache(cr.Groups);

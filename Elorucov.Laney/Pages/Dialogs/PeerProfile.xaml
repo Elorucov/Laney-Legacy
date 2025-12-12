@@ -38,7 +38,9 @@
                 <AppBarButton Style="{StaticResource CustomAppBarButtonStyle}" Icon="Delete" x:Uid="peerprofile_chatphoto_delete" Foreground="{ThemeResource SystemErrorTextColor}" Click="ChatPhotoDelete"/>
                 <MenuFlyoutSeparator/>
                 <TextBlock Style="{StaticResource HeaderTextBlockStyle}" x:Uid="peerprofile_misc"/>
-                <AppBarButton x:Name="managementBtn" Style="{StaticResource CustomAppBarButtonStyle}" Icon="Setting" x:Uid="peerprofile_chatmgmt"  Click="OpenChatPermissionsEditor"/>
+                <CheckBox x:Name="forwardChk" Margin="12,0" x:Uid="peerprofile_messageforwarding" Click="ToggleMessageForwardingAbility"/>
+                <CheckBox x:Name="serviceMessagesChk" Margin="12,0" x:Uid="peerprofile_servicemessages" Click="ToggleServiceMessagesAvailability"/>
+                <AppBarButton x:Name="managementBtn" Style="{StaticResource CustomAppBarButtonStyle}" Icon="Setting" x:Uid="peerprofile_chatmgmt" Click="OpenChatPermissionsEditor"/>
             </StackPanel>
         </Flyout>
 

@@ -40,7 +40,7 @@ namespace Elorucov.Laney.Services.Network {
         static HttpClient nocookieclient;
         static HttpClient tclient;
 
-        static string pingUrl = "https://vk.com/ping.txt";
+        static string pingUrl = "https://vk.ru/ping.txt";
         const string pingHash = "BCC08EA1CFB021F5595C3190D1FADC49";
 
         static string gfburl = "https://firebaseremoteconfig.googleapis.com/v1/projects/841415684880/namespaces/firebase:fetch";
@@ -207,7 +207,7 @@ namespace Elorucov.Laney.Services.Network {
 
             if (!dontSendCookies) {
                 if (Cookies == null) Cookies = new CookieContainer();
-                string[] domains = new string[] { "https://vk.com", "https://m.vk.com", "https://oauth.vk.com", "https://login.vk.com" };
+                string[] domains = new string[] { "https://vk.ru", "https://m.vk.ru", "https://oauth.vk.ru", "https://login.vk.ru" };
 
                 Windows.Web.Http.Filters.HttpBaseProtocolFilter f = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
                 foreach (string domain in domains) {

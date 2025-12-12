@@ -7,8 +7,7 @@ namespace Elorucov.VkAPI.Methods {
     public class Queue {
         public static async Task<object> Subscribe(string queueIds) {
             Dictionary<string, string> req = new Dictionary<string, string> {
-                { "queue_ids", queueIds },
-                { "access_token", API.WebToken }
+                { "queue_ids", queueIds }
             };
 
             var res = await API.SendRequestAsync("queue.subscribe", req);

@@ -63,7 +63,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
         private async Task StartSearch() {
             progress.IsIndeterminate = true;
             string q = Query.Text;
-            object resp = await Messages.Search(q, peerId, 0, FoundMessages.Count, 60, APIHelper.ConvertDateToVKFormat(FilterDate), VkAPI.API.WebToken);
+            object resp = await Messages.Search(q, peerId, 0, FoundMessages.Count, 60, APIHelper.ConvertDateToVKFormat(FilterDate));
             if (resp is MessagesHistoryResponse) {
                 MessagesHistoryResponse scr = resp as MessagesHistoryResponse;
                 AppSession.AddUsersToCache(scr.Profiles);

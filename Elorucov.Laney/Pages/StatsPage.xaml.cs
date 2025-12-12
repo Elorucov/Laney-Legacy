@@ -33,7 +33,7 @@ namespace Elorucov.Laney.Pages {
             DateSelectionInfo.Text = Locale.Get("choose_period");
 
             if (!API.Initialized) {
-                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.VKMApplicationID, AppParameters.VKMSecret, AppParameters.VkApiDomain);
+                API.Initialize(AppParameters.AccessToken, Locale.Get("lang"), ApplicationInfo.UserAgent, AppParameters.ApplicationID, AppParameters.ApplicationSecret, AppParameters.VkApiDomain);
             }
         }
 

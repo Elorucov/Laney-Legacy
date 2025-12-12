@@ -335,7 +335,7 @@ namespace Elorucov.Laney.Services.UI {
                     Description = def,
                     Name = WallReplyControlName,
                 };
-                dac.Click += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.com/wall{wr.OwnerId}_{wr.PostId}?reply={wr.Id}"));
+                dac.Click += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/wall{wr.OwnerId}_{wr.PostId}?reply={wr.Id}"));
                 sp.Children.Add(dac);
             }
 
@@ -382,7 +382,7 @@ namespace Elorucov.Laney.Services.UI {
 
             // Market
             if (market != null) {
-                Uri link = new Uri($"https://vk.com/product{market.OwnerId}_{market.Id}");
+                Uri link = new Uri($"https://vk.ru/product{market.OwnerId}_{market.Id}");
                 sp.Children.Add(new ExtendedAttachmentControl {
                     Name = LinkControlName,
                     Link = link,
@@ -404,7 +404,7 @@ namespace Elorucov.Laney.Services.UI {
                     Description = $"{Locale.Get("poll").Capitalize()} {def}",
                     Name = PollControlName,
                 };
-                dac.Click += async (a, b) => await VKLinks.LaunchLinkAsync(new Uri($"https://vk.com/poll{poll.OwnerId}_{poll.Id}"));
+                dac.Click += async (a, b) => await VKLinks.LaunchLinkAsync(new Uri($"https://vk.ru/poll{poll.OwnerId}_{poll.Id}"));
                 sp.Children.Add(dac);
             }
 
@@ -421,7 +421,7 @@ namespace Elorucov.Laney.Services.UI {
             // Event
             if (evt != null) {
                 Group eg = Services.AppSession.GetCachedGroup(evt.Id);
-                Uri link = new Uri($"https://vk.com/club{evt.Id}");
+                Uri link = new Uri($"https://vk.ru/club{evt.Id}");
 
                 sp.Children.Add(new ExtendedAttachmentControl {
                     Margin = new Thickness(0, 6, 0, 6),
@@ -452,7 +452,7 @@ namespace Elorucov.Laney.Services.UI {
 
             // Narrative
             if (nr != null) {
-                string link = $"https://m.vk.com/narrative{nr.OwnerId}_{nr.Id}";
+                string link = $"https://m.vk.ru/narrative{nr.OwnerId}_{nr.Id}";
                 sp.Children.Add(new ExtendedAttachmentControl {
                     Margin = new Thickness(0, 6, 0, 6),
                     Name = LinkControlName,
@@ -489,7 +489,7 @@ namespace Elorucov.Laney.Services.UI {
                     Image = artist.Photo.LastOrDefault(),
                     Name = LinkControlName
                 };
-                eac.ButtonClick += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.com/artist/{artist.Id}"));
+                eac.ButtonClick += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/artist/{artist.Id}"));
                 sp.Children.Add(eac);
             }
 
@@ -566,7 +566,7 @@ namespace Elorucov.Laney.Services.UI {
                     eac.ImageDirect = p.Photo.Photo300;
                 }
 
-                string link = $"https://vk.com/music/album/{p.OwnerId}_{p.Id}";
+                string link = $"https://vk.ru/music/album/{p.OwnerId}_{p.Id}";
                 if (!string.IsNullOrEmpty(p.AccessKey)) link += $"_{p.AccessKey}";
                 eac.Link = new Uri(link);
                 eac.ButtonClick += async (a, b) => {
@@ -627,7 +627,7 @@ namespace Elorucov.Laney.Services.UI {
                     Image = album.Thumb?.Sizes[1],
                     Name = LinkControlName
                 };
-                eac.ButtonClick += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.com/album{album.OwnerId}_{album.Id}"));
+                eac.ButtonClick += async (a, b) => await Launcher.LaunchUriAsync(new Uri($"https://vk.ru/album{album.OwnerId}_{album.Id}"));
                 sp.Children.Add(eac);
             }
 
@@ -641,7 +641,7 @@ namespace Elorucov.Laney.Services.UI {
                     ImageDirect = app.App.Icon,
                     Name = LinkControlName
                 };
-                eac.ButtonClick += async (a, b) => await VKLinks.LaunchLinkAsync(new Uri($"https://vk.com/app{app.App.Id}?ref=laney"));
+                eac.ButtonClick += async (a, b) => await VKLinks.LaunchLinkAsync(new Uri($"https://vk.ru/app{app.App.Id}?ref=laney"));
                 sp.Children.Add(eac);
             }
 
@@ -739,7 +739,7 @@ namespace Elorucov.Laney.Services.UI {
 
         private static async Task TryPlayAudio(long objectId, List<Audio> audios, Audio a, string atchsOwner) {
             if (a.ContentRestricted > 0 || string.IsNullOrEmpty(a.Url)) {
-                object r = await Audios.GetRestrictionPopup(a.Id, API.WebToken);
+                object r = await Audios.GetRestrictionPopup(a.Id);
                 if (r != null && r is AudioRestrictionInfo info) {
                     await new ContentDialog {
                         Title = info.Title,

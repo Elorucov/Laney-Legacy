@@ -13,17 +13,15 @@ using Windows.UI.Xaml.Controls;
 
 namespace Elorucov.VkAPI {
     public class API {
-        public const string Version = "5.251";
+        public const string Version = "5.263";
         private static string _api = "api.vk.me";
         public static string VkApiDomain { get { return _api; } private set { _api = value; } }
         private static string UserAgent;
-        private static string _webToken;
         private static string _exchangeToken;
 
         public static bool Initialized { get { return !String.IsNullOrEmpty(accessToken); } }
         public static int VKMClientId { get; private set; }
         public static string VKMClientSecret { get; private set; }
-        public static string WebToken { get { return _webToken; } set { _webToken = value; } }
         public static string ExchangeToken { get { return _exchangeToken; } set { _exchangeToken = value; } }
         public static Func<Uri, Dictionary<string, string>, Dictionary<string, string>, Task<HttpResponseMessage>> RequestCallback { get; set; }
         public static Action<bool, string, int> WebTokenRefreshed;
@@ -41,12 +39,11 @@ namespace Elorucov.VkAPI {
             UserAgent = userAgent;
             VKMClientId = clientId;
             VKMClientSecret = clientSecret;
-            // VkApiDomain = !String.IsNullOrEmpty(apidomain) ? apidomain : "api.vk.com";
+            // VkApiDomain = !String.IsNullOrEmpty(apidomain) ? apidomain : "api.vk.me";
         }
 
         public static void Uninitialize() {
             accessToken = null;
-            WebToken = null;
             Lang = null;
         }
 
@@ -121,7 +118,7 @@ namespace Elorucov.VkAPI {
                 Dictionary<string, string> headers = new Dictionary<string, string>();
                 if (!String.IsNullOrEmpty(auth)) headers.Add("Authorization", $"Bearer {auth}");
                 if (requestUri.Contains("auth.getAuthCode") || requestUri.Contains("auth.checkAuthCode") || requestUri.Contains("auth.processAuthCode")) {
-                    headers.Add("Origin", $"https://id.vk.com");
+                    headers.Add("Origin", $"https://id.vk.ru");
                 }
                 // if (auth == WebToken || (prmkv.ContainsKey("client_id") && prmkv["client_id"] == "3140623")) headers.Add("User-Agent", "com.vk.vkclient/2800 (unknown, iOS 17.4.1, iPhone 15 Pro Max, Scale/2.0)");
                 resp = await RequestCallback.Invoke(new Uri(requestUri), prmkv, headers);
@@ -168,11 +165,11 @@ namespace Elorucov.VkAPI {
                 VKErrorResponse er = JsonConvert.DeserializeObject<VKErrorResponse>(response);
                 if (er.error.error_code == 1117) {
                     // For those who updated form Laney v1.21.
-                    object resp1 = await Methods.Auth.RefreshTokens(3140623, "VeWdmVclDCtn6ihuP1nt", ExchangeToken);
+                    object resp1 = await Methods.Auth.RefreshTokens(VKMClientId, VKMClientSecret, ExchangeToken);
                     if (resp1 is RefreshTokensResponse rtr) {
-                        WebToken = rtr.Success[0].AccessToken.Token;
-                        if (parameters.ContainsKey("access_token")) parameters["access_token"] = WebToken;
-                        WebTokenRefreshed?.Invoke(true, WebToken, rtr.Success[0].AccessToken.ExpiresIn);
+                        accessToken = rtr.Success[0].AccessToken.Token;
+                        if (parameters.ContainsKey("access_token")) parameters["access_token"] = accessToken;
+                        WebTokenRefreshed?.Invoke(true, accessToken, rtr.Success[0].AccessToken.ExpiresIn);
                         resp = await SendRequestAsync(method, parameters).ConfigureAwait(false);
                     } else {
                         WebTokenRefreshed?.Invoke(false, null, 0);

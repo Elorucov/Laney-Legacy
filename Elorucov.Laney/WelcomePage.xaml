@@ -111,7 +111,6 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
-            <Button x:Name="UpdateAvailabilityButton" Visibility="Collapsed" x:Uid="appupdbtn" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource AccentButtonStyle}" Click="UpdateAvailabilityButton_Click"/>
             <HyperlinkButton HorizontalAlignment="Stretch" Margin="0,12" Click="ShowLangPicker">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="langName" x:Uid="wlc_lang"/>

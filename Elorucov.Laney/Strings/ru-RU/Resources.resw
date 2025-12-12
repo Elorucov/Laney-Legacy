@@ -162,6 +162,9 @@
   <data name="ActionUnPinMale" xml:space="preserve">
     <value>открепил сообщение</value>
   </data>
+  <data name="ActionOwnerChangedMale" xml:space="preserve">
+    <value>сменил владельца чата на</value>
+  </data>
   <data name="ActionCreateFemale" xml:space="preserve">
     <value>создала беседу</value>
   </data>
@@ -198,6 +201,9 @@
   <data name="ActionUnPinFemale" xml:space="preserve">
     <value>открепила сообщение</value>
   </data>
+  <data name="ActionOwnerChangedFemale" xml:space="preserve">
+    <value>сменила владельца чата на</value>
+  </data>
   <data name="AllConv_About" xml:space="preserve">
     <value>О приложении</value>
   </data>
@@ -229,7 +235,7 @@
     <value>сегодня</value>
   </data>
   <data name="thgirypoc" xml:space="preserve">
-    <value>Создано и разработано Эльчином Оруджевым с 2018 по 2025</value>
+    <value>Эльчин Оруджев</value>
   </data>
   <data name="wlc.Text" xml:space="preserve">
     <value>Добро пожаловать!</value>
@@ -1548,6 +1554,9 @@
   <data name="chatinfo_memctx_addadmin" xml:space="preserve">
     <value>Назначить администратором</value>
   </data>
+  <data name="chatinfo_memctx_owner" xml:space="preserve">
+    <value>Сделать владельцем</value>
+  </data>
   <data name="chatinfo_memctx_kick" xml:space="preserve">
     <value>Исключить из беседы</value>
   </data>
@@ -1864,7 +1873,7 @@ Tab — открыть панель стикеров;
     <value>Соединение через {0} с…</value>
   </data>
   <data name="network_error_descr" xml:space="preserve">
-    <value>Проверьте соединение и повторите попытку.</value>
+    <value>Проверьте соединение и повторите попытку.</value>
   </data>
   <data name="network_error_no_internet" xml:space="preserve">
     <value>Нет соединения с интернетом</value>
@@ -2245,6 +2254,12 @@ Tab — открыть панель стикеров;
   <data name="peerprofile_chatmgmt.Label" xml:space="preserve">
     <value>Управление</value>
   </data>
+  <data name="peerprofile_messageforwarding.Content" xml:space="preserve">
+    <value>Участники могут пересылать сообщения</value>
+  </data>
+  <data name="peerprofile_servicemessages.Content" xml:space="preserve">
+    <value>Сервисные сообщения</value>
+  </data>
   <data name="file_saved" xml:space="preserve">
     <value>Файл сохранён</value>
   </data>
@@ -2339,7 +2354,7 @@ Tab — открыть панель стикеров;
     <value>Не удалось перевести текст</value>
   </data>
   <data name="translation_error_972" xml:space="preserve">
-    <value>Cообщение перевести не получится. Может, там только цифры?</value>
+    <value>Cообщение перевести не получится. Может, там только цифры?</value>
   </data>
   <data name="translation_error_wronglang_title" xml:space="preserve">
     <value>А что это за язык?</value>
@@ -2393,10 +2408,10 @@ Tab — открыть панель стикеров;
     <value>Вернуть из архива</value>
   </data>
   <data name="conv_archived" xml:space="preserve">
-    <value>Чат перенесён в архив</value>
+    <value>Чат перенесён в архив</value>
   </data>
   <data name="conv_unarchived" xml:space="preserve">
-    <value>Чат возвращён из архива</value>
+    <value>Чат возвращён из архива</value>
   </data>
   <data name="convctx_pin" xml:space="preserve">
     <value>Закрепить</value>
@@ -2657,7 +2672,7 @@ Tab — открыть панель стикеров;
     <value>Стикеры чата</value>
   </data>
   <data name="stickers_picker_ugc_hint" xml:space="preserve">
-    <value>Просматривать и использовать стикеры могут только участники чата. Право создавать и редактировать набор есть только у создателя чата.</value>
+    <value>Просматривать и использовать стикеры могут только участники чата. Право создавать и редактировать набор есть только у создателя чата.</value>
   </data>
   <data name="ugc_sticker_age_restricted" xml:space="preserve">
     <value>Стикер c возрастным ограничением</value>
@@ -2717,7 +2732,7 @@ Tab — открыть панель стикеров;
     <value>Введите код, отправленный по SMS на номер {0}:</value>
   </data>
   <data name="2fa_email" xml:space="preserve">
-    <value>Мы отправили письмо с кодом на почту {0}</value>
+    <value>Мы отправили письмо с кодом на почту {0}</value>
   </data>
   <data name="2fa_push" xml:space="preserve">
     <value>Мы отправили push-уведомление с кодом на ваши устройства</value>
@@ -3048,13 +3063,13 @@ Tab — открыть панель стикеров;
     <value>Администратор чата запретил вам отправлять сообщения</value>
   </data>
   <data name="writing_disabled_for_you_until" xml:space="preserve">
-    <value>Администратор чата запретил вам отправлять сообщения до {0}</value>
+    <value>Администратор чата запретил вам отправлять сообщения до {0}</value>
   </data>
   <data name="writing_disabled_for_all" xml:space="preserve">
     <value>В этот чат может писать только администратор</value>
   </data>
   <data name="writing_disabled_for_all_until" xml:space="preserve">
-    <value>Администратор чата запретил отправлять сообщения до {0}</value>
+    <value>Администратор чата запретил отправлять сообщения до {0}</value>
   </data>
   <data name="for_hours_nom" xml:space="preserve">
     <value>На {0} час</value>
@@ -3344,19 +3359,19 @@ Tab — открыть панель стикеров;
     <value>Включены</value>
   </data>
   <data name="pp_attachments_photo" xml:space="preserve">
-    <value>Здесь будут отображаться фотографии из чата</value>
+    <value>Здесь будут отображаться фотографии из чата</value>
   </data>
   <data name="pp_attachments_video" xml:space="preserve">
-    <value>Здесь будут отображаться видео из чата</value>
+    <value>Здесь будут отображаться видео из чата</value>
   </data>
   <data name="pp_attachments_audio" xml:space="preserve">
-    <value>Здесь будет отображаться музыка из чата</value>
+    <value>Здесь будет отображаться музыка из чата</value>
   </data>
   <data name="pp_attachments_doc" xml:space="preserve">
-    <value>Здесь будут отображаться файлы из чата</value>
+    <value>Здесь будут отображаться файлы из чата</value>
   </data>
   <data name="pp_attachments_share" xml:space="preserve">
-    <value>Здесь будут отображаться ссылки из чата</value>
+    <value>Здесь будут отображаться ссылки из чата</value>
   </data>
   <data name="convctx_delete_for_all" xml:space="preserve">
     <value>Удалить чат</value>
@@ -3378,6 +3393,12 @@ Tab — открыть панель стикеров;
   </data>
   <data name="mention_param_all" xml:space="preserve">
     <value>Отключить</value>
+  </data>
+  <data name="chat_ownership_transfer_title" xml:space="preserve">
+    <value>Назначить пользователя новым владельцем чата?</value>
+  </data>
+  <data name="chat_ownership_transfer_desc" xml:space="preserve">
+    <value>Он сможет менять настройки чата</value>
   </data>
   <data name="backButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Назад</value>

@@ -28,7 +28,6 @@
                     <Button x:Name="PaneResizerButton" Style="{StaticResource CircleButtonStyle}" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,16,16" Click="PaneResizerButton_Click">
                         <ctrls:FixedFontIcon x:Name="PaneResizerIcon" Glyph="" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Button>
-                    <Button x:Name="UpdateAvailabilityButton" Visibility="Collapsed" x:Uid="appupdbtn" Margin="12,0,12,32" HorizontalAlignment="Center" VerticalAlignment="Bottom" Style="{StaticResource AccentButtonStyle}" Click="UpdateAvailabilityButton_Click"/>
                 </Grid>
             </wuix:MasterDetail.LeftContent>
             <wuix:MasterDetail.RightContent>

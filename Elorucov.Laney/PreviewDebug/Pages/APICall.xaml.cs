@@ -19,7 +19,7 @@ namespace Elorucov.Laney.PreviewDebug.Pages {
                 btn.IsEnabled = false;
                 resp.Text = "Sending...";
 
-                string token = wtcb.IsChecked.Value ? AppParameters.WebToken : AppParameters.AccessToken;
+                string token = AppParameters.AccessToken;
 
                 try {
                     Dictionary<string, string> parameters = new Dictionary<string, string>();

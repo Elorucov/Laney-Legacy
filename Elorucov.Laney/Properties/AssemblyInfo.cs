@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Laney")]
-[assembly: AssemblyCopyright("© 2018 - 2025 Elchin Orujov (ELOR, ex. Elorucov)")]
+[assembly: AssemblyCopyright("© 2018 - 2026 Elchin Orujov (ELOR, ex. Elorucov)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -23,6 +23,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.30.*")]
-[assembly: AssemblyFileVersion("1.30.200.0")]
+[assembly: AssemblyVersion("1.31.*")]
+[assembly: AssemblyFileVersion("1.31.202.0")]
 [assembly: ComVisible(false)]

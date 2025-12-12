@@ -80,7 +80,7 @@ namespace Elorucov.Laney.Pages {
 
             try {
                 string accessKey = !string.IsNullOrEmpty(Video.AccessKey) ? $"_{Video.AccessKey}" : string.Empty;
-                var response = await Videos.Get(Video.OwnerId, $"{Video.OwnerId}_{Video.Id}{accessKey}", VkAPI.API.WebToken);
+                var response = await Videos.Get(Video.OwnerId, $"{Video.OwnerId}_{Video.Id}{accessKey}");
                 if (response is VKList<Video> videos && videos.Count > 0) {
                     Video = videos.Items.FirstOrDefault();
                     if (Video.Restriction != null && !Video.Restriction.CanPlay) {

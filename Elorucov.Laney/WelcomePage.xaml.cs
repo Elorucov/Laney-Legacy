@@ -5,11 +5,9 @@ using Elorucov.Laney.Services;
 using Elorucov.Laney.Services.Common;
 using Elorucov.Laney.Services.Logger;
 using Elorucov.Laney.Services.UI;
-using Elorucov.VkAPI;
 using Elorucov.VkAPI.Methods;
 using Elorucov.VkAPI.Objects;
 using Microsoft.UI.Xaml.Controls;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -84,15 +82,15 @@ namespace Elorucov.Laney {
                 if (b == null) return;
                 Tuple<long, string, string> cred = b as Tuple<long, string, string>;
                 AppParameters.UserID = cred.Item1;
-                AppParameters.WebToken = cred.Item2;
-                Frame.Navigate(typeof(DirectAuthPage));
+                AppParameters.AccessToken = cred.Item2;
+                Frame.Navigate(typeof(Main));
             };
             qrDialog.Show();
         }
 
         private void ShowLangPicker(object sender, RoutedEventArgs e) {
             List<AppLanguage> langs = new List<AppLanguage>();
-            langs.Insert(0, new AppLanguage { LanguageCode = string.Empty, DisplayName = "System" });
+            langs.Insert(0, new AppLanguage { LanguageCode = String.Empty, DisplayName = "System" });
             langs.AddRange(AppLanguage.SupportedLanguages);
 
             // Menu flyout
@@ -120,13 +118,6 @@ namespace Elorucov.Laney {
             Services.UI.Shadow.TryDrawUsingThemeShadow(LogoEllipse, LogoEllipseShadow, receivers, 16);
 
             if (Functions.GetOSBuild() >= 16299) {
-                KeyboardAccelerator ka = new KeyboardAccelerator {
-                    Modifiers = Windows.System.VirtualKeyModifiers.Shift,
-                    Key = Windows.System.VirtualKey.F9
-                };
-                ka.Invoked += async (a, b) => await OpenWTIDOverrideDialogAsync();
-                KeyboardAccelerators.Add(ka);
-
                 KeyboardAccelerator kb = new KeyboardAccelerator {
                     Modifiers = Windows.System.VirtualKeyModifiers.Shift,
                     Key = Windows.System.VirtualKey.F8
@@ -140,12 +131,6 @@ namespace Elorucov.Laney {
                     await Task.Delay(350); // required
                     LoginToSession(sessionToSwitch);
                 } else {
-                    if (App.IsUpdateIsReadyToApply) {
-                        UpdateAvailabilityButton.Visibility = Visibility.Visible;
-                    } else {
-                        // App.MSStoreUpdater.Downloaded += (j, k) => UpdateAvailabilityButton.Visibility = Visibility.Visible;
-                    }
-
                     var sessions = await VKSessionManager.GetSessionsAsync();
                     if (sessions.Count > 0) {
                         FindName(nameof(SessionsView));
@@ -171,73 +156,19 @@ namespace Elorucov.Laney {
         byte num = 0;
         private void OnLogoClicked(object sender, RoutedEventArgs e) {
             num++;
-            if (num >= 5) new System.Action(async () => await OpenLoginByTokenDialogAsync())();
+            if (num >= 10) new System.Action(async () => { await Launcher.LaunchUriAsync(new Uri("https://elor.top/")); })();
         }
-
-        private async Task OpenWTIDOverrideDialogAsync() {
-            // Почему InputScope реализовано так ужасно(((
-            var isc = new InputScope();
-            isc.Names.Add(new InputScopeName(InputScopeNameValue.Digits));
-
-            TextBox cid = new TextBox { Header = "Client ID:", Text = AppParameters.VKMApplicationID.ToString(), InputScope = isc };
-            PasswordBox cs = new PasswordBox { Header = "Client secret:", Margin = new Thickness(0, 12, 0, 0) };
-
-            StackPanel sp = new StackPanel();
-            sp.Children.Add(cid);
-            sp.Children.Add(cs);
-
-            ContentDialog dlg = new ContentDialog {
-                Title = "Override official app credentials",
-                Content = sp,
-                PrimaryButtonText = "Set",
-                SecondaryButtonText = "Reset to default",
-                CloseButtonText = Locale.Get("close"),
-                DefaultButton = ContentDialogButton.Primary
-            };
-            dlg.PrimaryButtonClick += (a, b) => {
-                b.Cancel = true;
-                int id = 0;
-                if (!int.TryParse(cid.Text, out id) || id <= 0) {
-                    Tips.Show("Incorrect client id!");
-                    return;
-                }
-                if (string.IsNullOrEmpty(cs.Password)) {
-                    Tips.Show("Client secret is empty!");
-                    return;
-                }
-
-                AppParameters.VKMApplicationID = id;
-                AppParameters.VKMSecret = cs.Password;
-                dlg.Hide();
-            };
-
-            var result = await dlg.ShowAsync();
-            if (result == ContentDialogResult.Secondary) AppParameters.Reset();
-        }
-
 
         byte num2 = 0;
         private void OnEClicked(object sender, RoutedEventArgs e) {
             num2++;
-            if (num2 >= 10) new System.Action(async () => await OpenWTIDOverrideDialogAsync())();
+            if (num2 >= 5) OpenLoginByTokenDialogAsync();
         }
 
         private async Task OpenLoginByTokenDialogAsync() {
             StackPanel content = new StackPanel();
 
             PasswordBox at = new PasswordBox {
-                Margin = new Thickness(0, 0, 0, 12),
-                PlaceholderText = "access_token от официального приложения"
-            };
-
-            PasswordBox at3rd = new PasswordBox {
-                Margin = new Thickness(0, 0, 0, 12),
-                PlaceholderText = $"access_token от приложения с ID {AppParameters.ApplicationID}",
-                Visibility = Visibility.Collapsed
-            };
-
-            CheckBox checkBox = new CheckBox() {
-                Content = $"Указать токен и от приложения с ID {AppParameters.ApplicationID}",
                 Margin = new Thickness(0, 0, 0, 12)
             };
 
@@ -246,21 +177,14 @@ namespace Elorucov.Laney {
                 TextWrapping = TextWrapping.Wrap
             };
 
-            checkBox.Click += (a, b) => {
-                at3rd.Visibility = checkBox.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            };
-
-            content.Children.Add(new TextBlock { TextWrapping = TextWrapping.Wrap, Text = "Введите access token от официального приложения ВК (мобильные клиенты либо десктопный VK Мессенджер).\nЕсли галочка «Указать токен и для приложения...» НЕ стоит, то Laney попытается сам получить второй access token." });
-            content.Children.Add(new HyperlinkButton { Content = "Получить access_token", Margin = new Thickness(0, 12, 0, 12), NavigateUri = new Uri("https://vkhost.github.io") });
+            content.Children.Add(new TextBlock { TextWrapping = TextWrapping.Wrap, Text = "Введите access token от официального приложения ВК (мобильные клиенты либо десктопный VK Мессенджер).\nПриложение само получит access token от Laney." });
             content.Children.Add(at);
-            content.Children.Add(at3rd);
-            content.Children.Add(checkBox);
             content.Children.Add(err);
 
             ContentDialog dlg = new ContentDialog {
                 Title = "Auth with token",
-                PrimaryButtonText = Locale.Get("continue"),
-                SecondaryButtonText = Locale.Get("cancel"),
+                PrimaryButtonText = "Auth",
+                SecondaryButtonText = "Cancel",
                 DefaultButton = ContentDialogButton.Primary,
                 Content = content
             };
@@ -269,7 +193,7 @@ namespace Elorucov.Laney {
                 b.Cancel = true;
                 dlg.IsPrimaryButtonEnabled = false;
                 dlg.IsSecondaryButtonEnabled = false;
-                bool result = await CheckTokenAsync(at.Password, checkBox.IsChecked == true ? at3rd.Password : null, err);
+                bool result = await CheckTokenAsync(at.Password, err);
                 if (result) {
                     dlg.Hide();
                     Frame.Navigate(typeof(Main));
@@ -282,47 +206,20 @@ namespace Elorucov.Laney {
             await dlg.ShowAsync();
         }
 
-        private async Task<bool> CheckTokenAsync(string offClientToken, string appToken, TextBlock err) {
+        private async Task<bool> CheckTokenAsync(string token, TextBlock err) {
             try {
                 err.Text = "Checking access to messages API...";
-                VkAPI.API.WebToken = offClientToken;
                 object response = await Messages.GetFolders();
                 if (response is VKList<Folder>) {
                     err.Text = "Getting user's ID...";
-                    object response2 = await Users.Get(accessToken: offClientToken);
+                    object response2 = await Users.Get(accessToken: token);
                     if (response2 is List<VkAPI.Objects.User> users && users.Count > 0) {
-                        if (!string.IsNullOrEmpty(appToken)) {
-                            err.Text = "Checking 2-nd token for client...";
-
-                            object appresponse = await Apps.Get(appToken);
-                            if (appresponse is VKList<VkAPI.Objects.App> response3) {
-                                var app = response3.Items.FirstOrDefault();
-                                if (app.Id != AppParameters.ApplicationID) {
-                                    err.Text = $"This token gained for \"{app.Title}\" app (id {app.Id}), not for app ({AppParameters.ApplicationID})!";
-                                    return false;
-                                }
-                                AppParameters.UserID = users.FirstOrDefault().Id;
-                                AppParameters.AccessToken = appToken;
-                                AppParameters.WebToken = offClientToken;
-                                Frame.Navigate(typeof(Main));
-                                return true;
-                            } else if (appresponse is VKError vkerr) {
-                                err.Text = $"API error in 2-nd phase! ({vkerr.error_code}): {vkerr.error_msg}";
-                            } else if (appresponse is Exception ex) {
-                                var e = Functions.GetNormalErrorInfo(response2);
-                                err.Text = $"Cannot check app (2-nd phase)! {e.Item1}!\n{e.Item2}";
-                            }
-                            return false;
-                        } else {
-                            err.Text = "Getting token for Laney...";
-                            AppParameters.UserID = users.FirstOrDefault().Id;
-                            AppParameters.WebToken = offClientToken;
-                            Frame.Navigate(typeof(DirectAuthPage));
-                            return true;
-                        }
+                        AppParameters.UserID = users.FirstOrDefault().Id;
+                        AppParameters.AccessToken = token;
+                        return true;
                     } else {
-                        var e = Functions.GetNormalErrorInfo(response2);
-                        err.Text = $"Cannot check user id! {e.Item1}\n{e.Item2}";
+                        var e = Functions.GetNormalErrorInfo(response);
+                        err.Text = $"Cannot get user id! {e.Item1}!\n{e.Item2}";
                         return false;
                     }
                 } else {
@@ -344,11 +241,11 @@ namespace Elorucov.Laney {
             LoginToSession(session);
         }
 
+        // if vksession file is old, replacing access token with vkm access token. 
         private void LoginToSession(VKSession session) {
             AppParameters.UserID = session.Id;
-            AppParameters.AccessToken = session.AccessToken;
-            AppParameters.WebToken = session.VKMAccessToken;
-            AppParameters.WebTokenExpires = session.VKMAccessTokenExpires;
+            AppParameters.AccessToken = !string.IsNullOrEmpty(session.VKMAccessToken) ? session.VKMAccessToken : session.AccessToken;
+            AppParameters.AccessTokenExpires = session.VKMAccessTokenExpires;
             AppParameters.ExchangeToken = session.VKMExchangeToken;
             AppParameters.UserName = session.Name;
             AppParameters.UserAvatar = session.Avatar;
@@ -386,15 +283,6 @@ namespace Elorucov.Laney {
                     }
                 }
             })();
-        }
-
-        private void UpdateAvailabilityButton_Click(object sender, RoutedEventArgs e) {
-            //new System.Action(async () => {
-            //    var result = await App.MSStoreUpdater.TryApplyUpdatesAsync();
-            //    if (!result.HasValue || !result.Value) {
-            //        await Launcher.LaunchUriAsync(new Uri("ms-windows-store://pdp/?ProductId=9MSPLCXVN1M5"));
-            //    }
-            //})();
         }
     }
 }

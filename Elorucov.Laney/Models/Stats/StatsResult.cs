@@ -273,7 +273,7 @@ namespace Elorucov.Laney.Models.Stats {
 
             List<Entity> topStickers = new List<Entity>();
             foreach (var s in stickersTop) {
-                Uri uri = new Uri($"https://vk.com/sticker/1-{s.Key}-128");
+                Uri uri = new Uri($"https://vk.ru/sticker/1-{s.Key}-128");
                 topStickers.Add(new Entity(s.Key, s.Value.ToString(), null, uri));
             }
             if (topStickers.Count > 0) TopStickers = topStickers;

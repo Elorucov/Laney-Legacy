@@ -13,7 +13,7 @@ namespace Elorucov.VkAPI {
                 { "client_secret", clientSecret }
             };
 
-            var resp = await API.InternalRequestAsync("https://oauth.vk.com/get_anonym_token", p);
+            var resp = await API.InternalRequestAsync("https://oauth.vk.ru/get_anonym_token", p);
 
             byte[] rarr = await resp.Content.ReadAsByteArrayAsync();
             string response = Encoding.UTF8.GetString(rarr);
@@ -39,7 +39,7 @@ namespace Elorucov.VkAPI {
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_sid", captchaSid);
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_key", captchaKey);
 
-            var resp = await API.InternalRequestAsync("https://oauth.vk.com/token", p);
+            var resp = await API.InternalRequestAsync("https://oauth.vk.ru/token", p);
 
             byte[] rarr = await resp.Content.ReadAsByteArrayAsync();
             string response = Encoding.UTF8.GetString(rarr);
@@ -64,7 +64,7 @@ namespace Elorucov.VkAPI {
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_sid", captchaSid);
             if (!String.IsNullOrEmpty(captchaSid)) p.Add("captcha_key", captchaKey);
 
-            var resp = await API.InternalRequestAsync("https://oauth.vk.com/token", p);
+            var resp = await API.InternalRequestAsync("https://oauth.vk.ru/token", p);
 
             byte[] rarr = await resp.Content.ReadAsByteArrayAsync();
             string response = Encoding.UTF8.GetString(rarr);

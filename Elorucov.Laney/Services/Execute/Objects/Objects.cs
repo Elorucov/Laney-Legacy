@@ -100,6 +100,9 @@ namespace Elorucov.Laney.Services.Execute.Objects {
 
         [JsonProperty("is_casper_chat")]
         public bool IsCasperChat { get; set; }
+
+        [JsonProperty("disable_service_messages")]
+        public bool DisableServiceMessages { get; set; }
     }
 
     public class SpecialEvent {
@@ -126,6 +129,9 @@ namespace Elorucov.Laney.Services.Execute.Objects {
     }
 
     public class StartupInfo {
+        [JsonProperty("exchange_token")]
+        public string ExchangeToken { get; set; }
+
         [JsonProperty("ctl_source")]
         public string ChatThemesListSource { get; set; }
 

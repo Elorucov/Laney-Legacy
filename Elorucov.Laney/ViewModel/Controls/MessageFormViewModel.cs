@@ -108,7 +108,7 @@ namespace Elorucov.Laney.ViewModel.Controls {
         }
 
         private void CheckIsMessageNotEmpty() {
-            bool a = !string.IsNullOrEmpty(MessageText);
+            bool a = !String.IsNullOrEmpty(MessageText);
             bool b = Attachments.Count > 0;
             IsMessageNotEmpty = a || b;
         }
@@ -497,14 +497,14 @@ namespace Elorucov.Laney.ViewModel.Controls {
 
                 string attachments = null;
                 if (attachmentsList.Count > 0) attachments = string.Join(',', attachmentsList);
-                string txt = !string.IsNullOrEmpty(MessageText) ? MessageText.Replace("\r\n", "\r").Replace("\r", "\r\n") : null;
+                string txt = !String.IsNullOrEmpty(MessageText) ? MessageText.Replace("\r\n", "\r").Replace("\r", "\r\n") : null;
 
                 object resp = EditingMessageId <= 0 ? await Messages.Send(PeerId, RandomId, txt, glat, glong, attachments,
                     forward, Sticker?.StickerId, null,
                     AppParameters.MessageSendDontParseLinks, AppParameters.MessageSendDisableMentions, silent, ttl,
-                    vkRef, vkRefSource, FormatData, isCasperChat || ttl > 0 ? API.WebToken : null) :
+                    vkRef, vkRefSource, FormatData) :
                     await Messages.Edit(PeerId, EditingMessageId, txt, glat, glong, attachments,
-                    AppParameters.MessageSendDontParseLinks, ForwardedMessagesIds.Count > 0, FormatData, isCasperChat || ttl > 0 ? API.WebToken : null);
+                    AppParameters.MessageSendDontParseLinks, ForwardedMessagesIds.Count > 0, FormatData);
                 if (resp is int || resp is MessageSendResponse) {
                     ClearForm();
                     vkRef = null;
@@ -524,20 +524,20 @@ namespace Elorucov.Laney.ViewModel.Controls {
         public async Task SendMessageToBot(BotButtonAction bba, string customText = null, int ownerMessageId = 0, long authorId = 0, Button uiButton = null) {
             IsEnabled = false;
             object resp = null;
-            string t = string.IsNullOrEmpty(customText) ? bba.Label : customText;
+            string t = String.IsNullOrEmpty(customText) ? bba.Label : customText;
             switch (bba.Type) {
                 case BotButtonType.Text:
                     IsProgressIndeterminate = true;
                     resp = await Messages.Send(PeerId, RandomId, t, null, null, null, null, null, bba.Payload,
                     AppParameters.MessageSendDontParseLinks, AppParameters.MessageSendDisableMentions, false, 0,
-                    vkRef, vkRefSource, null, isCasperChat ? API.WebToken : null);
+                    vkRef, vkRefSource, null);
                     break;
                 case BotButtonType.OpenApp:
-                    string link = string.IsNullOrEmpty(bba.Hash) ? $"https://m.vk.com/app{bba.AppId}" : $"https://m.vk.com/app{bba.AppId}#{bba.Hash}";
+                    string link = String.IsNullOrEmpty(bba.Hash) ? $"https://m.vk.ru/app{bba.AppId}" : $"https://m.vk.ru/app{bba.AppId}#{bba.Hash}";
                     await Launcher.LaunchUriAsync(new Uri(link));
                     break;
                 case BotButtonType.VKPay:
-                    await Launcher.LaunchUriAsync(new Uri($"https://m.vk.com/app6217559#{bba.Hash}"));
+                    await Launcher.LaunchUriAsync(new Uri($"https://m.vk.ru/app6217559#{bba.Hash}"));
                     break;
                 case BotButtonType.OpenLink:
                     await Launcher.LaunchUriAsync(bba.LinkUri);
@@ -551,7 +551,7 @@ namespace Elorucov.Laney.ViewModel.Controls {
                         Tips.Show($"Lat:  {glat}\nLong: {glong}");
                         resp = await Messages.Send(PeerId, RandomId, Locale.Get("botbtn_position"), glat, glong, null, null, null, bba.Payload,
                             AppParameters.MessageSendDontParseLinks, AppParameters.MessageSendDisableMentions, false, 0,
-                            vkRef, vkRefSource, null, isCasperChat ? API.WebToken : null);
+                            vkRef, vkRefSource, null);
                     } else {
                         Tips.Show(Locale.Get("geo_error"));
                     }

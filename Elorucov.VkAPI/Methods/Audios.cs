@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Elorucov.VkAPI.Methods {
     public class Audios {
-        public static async Task<object> Get(long playlistId, int offset, string accessToken) {
+        public static async Task<object> Get(long playlistId, int offset) {
             Dictionary<string, string> p = new Dictionary<string, string> {
-                { "access_token", accessToken },
                 { "count", "500" }
             };
 
@@ -17,10 +16,9 @@ namespace Elorucov.VkAPI.Methods {
             return VKResponseHelper.ParseResponse<VKList<Audio>>(res);
         }
 
-        public static async Task<object> GetRestrictionPopup(long audioId, string accessToken) {
+        public static async Task<object> GetRestrictionPopup(long audioId) {
             Dictionary<string, string> p = new Dictionary<string, string> {
-                { "audio_id", audioId.ToString() },
-                { "access_token", accessToken }
+                { "audio_id", audioId.ToString() }
             };
 
             var res = await API.SendRequestAsync("audio.getRestrictionPopup", p);

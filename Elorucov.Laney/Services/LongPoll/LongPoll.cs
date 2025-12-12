@@ -294,7 +294,7 @@ namespace Elorucov.Laney.Services.LongPoll {
 
         static bool eventsRegistered = false;
         private static async Task SetUpLPAsync(LongPollServerInfo lpinfo) {
-            Server = AppParameters.LongPollFix ? lpinfo.Server.Replace("im.vk.com/nim", "api.vk.com/ruim") : lpinfo.Server;
+            Server = AppParameters.LongPollFix ? lpinfo.Server.Replace("im.vk.ru/nim", "api.vk.me/ruim") : lpinfo.Server;
             Key = lpinfo.Key;
             TimeStamp = lpinfo.TS;
             PTS = lpinfo.PTS;
@@ -304,7 +304,7 @@ namespace Elorucov.Laney.Services.LongPoll {
             IsLPCycleEnabled = true;
             d = SynchronizationContext.Current;
             await Task.Factory.StartNew(async () => await RunAsync());
-            StatusChanged?.Invoke(null, string.Empty);
+            StatusChanged?.Invoke(null, String.Empty);
 
             if (!eventsRegistered) {
                 eventsRegistered = true;
@@ -355,7 +355,7 @@ namespace Elorucov.Laney.Services.LongPoll {
                     object r = resp.Item1;
                     raw = resp.Item2;
                     if (r is LongPollResponse res) {
-                        if (!AppParameters.LongPollDebugInfoInStatus) StatusChanged?.Invoke(null, string.Empty);
+                        if (!AppParameters.LongPollDebugInfoInStatus) StatusChanged?.Invoke(null, String.Empty);
                         DEBUGLongPollResponseReceived?.Invoke($"\n{res.Raw}");
                         d.Post(async o => await ParseLPUpdatesAsync(res.Updates), null);
                         TimeStamp = res.TS;
@@ -503,7 +503,7 @@ namespace Elorucov.Laney.Services.LongPoll {
                         case 67:
                             List<LongPollActivityInfo> ct = new List<LongPollActivityInfo>();
                             foreach (var b in (JArray)u[2]) {
-                                int memberId = int.Parse(b.ToString());
+                                int memberId = Int32.Parse(b.ToString());
                                 LongPollActivityStatus status = LongPollActivityStatus.Typing;
                                 switch (lpevent) {
                                     case 64: status = LongPollActivityStatus.RecordingVoiceMessage; break;
@@ -669,9 +669,9 @@ namespace Elorucov.Laney.Services.LongPoll {
 
             if (peerMessagePair.Count == 1) {
                 var pair = peerMessagePair[0];
-                resp = await Messages.GetByConversationMessageId(pair.Key, new List<int> { pair.Value }, VkAPI.API.WebToken);
+                resp = await Messages.GetByConversationMessageId(pair.Key, new List<int> { pair.Value });
             } else {
-                resp = await Messages.GetById(peerMessagePair, VkAPI.API.WebToken);
+                resp = await Messages.GetById(peerMessagePair);
             }
 
             if (resp is MessagesHistoryResponse r) {
@@ -710,7 +710,7 @@ namespace Elorucov.Laney.Services.LongPoll {
                     kbd.AuthorId = from;
                 }
             } catch { }
-            DefaultKeyboardReceived?.Invoke(kbd, peerId);
+            DefaultKeyboardReceived?.Invoke(kbd, (int)peerId);
         }
 
         static Dictionary<int, bool> PendingMentions = new Dictionary<int, bool>();
@@ -720,14 +720,14 @@ namespace Elorucov.Laney.Services.LongPoll {
                 JToken t = ((JToken)v)["marked_users"];
                 if (t != null) {
                     foreach (JArray o in (JArray)t) {
-                        int flag = int.Parse(o[0].ToString());
+                        int flag = Int32.Parse(o[0].ToString());
                         bool isBomb = flag == 2;
 
                         if (o[1].ToString() == "all") {
                             PendingMentions.Add(messageId, isBomb);
                         } else {
                             JArray u1 = (JArray)o[1];
-                            if (long.Parse(u1.First.ToString()) == AppParameters.UserID) PendingMentions.Add(messageId, isBomb);
+                            if (Int64.Parse(u1.First.ToString()) == AppParameters.UserID) PendingMentions.Add(messageId, isBomb);
                         }
                     }
                 }

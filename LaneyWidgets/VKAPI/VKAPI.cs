@@ -8,7 +8,7 @@ namespace LaneyWidgets.VKAPI {
         private static HttpClient httpClient;
 
         internal static async Task<string> SendRequestAsync(string method, Dictionary<string, string> parameters) {
-            string requestUri = $@"https://api.vk.com/method/{method}";
+            string requestUri = $@"https://api.vk.me/method/{method}";
             if (httpClient == null) {
                 HttpClientHandler handler = new HttpClientHandler() {
                     AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate

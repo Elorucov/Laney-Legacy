@@ -92,6 +92,10 @@ namespace Elorucov.Laney.Pages.Dialogs {
         // Temporary
         private void ChatEditFlyout_Opening(object sender, object e) {
             managementBtn.IsEnabled = ViewModel.ChatPermissions != null;
+            forwardChk.IsEnabled = ViewModel.ChatACL != null && ViewModel.ChatACL.CanDisableForwardMessages;
+            forwardChk.IsChecked = ViewModel.ChatACL != null && ViewModel.ChatACL.CanForwardMessages;
+            serviceMessagesChk.IsEnabled = ViewModel.ChatACL != null && ViewModel.ChatACL.CanDisableServiceMessages;
+            serviceMessagesChk.IsChecked = !ViewModel.ServiceMessagesDisabled;
             EditableChatName.Text = ViewModel.Header;
         }
 
@@ -184,7 +188,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
         }
 
         private async Task RenameChatAPI(string text) {
-            if (string.IsNullOrEmpty(text)) return;
+            if (String.IsNullOrEmpty(text)) return;
 
             VK.VKUI.Popups.ScreenSpinner<object> ssp = new VK.VKUI.Popups.ScreenSpinner<object>();
             object response = await ssp.ShowAsync(Messages.EditChat(ViewModel.Id - 2000000000, text));
@@ -222,6 +226,34 @@ namespace Elorucov.Laney.Pages.Dialogs {
                 VKLinks.ShowPeerInfoModal(ViewModel.Id);
             };
             csm.Show();
+        }
+
+        private void ToggleMessageForwardingAbility(object sender, RoutedEventArgs e) {
+            ChatEditFlyout.Hide();
+            new System.Action(async () => {
+                VK.VKUI.Popups.ScreenSpinner<object> ssp = new VK.VKUI.Popups.ScreenSpinner<object>();
+                object r = await ssp.ShowAsync(Messages.EditChat(ViewModel.Id - 2000000000, ViewModel.ChatACL.CanForwardMessages, null));
+                if (r is bool b) {
+                    Hide();
+                    VKLinks.ShowPeerInfoModal(ViewModel.Id);
+                } else {
+                    Functions.ShowHandledErrorTip(r);
+                }
+            })();
+        }
+
+        private void ToggleServiceMessagesAvailability(object sender, RoutedEventArgs e) {
+            ChatEditFlyout.Hide();
+            new System.Action(async () => {
+                VK.VKUI.Popups.ScreenSpinner<object> ssp = new VK.VKUI.Popups.ScreenSpinner<object>();
+                object r = await ssp.ShowAsync(Messages.EditChat(ViewModel.Id - 2000000000, null, !ViewModel.ServiceMessagesDisabled));
+                if (r is bool b) {
+                    Hide();
+                    VKLinks.ShowPeerInfoModal(ViewModel.Id);
+                } else {
+                    Functions.ShowHandledErrorTip(r);
+                }
+            })();
         }
 
         private void FindChatMembers(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) {
@@ -373,7 +405,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
                     if (attachment != null) Main.GetCurrent().StartForwardingAttachments(new List<AttachmentBase> { attachment });
                 };
                 copylink.Click += (a, b) => {
-                    if (!string.IsNullOrEmpty(atch.Attachment.Link?.Url)) {
+                    if (!String.IsNullOrEmpty(atch.Attachment.Link?.Url)) {
                         DataPackage dp = new DataPackage();
                         dp.RequestedOperation = DataPackageOperation.Copy;
                         dp.SetText(atch.Attachment.Link.Url);

@@ -3,6 +3,7 @@ using Elorucov.Laney.Services.Execute.Objects;
 using Elorucov.VkAPI;
 using Elorucov.VkAPI.Helpers;
 using Elorucov.VkAPI.Objects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ namespace Elorucov.Laney.Services.Execute {
         }
 
         public static async Task<object> Startup() {
-            Dictionary<string, string> p = new Dictionary<string, string> {
+            Dictionary<string, string> req = new Dictionary<string, string> {
+                { "func_v", "17" },
                 { "app_build", ApplicationInfo.Build.ToString() },
                 { "os_build", Functions.GetOSBuild().ToString() },
                 { "user_lang", Locale.Get("lang") },
@@ -27,18 +29,17 @@ namespace Elorucov.Laney.Services.Execute {
             };
 
             int type = AppParameters.Notifications;
-            p.Add("push_type", type.ToString());
+            req.Add("push_type", type.ToString());
             if (type != 0) {
                 string token = await PushNotifications.VKNotificationHelper.GetChannelUri();
                 string id = PushNotifications.VKNotificationHelper.GetDeviceId();
-                p.Add("token", token);
-                p.Add("device_id", id);
+                req.Add("token", token);
+                req.Add("device_id", id);
             }
 
             string code = await GetCodeAsync("startup.17");
-            p.Add("code", code);
-
-            var res = await API.SendRequestAsync("execute", p);
+            req.Add("code", code);
+            var res = await API.SendRequestAsync("execute", req);
             return VKResponseHelper.ParseResponse<StartupInfo>(res);
         }
 
@@ -77,7 +78,6 @@ namespace Elorucov.Laney.Services.Execute {
             };
             string code = await GetCodeAsync("getConvsFoldersAndCounters.1");
             p.Add("code", code);
-            p.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("execute", p);
             return VKResponseHelper.ParseResponse<ConvsAndCountersResponse>(res);
@@ -95,7 +95,6 @@ namespace Elorucov.Laney.Services.Execute {
             };
             string code = await GetCodeAsync("getHistoryWithMembers.7");
             p.Add("code", code);
-            p.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("execute", p);
             return VKResponseHelper.ParseResponse<MessagesHistoryResponseEx>(res);
@@ -210,7 +209,6 @@ namespace Elorucov.Laney.Services.Execute {
 
             string code = await GetCodeAsync("getUGCPacks.1");
             p.Add("code", code);
-            p.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("execute", p);
             return VKResponseHelper.ParseResponse<UGCStickerPacksResponse>(res);
@@ -295,7 +293,6 @@ namespace Elorucov.Laney.Services.Execute {
 
             string code = await GetCodeAsync("getAudiosAndPlaylists.1");
             p.Add("code", code);
-            p.Add("access_token", API.WebToken);
 
             var res = await API.SendRequestAsync("execute", p);
             return VKResponseHelper.ParseResponse<AudiosAndPlaylistsResponse>(res);

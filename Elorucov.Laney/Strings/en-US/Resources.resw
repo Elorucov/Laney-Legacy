@@ -162,6 +162,9 @@
   <data name="ActionUnPinMale" xml:space="preserve">
     <value>unpinned a message</value>
   </data>
+  <data name="ActionOwnerChangedMale" xml:space="preserve">
+    <value>changed the chat owner to</value>
+  </data>
   <data name="ActionCreateFemale" xml:space="preserve">
     <value>created the group chat</value>
   </data>
@@ -198,6 +201,9 @@
   <data name="ActionUnPinFemale" xml:space="preserve">
     <value>unpinned a message</value>
   </data>
+  <data name="ActionOwnerChangedFemale" xml:space="preserve">
+    <value>changed the chat owner to</value>
+  </data>
   <data name="AllConv_About" xml:space="preserve">
     <value>About</value>
   </data>
@@ -229,7 +235,7 @@
     <value>today</value>
   </data>
   <data name="thgirypoc" xml:space="preserve">
-    <value>Created and developed by Elchin Orujov 2018-2025</value>
+    <value>Elchin Orujov</value>
   </data>
   <data name="wlc.Text" xml:space="preserve">
     <value>Welcome!</value>
@@ -1548,6 +1554,9 @@
   <data name="chatinfo_memctx_addadmin" xml:space="preserve">
     <value>Appoint as administrator</value>
   </data>
+  <data name="chatinfo_memctx_owner" xml:space="preserve">
+    <value>Appoint as owner</value>
+  </data>
   <data name="chatinfo_memctx_kick" xml:space="preserve">
     <value>Remove from chat</value>
   </data>
@@ -1864,7 +1873,7 @@ Tab — open sticker panel;
     <value>Connecting in {0} s…</value>
   </data>
   <data name="network_error_descr" xml:space="preserve">
-    <value>Please check your internet connection and try again.</value>
+    <value>Please check your internet connection and try again.</value>
   </data>
   <data name="network_error_no_internet" xml:space="preserve">
     <value>No internet connection</value>
@@ -1921,16 +1930,16 @@ Tab — open sticker panel;
     <value>File saved to your files</value>
   </data>
   <data name="ActionStyleUpdateMale" xml:space="preserve">
-    <value>changed the chat theme to</value>
+    <value>changed the chat theme to</value>
   </data>
   <data name="ActionStyleUpdateFemale" xml:space="preserve">
-    <value>changed the chat theme to</value>
+    <value>changed the chat theme to</value>
   </data>
   <data name="ActionStyleResetMale" xml:space="preserve">
-    <value>reset the chat theme</value>
+    <value>reset the chat theme</value>
   </data>
   <data name="ActionStyleResetFemale" xml:space="preserve">
-    <value>reset the chat theme</value>
+    <value>reset the chat theme</value>
   </data>
   <data name="style_update_not_available" xml:space="preserve">
     <value>Changing chat themes are available on the mobile app.</value>
@@ -2245,6 +2254,12 @@ You can send message without these files. Do you wish to proceed?</value>
   <data name="peerprofile_chatmgmt.Label" xml:space="preserve">
     <value>Management</value>
   </data>
+  <data name="peerprofile_messageforwarding.Content" xml:space="preserve">
+    <value>Members can forward messages</value>
+  </data>
+  <data name="peerprofile_servicemessages.Content" xml:space="preserve">
+    <value>Service messages</value>
+  </data>
   <data name="file_saved" xml:space="preserve">
     <value>File saved</value>
   </data>
@@ -2333,19 +2348,19 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>Failed to translate text</value>
   </data>
   <data name="translation_error_general" xml:space="preserve">
-    <value>Try translating the message later.</value>
+    <value>Try translating the message later.</value>
   </data>
   <data name="translation_error_972_title" xml:space="preserve">
     <value>Failed to translate text</value>
   </data>
   <data name="translation_error_972" xml:space="preserve">
-    <value>We couldn't translate the message. Maybe it consists of only digits?</value>
+    <value>We couldn't translate the message. Maybe it consists of only digits?</value>
   </data>
   <data name="translation_error_wronglang_title" xml:space="preserve">
     <value>What language is this?</value>
   </data>
   <data name="translation_error_wronglang" xml:space="preserve">
-    <value>We couldn't determine the language, but you can select it yourself.</value>
+    <value>We couldn't determine the language, but you can select it yourself.</value>
   </data>
   <data name="translation_original_lang" xml:space="preserve">
     <value>Message language</value>
@@ -2486,7 +2501,7 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>Are you sure you want to delete "{0}"?</value>
   </data>
   <data name="folder_delete_dialog_content" xml:space="preserve">
-    <value>This won't affect the conversations in it.</value>
+    <value>This won't affect the conversations in it.</value>
   </data>
   <data name="folder_select_convs.Text" xml:space="preserve">
     <value>Select conversations</value>
@@ -2510,7 +2525,7 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>New chat</value>
   </data>
   <data name="new_chat_footnote.Text" xml:space="preserve">
-    <value>Enter a name and upload an optional photo</value>
+    <value>Enter a name and upload an optional photo</value>
   </data>
   <data name="chatphoto_browse" xml:space="preserve">
     <value>Upload from device</value>
@@ -2714,13 +2729,13 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>Incorrect confirmation code.</value>
   </data>
   <data name="2fa_sms" xml:space="preserve">
-    <value>We sent an SMS confirmation code to {0}</value>
+    <value>We sent an SMS confirmation code to {0}</value>
   </data>
   <data name="2fa_email" xml:space="preserve">
-    <value>We sent an email with a code to {0}</value>
+    <value>We sent an email with a code to {0}</value>
   </data>
   <data name="2fa_push" xml:space="preserve">
-    <value>We sent a push notification with a code to your devices</value>
+    <value>We sent a push notification with a code to your devices</value>
   </data>
   <data name="2fa_app" xml:space="preserve">
     <value>Enter the code provided by the code-generating app:</value>
@@ -2732,7 +2747,7 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>Enter password</value>
   </data>
   <data name="password_flow" xml:space="preserve">
-    <value>Enter the current password linked to {0}</value>
+    <value>Enter the current password linked to {0}</value>
   </data>
   <data name="2fa_flow_title" xml:space="preserve">
     <value>2-step verification</value>
@@ -3048,13 +3063,13 @@ You can send message without these files. Do you wish to proceed?</value>
     <value>The chat administrator restricted you from messaging</value>
   </data>
   <data name="writing_disabled_for_you_until" xml:space="preserve">
-    <value>The chat administrator restricted you from messaging until {0}</value>
+    <value>The chat administrator restricted you from messaging until {0}</value>
   </data>
   <data name="writing_disabled_for_all" xml:space="preserve">
     <value>Only the administrator can write in this chat</value>
   </data>
   <data name="writing_disabled_for_all_until" xml:space="preserve">
-    <value>The chat administrator has restricted messaging until {0}</value>
+    <value>The chat administrator has restricted messaging until {0}</value>
   </data>
   <data name="for_hours_nom" xml:space="preserve">
     <value>For {0} hour</value>
@@ -3173,7 +3188,7 @@ You can send message without these files. Do you wish to proceed?</value>
   <data name="feed_composer_postponed_created_desc" xml:space="preserve">
     <value>You can't view or manage your scheduled posts in Laney yet.</value>
   </data>
-    <data name="feed_source_search.PlaceholderText" xml:space="preserve">
+  <data name="feed_source_search.PlaceholderText" xml:space="preserve">
     <value>Search people and communities</value>
   </data>
   <data name="feed_search.PlaceholderText" xml:space="preserve">
@@ -3304,8 +3319,8 @@ your device's camera</value>
     <value>Open external link?</value>
   </data>
   <data name="external_link_confirm" xml:space="preserve">
-    <value>VK and Laney developer are not responsible for its content.
-Take caution when opening the link:</value>
+    <value>VK and Laney developer are not responsible for its content.
+Take caution when opening the link:</value>
   </data>
   <data name="se_ram.Header" xml:space="preserve">
     <value>RAM counter on window titlebar</value>
@@ -3362,7 +3377,7 @@ Take caution when opening the link:</value>
     <value>Delete chat</value>
   </data>
   <data name="chat_delete_for_all_confirm" xml:space="preserve">
-    <value>Are you sure you want to delete this chat?</value>
+    <value>Are you sure you want to delete this chat?</value>
   </data>
   <data name="chat_deleted" xml:space="preserve">
     <value>Chat was deleted</value>
@@ -3378,6 +3393,12 @@ Take caution when opening the link:</value>
   </data>
   <data name="mention_param_all" xml:space="preserve">
     <value>Disable</value>
+  </data>
+  <data name="chat_ownership_transfer_title" xml:space="preserve">
+    <value>Appoint user as new chat owner?</value>
+  </data>
+  <data name="chat_ownership_transfer_desc" xml:space="preserve">
+    <value>They'll be able to change the chat settings</value>
   </data>
   <data name="backButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Back</value>

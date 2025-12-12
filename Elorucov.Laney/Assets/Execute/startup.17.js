@@ -12,6 +12,7 @@ var lpres = API.messages.getLongPollServer({ "need_pts": 1, "lp_version": 19 });
 var uids = API.users.get({ "user_ids": uids, "fields": "has_photo,photo_200,photo_100,photo_50,sex,contacts,connections" });
 var acc = API.account.getInfo({ "fields": "messages_translation_language_pairs" });
 var ra = API.messages.getReactionsAssets();
+var et = API.auth.getExchangeToken();
 
 var pnsresult = 0;
 var p = 0;
@@ -31,6 +32,11 @@ if (pnstype == 1) {
 
 // Response
 var resp = {};
+
+if (et) {
+    resp.exchange_token = et.users_exchange_tokens[0].common_token;
+}
+
 resp.trackVisitorResult = !a ? 0 : a;
 resp.setOnlineResult = !p ? 0 : b;
 resp.unregisterDeviceResult = !u ? 0 : u;

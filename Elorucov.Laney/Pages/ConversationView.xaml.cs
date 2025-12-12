@@ -374,7 +374,7 @@ namespace Elorucov.Laney.Pages {
                 };
 
                 if (ViewModel.MessageSendRestriction == MessageSendRestriction.None) MultiSelectCommandButtons.Children.Add(replybtn);
-                if (windowType != WindowType.ContactPanel) MultiSelectCommandButtons.Children.Add(fwdmsgbtn);
+                if (windowType != WindowType.ContactPanel && (ViewModel.ChatSettings == null ? true : ViewModel.ChatSettings.ACL.CanForwardMessages)) MultiSelectCommandButtons.Children.Add(fwdmsgbtn);
                 MultiSelectCommandButtons.Children.Add(deletebtn);
             } catch (Exception ex) {
                 Log.Error($"ShowHideCommandBarButtons 0x{ex.HResult.ToString("x8")}");
@@ -519,12 +519,14 @@ namespace Elorucov.Laney.Pages {
                         mf.Items.Add(reactions);
                     }
 
+                    bool canForwardFromChat = ViewModel.ChatSettings == null ? true : ViewModel.ChatSettings.ACL.CanForwardMessages;
+
                     if (mf.Items.Count > 0 && mf.Items.LastOrDefault() is MenuFlyoutItem) mf.Items.Add(new MenuFlyoutSeparator());
 
                     if (msg.TryGetMessageText(out ctext)) mf.Items.Add(copyText);
                     if (msg.CanEditMessage(ViewModel.PinnedMessage)) mf.Items.Add(edit);
                     if (string.IsNullOrEmpty(ViewModel.RestrictionReason) && msg.CanReply()) mf.Items.Add(reply);
-                    if (windowType == WindowType.Main && msg.TTL == 0 && !msg.HasCall()) mf.Items.Add(forward);
+                    if (windowType == WindowType.Main && msg.TTL == 0 && !msg.HasCall() && canForwardFromChat) mf.Items.Add(forward);
                     if (ViewModel.ChatSettings != null && ViewModel.ChatSettings.ACL.CanChangePin && msg.TTL == 0 && !msg.HasCall()) mf.Items.Add(pin);
                     if (!msg.HasCall()) mf.Items.Add(mark);
                     if (AppSession.MessagesTranslationLanguagePairs.Count > 0 && !string.IsNullOrEmpty(msg.Text)) mf.Items.Add(translate);

@@ -76,7 +76,7 @@ namespace Elorucov.Laney.Pages.Dialogs {
                 ScrollViewer sv = lvb.GetScrollViewerFromListView();
                 if (sv != null) sv.ViewChanged += async (a, b) => {
                     if (sv.VerticalOffset >= sv.ScrollableHeight - 128) {
-                        switch (int.Parse(lvb.Tag.ToString())) {
+                        switch (Int32.Parse(lvb.Tag.ToString())) {
                             case 1: await ViewModel.LoadPhotosAsync(); break;
                             case 2: await ViewModel.LoadVideosAsync(); break;
                             case 3: await ViewModel.LoadDocumentsAsync(); break;
@@ -207,8 +207,8 @@ namespace Elorucov.Laney.Pages.Dialogs {
 
         private void AudioUC_IsPlayButtonClicked(object sender, Audio a) {
             new System.Action(async () => {
-                if (a.ContentRestricted > 0 || string.IsNullOrEmpty(a.Url)) {
-                    object r = await Audios.GetRestrictionPopup(a.Id, API.WebToken);
+                if (a.ContentRestricted > 0 || String.IsNullOrEmpty(a.Url)) {
+                    object r = await Audios.GetRestrictionPopup(a.Id);
                     if (r != null && r is AudioRestrictionInfo info) {
                         await new ContentDialog {
                             Title = info.Title,

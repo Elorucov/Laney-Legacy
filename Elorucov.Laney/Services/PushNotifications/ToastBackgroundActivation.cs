@@ -69,7 +69,7 @@ namespace Elorucov.Laney.Services.PushNotifications {
             if (canReply) forward = $"&forward={{\"peer_id\":{peerId},\"conversation_message_ids\":[{replyMessageId}],\"is_reply\":true}}";
 
             string at = AppParameters.AccessToken;
-            string domain = AppParameters.VkApiDomain ?? "https://api.vk.com";
+            string domain = AppParameters.VkApiDomain ?? "https://api.vk.me";
             string lang = Locale.Get("lang");
 
             string url = $"{domain}/method/messages.send?peer_id={peerId}&random_id=0&message={text}{forward}&access_token={at}&v={API.Version}&lang={lang}";

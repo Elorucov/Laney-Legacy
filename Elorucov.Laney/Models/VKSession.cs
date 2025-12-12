@@ -16,10 +16,10 @@ namespace Elorucov.Laney.Models {
         public string VKMExchangeToken { get; private set; }
         public string LocalPasscode { get; set; }
 
-        public VKSession(long id, string accessToken, string vkmAccessToken, long vkmExpires, string exchangeToken, string name, string avatar) {
+        // Чтобы не сломать структуру старой версии файла с сессиями.
+        public VKSession(long id, string accessToken, long vkmExpires, string exchangeToken, string name, string avatar) {
             Id = id;
             AccessToken = accessToken;
-            VKMAccessToken = vkmAccessToken;
             VKMAccessTokenExpires = vkmExpires;
             VKMExchangeToken = exchangeToken;
             Name = name;

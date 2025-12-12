@@ -49,7 +49,7 @@ namespace Elorucov.Laney.Pages.Dialogs.Folders {
             Loader.IsActive = true;
             var ids = SelectedConversations.Select(c => c.Id);
 
-            object response = await Messages.GetConversations(100, 0, null, 0, API.WebToken);
+            object response = await Messages.GetConversations(100, 0, null, 0);
             Loader.IsActive = false;
             if (response is ConversationsResponse cr) {
                 AppSession.AddUsersToCache(cr.Profiles);

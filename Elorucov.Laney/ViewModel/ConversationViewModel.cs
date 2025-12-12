@@ -382,12 +382,12 @@ namespace Elorucov.Laney.ViewModel {
                     IsDonut = c.ChatSettings != null ? c.ChatSettings.IsDonut : false;
                     MembersCount = c.ChatSettings != null ? c.ChatSettings.MembersCount : 0;
                     Title = c.ChatSettings != null ? c.ChatSettings.Title : "Untitled chat";
-                    Photo = new Uri(c.ChatSettings?.Photo?.Medium != null ? c.ChatSettings.Photo.Medium : "https://vk.com/images/icons/im_multichat_200.png");
+                    Photo = new Uri(c.ChatSettings?.Photo?.Medium != null ? c.ChatSettings.Photo.Medium : "https://vk.ru/images/icons/im_multichat_200.png");
                     if (c.ChatSettings?.PinnedMessage != null) PinnedMessage = new LMessage(c.ChatSettings.PinnedMessage);
                 } else if (c.Peer.Type == PeerType.User) {
                     if (c.Peer.Id == AppParameters.UserID) {
                         Title = Locale.Get("favorites_myself");
-                        Photo = new Uri("https://vk.com/images/icons/im_favorites_200.png");
+                        Photo = new Uri("https://vk.ru/images/icons/im_favorites_200.png");
                     } else {
                         var u = AppSession.GetCachedUser(c.Peer.Id);
                         Title = u != null ? u.FullName : "Untitled user";
@@ -407,7 +407,7 @@ namespace Elorucov.Laney.ViewModel {
                 } else if (c.Peer.Type == PeerType.Contact) {
                     var t = AppSession.GetCachedContact(c.Peer.LocalId);
                     Title = t != null ? t.Name : "Untitled contact";
-                    Photo = t != null && t.Photo != null ? t.Photo : new Uri("https://vk.com/images/camera_200.png");
+                    Photo = t != null && t.Photo != null ? t.Photo : new Uri("https://vk.ru/images/camera_200.png");
                 }
 
                 IsMuted = c.PushSettings != null && c.PushSettings.DisabledForever ? true : false;
@@ -767,7 +767,7 @@ namespace Elorucov.Laney.ViewModel {
                                     Photo = message.Attachments[0].Photo.PreviewImageUri;
                                     break;
                                 case "chat_photo_remove":
-                                    Photo = new Uri("https://vk.com/images/icons/im_multichat_200.png");
+                                    Photo = new Uri("https://vk.ru/images/icons/im_multichat_200.png");
                                     break;
                                 case "chat_pin_message":
                                     await UpdatePinnedMessageAsync(message.Action.ConversationMessageId);
@@ -855,7 +855,7 @@ namespace Elorucov.Laney.ViewModel {
                     if (Functions.CheckFlag(flags, 128) || // Восстановление сообщения
                         Functions.CheckFlag(flags, 64) || // Отмена пометки сообщения как спам
                         Functions.CheckFlag(flags, 32768)) { // Отмена пометки сообщения как спам
-                        object resp = await VkAPI.Methods.Messages.GetByConversationMessageId(peerId, new List<int> { msgid }, VkAPI.API.WebToken);
+                        object resp = await VkAPI.Methods.Messages.GetByConversationMessageId(peerId, new List<int> { msgid });
                         if (resp is MessagesHistoryResponse r && r.Items.Count > 0) {
                             AppSession.AddUsersToCache(r.Profiles);
                             AppSession.AddGroupsToCache(r.Groups);
@@ -1035,7 +1035,7 @@ namespace Elorucov.Laney.ViewModel {
                         case LPBotCallbackActionType.OpenApp:
                             string oid = callback.Action.OwnerId.IsUser() ? $"_{callback.Action.OwnerId}" : string.Empty;
                             string hash = string.IsNullOrEmpty(callback.Action.Hash) ? $"#{callback.Action.Hash}" : string.Empty;
-                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://m.vk.com/app{callback.Action.AppId}{oid}{hash}"));
+                            await Windows.System.Launcher.LaunchUriAsync(new Uri($"https://m.vk.ru/app{callback.Action.AppId}{oid}{hash}"));
                             break;
                     }
                 })();
